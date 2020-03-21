@@ -1,0 +1,61 @@
+# Installation of the APEC protocol (Last update: April 2, 2019) 
+#
+#
+# 1) Install Dowser, Modeller, Scrwl4, Molcas (7.8) and Tinker (5)
+#
+# 2) Install VMD and make sure it can be run sliently from prompt.  
+#
+# 3) Modify "atomdict.db" into the directory "~/dowser/DATA" to allow Dowser to recognize the RET or any other chromophore
+# 
+# 4) Update sample-ARMconfig file (See details in that file) and then run install.sh 
+#
+#
+#
+# Running APEC protocol
+#
+# 1) Create the xyz file of the cromophore containing the coordinates, atom types, conectivities and QM/MM model in the following way:
+#    - Extract the chromophore from the pdb file and create the file chromophore.pdb (it can be any name)
+#    - Add the hydrogens using babel code (install babel from here:https://openbabel.org/wiki/Category:Macintosh):
+#      babel -ipdb -h 'chromophore.pdb' -opdb 'chromophoreH.pdb'
+#    - chromophoreH.pdb contains the hydrogen atoms and also the conectivities
+#    - from chromophoreH.pdb create a XYZ file (chromophore.xyz) like this one:
+#
+#    41
+#  PDB_labels       X       Y       Z     AMBER_Atom_type  QM/MM model
+#    C1          -0.573  -0.262   0.118        CT              QM
+#    C2          -1.449   0.737  -0.336        CA              MM
+#    H3          -2.829   0.561  -0.349        H1              LQ
+#    ...                                         
+#    C5           5.007  -1.386  -0.211        CB              LM
+#    C5           5.067  -3.376  -0.513        CB              XX
+#    C1  C2
+#    C1  H3
+#    ...
+#    End
+#
+#
+# 2) Prepare the pdb file of the protein (without the chromophore) with the correct protonation states (Using PropKa: https://github.com/jensengroup/propka-3.1) 
+#
+# 3) Copy New_APEC_99sb.sh file to the same directory with the pdb file of the protein and chromophore.xyz
+#
+# 4) Run New_APEC_99sb.sh
+#
+#
+## "seqmut file (For Mutation) 
+##
+## The mutation routine is activated ONLY if you place a file named "seqmut"
+## in the same folder as the initial PDB file and New.sh. In that file mutations have 
+## to be placed in one of the following standard format for replacements:
+##     S83G
+##     Tyr96Arg
+## The script is case-insensitive, so also s83g, TYR78lys and so on would be accepted. 
+##
+## Mixed 1- and 3-letters codes will not be properly read. 
+##
+## If you want to perform more than 1 substitution, just list them on different lines in the same file.
+## 
+#
+#ASEC
+#
+ 
+

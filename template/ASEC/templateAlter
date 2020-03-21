@@ -1,0 +1,40 @@
+* template for CASSCF single point for orbital switching
+
+> EXPORT MOLCAS_MOLDEN=ON
+
+> COPY $InpDir/$Project.xyz $WorkDir
+> COPY $InpDir/$Project.key $WorkDir
+> COPY $InpDir/PARAMETRI.prm $WorkDir
+*> COPY $InpDir/$Project.Espf.Data $WorkDir
+
+*> COPY $InpDir/$Project.JobIph $WorkDir/$Project.JobOld
+
+&Gateway
+ Tinker
+ Group = NoSym
+ Basis = bases
+
+&SEWARD
+&ESPF
+  External = Tinker
+  lamorok
+&RASSCF
+  lumorb
+    spin=1
+    nActEl=12 0 0
+    Inactive=76
+    Ras2=12
+    alter
+    NUMORB
+
+> COPY $WorkDir/$Project.JobIph $InpDir
+> COPY $Project.Espf.Data $InpDir
+
+ &GRID_IT
+   SELEct
+   1:55-110
+ &GRID_IT
+   FILEORB = $Project.RasOrb; NAME = average
+   SELEct
+   1:55-110
+

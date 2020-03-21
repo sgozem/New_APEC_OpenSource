@@ -1,0 +1,19 @@
+#
+# Sample file for quick installation. To use it:
+# 1. Edit each field according to your settings
+# 2. Rename me as APECconfig
+# 3. Place me in the same folder as install.sh
+# 4. Run install.sh and enjoy!
+#
+
+MolcasInstall /home/users/yorozcogonzalez/bin/7.8.dev
+MolcasDriver /home/users/yorozcogonzalez/bin
+MolcasVersion 7.8
+TinkerDir /home/users/yorozcogonzalez/bin/7.8.dev/tinker/bin_qmmm
+TinkerVersion 5.1
+Queue SLURM
+GromacsPath /home/users/yorozcogonzalez/bin/gromacs/bin 
+DowserPath /home/users/yorozcogonzalez/bin/dowser/bin/dowser
+Modeller NO
+SCWRL4 YES
+

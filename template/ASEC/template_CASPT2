@@ -1,0 +1,47 @@
+* template to be used for one step minimum optimization
+
+> EXPORT MOLCAS_MOLDEN=ON
+
+> COPY $InpDir/$Project.xyz $WorkDir
+> COPY $InpDir/$Project.key $WorkDir
+> COPY $InpDir/PARAMETER.prm $WorkDir
+
+> COPY $InpDir/$Project.JobIph $WorkDir/$Project.JobOld
+>> LINK FORCE $Project.JobOld JOBOLD
+
+&Gateway
+  Tinker
+  Group = NoSym
+  Basis = ANO-L-VDZP
+
+&SEWARD
+  cholesky
+&ESPF
+  External = Tinker
+  lamorok
+*&SCF
+*  charge = 0
+&RASSCF
+  JobIph
+*  cirestart
+  spin=1
+  nActEl=16 0 0
+  Inactive=59
+  Ras2=14
+  ciroot=8 8 1
+  thrs = 0.000001  0.001 0.001
+  cholesky
+  cimx = 200
+  iter = 200 50
+
+&RASSI
+  nrof jobiphs
+  1 8
+  1 2 3 4 5 6 7 8
+&CASPT2
+  maxiter = 300
+  multi = 8 1 2 3 4 5 6 7 8
+  nomult
+  imag = 0.2
+  ipea = 0.25
+

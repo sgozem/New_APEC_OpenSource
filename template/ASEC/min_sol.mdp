@@ -1,0 +1,60 @@
+;http://ringo.ams.sunysb.edu/index.php/Ubq_min.mdp
+; Modified by Yoelvis
+
+;define                  = -DPOSRES    ; defines to pass to the preprocessor
+
+;constraints             = h-bonds
+constraints             = none
+;comm_mode               = Linear                ; remove center of mass translation
+;comm_grps               = Water non-Water       ; group(s) for center of mass motion removal
+
+;integrator             = l-bfgs
+integrator              = steep        ; steepest descents energy minimization
+nsteps                  = 1000         ; maximum number of steps to integrate
+;nsteps                  = 20000         ; maximum number of steps to integrate
+;
+; Energy minimizing stuff
+;
+emtol                   = 100               ; [kJ/mol/nm] minimization is converged when max force is < emtol
+emstep                  = 0.1               ; [nm] initial step-size
+;energygrps              = Water non-Water
+;energygrp-excl          = non-Water non-Water Water Water
+;
+; Output Control
+;
+nstxout                 = 100           ; [steps] freq to write coordinates to trajectory
+nstvout                 = 100           ; [steps] freq to write velocities to trajectory
+nstfout                 = 100           ; [steps] freq to write forces to trajectory
+nstlog                  = 1              ; [steps] freq to write energies to log file
+nstenergy               = 1             ; [steps] freq to write energies to energy file
+;
+; Neighbor Searching
+;
+cutoff-scheme = Verlet
+nstlist                 = 10            ; [steps] freq to update neighbor list
+ns_type                 = Simple        ; method of updating neighbor list
+pbc                     = xyz           ; periodic boundary conditions in all directions
+;rlist                   = 0.8           ; [nm] cut-off distance for the short-range neighbor list
+; Electrostatics
+coulombtype             = PME           ; Particle-Mesh Ewald electrostatics
+rcoulomb                = 1.2           ; [nm] distance for Coulomb cut-off
+;
+; VdW
+;
+vdwtype                 = cut-off       ; twin-range cut-off with rlist where rvdw >= rlist
+rvdw                    = 1.2           ; [nm] distance for LJ cut-off
+DispCorr                = Ener          ; apply long range dispersion corrections for energy
+;
+; Ewald
+;
+fourierspacing          = 0.12          ; [nm] grid spacing for FFT grid when using PME
+pme_order               = 4             ; interpolation order for PME, 4 = cubic
+ewald_rtol              = 1e-5          ; relative strength of Ewald-shifted potential at rcoulomb
+;
+; Freezing atoms
+;
+;freezegrps = non-Water
+freezegrps = GroupDyna
+freezedim = Y Y Y
+
+

@@ -1,0 +1,56 @@
+* template to be used for one step minimum optimization
+
+> EXPORT MOLCAS_MOLDEN=ON
+
+> COPY $InpDir/$Project.xyz $WorkDir
+> COPY $InpDir/$Project.key $WorkDir
+> COPY $InpDir/PARAMETRI.prm $WorkDir
+
+*> EXPORT CONT=0
+> EXPORT PASOS=1
+
+&Gateway
+ Tinker
+ Group = NoSym
+ Basis = ANO-L-MB
+
+*>   Set   maxiter   200
+>   Do   while
+ 
+   &SEWARD
+   &ESPF
+    External = Tinker
+    lamorok
+   &SCF
+    Charge = 0
+
+*&mclr
+*iter = 300
+
+   &ALASKA
+   &SLAPAF
+    cartesian
+    rHidden = 2.75
+*    THRShld
+*    1.0D-3 3.0D-1
+ end of input
+
+> COPY $WorkDir/$Project.xyz $InpDir/$Project.Final.xyz
+> COPY $WorkDir/$Project.xyz $InpDir/$Project.Final.xyz_$PASOS
+
+*> EXPORT EST=00$CONT
+*> If ( -FILE $Project.$EST )
+*> COPY $WorkDir/$Project.$EST $InpDir
+*> EndIf
+
+*> EXPORT EST=0$CONT
+*> If ( -FILE $Project.$EST )
+*> COPY $WorkDir/$Project.$EST $InpDir
+*> EndIf
+
+*> EVAL CONT=$CONT+1
+> EVAL PASOS=$PASOS+1
+
+>   EndDo
+
+

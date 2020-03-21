@@ -1,0 +1,10 @@
+Template /home/users/yorozcogonzalez/bin/New_APEC/template
+Tinker /home/users/yorozcogonzalez/bin/build/tinker/bin
+Version Tk 6.3.3
+Queue SLURM
+Gromacs YES
+GroPath /home/users/yorozcogonzalez/bin/gromacs-2019.3/bin/bin
+Dowser YES
+DowPath /home/users/yorozcogonzalez/bin/dowser/bin/dowser
+Modeller NO
+SCWRL4 YES

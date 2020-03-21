@@ -1,0 +1,93 @@
+* template to be used for one step minimum optimization
+
+> EXPORT MOLCAS_MOLDEN=ON
+
+> COPY $InpDir/$Project.xyz $WorkDir
+> COPY $InpDir/$Project.key $WorkDir
+> COPY $InpDir/PARAMETRI.prm $WorkDir
+
+
+> COPY $InpDir/$Project.JobIph_old $WorkDir/$Project.JobOld
+
+> EXPORT CONT=1
+> EXPORT PASOS=1
+
+> COPY $InpDir/$Project.Hessian_old RUNOLD
+
+&Gateway
+ Tinker
+ Group = NoSym
+ Basis = 6-31G*
+
+*>   Set   maxiter   100
+>   Do   while
+ 
+   &SEWARD
+   &ESPF
+    External = Tinker
+    lamorok
+* >>> IF (ITER=1) <<<
+*     &SCF
+*     Charge = +1
+* >>> ENDIF <<<
+   &RASSCF
+    JobIph
+    cirestart
+    spin=1
+    nActEl=12 0 0
+    Inactive=76
+    Ras2=12
+    ciroot=2 2 1
+    RLXRoot=1
+
+> COPY $WorkDir/$Project.JobIph $InpDir/$Project.JobIph_$PASOS
+> COPY $Project.JobIph $Project.JobOld
+
+&mclr
+iter = 300
+
+   &ALASKA
+   &SLAPAF
+    OLDF
+    cartesian
+    rHidden = 4.0
+    maxstep = 0.1
+    FindTS
+    Constraints
+    d1 = dihedral C24 C25 C26 C27
+    d2 = dihedral H44 C25 C26 H45
+    Value
+    d1 = -92.0
+    d2 = -91.0
+    End of Constraints
+*    TS
+*    THRShld
+*    1.0D-4 0.45D-2
+
+> COPY $WorkDir/$Project.RunFile $InpDir/$Project.Hessian_new_$PASOS
+
+> COPY $WorkDir/$Project.xyz $InpDir/$Project.xyz_$PASOS
+> COPY $WorkDir/$Project.Espf.Data $InpDir
+
+> EXPORT EST=00$CONT
+> If ( -FILE $Project.$EST )
+> COPY $WorkDir/$Project.$EST $InpDir
+> EndIf
+
+> EXPORT EST=0$CONT
+> If ( -FILE $Project.$EST )
+> COPY $WorkDir/$Project.$EST $InpDir
+> EndIf
+
+> EVAL CONT=$CONT+1
+> EVAL PASOS=$PASOS+1
+>   EndDo
+
+ &GRID_IT
+   SELEct
+   1:67-98
+ &GRID_IT
+   FILEORB = $Project.RasOrb; NAME = average
+   SELEct
+   1:67-98
+
