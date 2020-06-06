@@ -22,4 +22,6 @@ GROMACS side
  Add the new residue using the same charges as in TINKER
 - amber99sb/aminoacids.hdb:
   Add the new residue table to add the hydrogens from the bare pdb file
+- residuetypes.dat:
+  Add the new residue 3-lett code as a protein or ...
   
