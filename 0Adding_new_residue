@@ -6,6 +6,8 @@ TINKER side
   Add the the atom type of the backbone atoms of the new residue in the "biopolymer types" seccions.
 - sizes.i:
   Increase "maxamino" accordingly.
+- amber99sb:
+  add the new residue in "atom", "charge" and "biotype".  
 - make all
 - make rename
 
