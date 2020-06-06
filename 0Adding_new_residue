@@ -6,8 +6,20 @@ TINKER side
   Add the the atom type of the backbone atoms of the new residue in the "biopolymer types" seccions.
 - sizes.i:
   Increase "maxamino" accordingly.
+- readpdb.f:
+  Add any needed text interpretation to the new residue.
 - amber99sb:
   add the new residue in "atom", "charge" and "biotype".  
 - make all
 - make rename
 
+DOWSER side
+- dowser/DATA/atomdict.db
+  Add the new residue, following the instructions from here: http://xray.bmc.uu.se/~spoel/jhgroup/local/Dowser/Dowman.html
+
+GROMACS side
+- amber99sb/aminoacids.trp:
+ Add the new residue using the same charges as in TINKER
+- amber99sb/aminoacids.hdb:
+  Add the new residue table to add the hydrogens from the bare pdb file
+  
