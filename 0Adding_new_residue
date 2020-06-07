@@ -24,4 +24,6 @@ GROMACS side
   Add the new residue table to add the hydrogens from the bare pdb file
 - residuetypes.dat:
   Add the new residue 3-lett code as a protein or ...
+
+Note: If the added residue is charged, it must be added to "New_APEC_1" in the "minusc" variable to account for the total charge of the system.
   
