@@ -1,0 +1,17 @@
+TINKER side
+- tinker/source/pdbxyz.f:
+  Modify "subroutine hetatom" to add "builh3o"
+  Add the "subroutine buildh3o"
+  
+  
+- tinker/source/initres.f:
+  Add the 3-lett and 1-lett codes of the new residue to acid1 and acid3.
+  Add the the atom type of the backbone atoms of the new residue in the "biopolymer types" seccions.
+- sizes.i:
+  Increase "maxamino" accordingly.
+- readpdb.f:
+  Add any needed text interpretation to the new residue.
+- amber99sb:
+  add the new residue in "atom", "charge" and "biotype".  
+- make all
+- make rename
