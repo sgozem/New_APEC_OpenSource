@@ -4,7 +4,11 @@ TINKER side
 - tinker/source/pdbxyz.f:
   Modify "subroutine hetatom" to add "builh3o"
   Add the "subroutine buildh3o"
-  
+  Recompile with:
+    cd tinker/source/
+    make all
+    make rename
+
 Sevaral other modifications to the protocol already added to the last version to deal with gromacs, dawser, etc. 
 
 - tinker/source/initres.f:
