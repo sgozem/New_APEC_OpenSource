@@ -4,6 +4,8 @@ TINKER side
 - tinker/source/pdbxyz.f:
   Modify "subroutine hetatom" to add "builh3o"
   Add the "subroutine buildh3o"
+- readpdb.f:
+  Add any needed text interpretation to the new residue.
   Recompile with:
     cd tinker/source/
     make all
