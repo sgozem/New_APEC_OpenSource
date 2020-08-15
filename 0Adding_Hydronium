@@ -1,9 +1,12 @@
 TINKER side
+- amber99sb:
+  add the new residue in "atom", "charge" and "biotype".
 - tinker/source/pdbxyz.f:
   Modify "subroutine hetatom" to add "builh3o"
   Add the "subroutine buildh3o"
   
-  
+Sevaral other modifications to the protocol already added to the last version to deal with gromacs, dawser, etc. 
+
 - tinker/source/initres.f:
   Add the 3-lett and 1-lett codes of the new residue to acid1 and acid3.
   Add the the atom type of the backbone atoms of the new residue in the "biopolymer types" seccions.
