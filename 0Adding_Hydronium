@@ -1,11 +1,13 @@
 TINKER side
 - amber99sb:
   add the new residue in "atom", "charge" and "biotype".
+- readpdb.f:
+  Add any needed interpretation text for the new residue.
+  the atom definition here will be used by pdbxyz.f later 
 - tinker/source/pdbxyz.f:
+  Add the new hetatm as allowed resname
   Modify "subroutine hetatom" to add "builh3o"
   Add the "subroutine buildh3o"
-- readpdb.f:
-  Add any needed text interpretation to the new residue.
   Recompile with:
     cd tinker/source/
     make all
