@@ -23,7 +23,7 @@ nstcomm = 1
 rcoulomb = 1.2
 rvdw = 1.2
 nstlist = 10
-ns_type = simple
+ns_type = grid
 define = -DFLEXIBLE
 ;
 ; Freezing atoms

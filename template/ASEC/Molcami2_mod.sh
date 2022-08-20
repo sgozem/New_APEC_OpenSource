@@ -6,6 +6,41 @@ Project=`grep "Project" ../Infos.dat | awk '{ print $2 }'`
 prm=`grep "Parameters" ../Infos.dat | awk '{ print $2 }'`
 tinkerdir=`grep "Tinker" ../Infos.dat | awk '{ print $2 }'`
 templatedir=`grep "Template" ../Infos.dat | awk '{ print $2 }'`
+tempdir=`grep "tempdir" ../Infos.dat | awk '{ print $2 }'`
+
+scf=${Project}_OptSCF
+
+if [[ -f $scf/$scf.out ]]; then
+   echo ""
+   echo " *************************************************************"
+   echo "                      Warning!"
+   echo ""
+   echo " $scf.out already excist. We are goint to use it..."
+   echo ""
+   echo " *************************************************************"
+   echo ""
+else
+   echo ""
+   echo " Collecting the HF optimization from iRODS..."
+   echo ""
+   dir=`basename $tempdir`
+   iget -r /arctic/projects/CHEM9C4/$USER/$dir $scf
+   if [[ -f $scf/$dir/$scf.out ]]; then
+      mv $scf/$dir/* $scf
+      rm -r $scf/$dir
+      irm -r /arctic/projects/CHEM9C4/$USER/$dir
+   else
+      echo ""
+      echo "************************************************************************"
+      echo ""
+      echo " It seems that the MD is still running or it did not finish properly"
+      echo ""
+      echo "************************************************************************"
+      echo ""
+      exit 0
+   fi
+fi
+
 #
 # Instructions to the user
 #
@@ -16,7 +51,6 @@ echo ""
 #
 # Grepping the Happy landing to check that the calculation ended up properly
 #
-scf=${Project}_OptSCF_VDZ
 if grep -q "Timing: Wall=" $scf/$scf.out; then
    echo " HF optimization ended successfully"
    echo ""
@@ -76,7 +110,7 @@ no=$PWD
 sed -i "s|NOMEDIRETTORI|${no}|" molcas-job.sh
 sed -i "s|MEMTOT|23000|" molcas-job.sh
 sed -i "s|MEMORIA|20000|" molcas-job.sh
-sed -i "s|hh:00:00|160:00:00|" molcas-job.sh
+sed -i "s|hh:00:00|120:00:00|" molcas-job.sh
 
 #
 # Submitting the CAS/3-21G single point
@@ -84,9 +118,16 @@ sed -i "s|hh:00:00|160:00:00|" molcas-job.sh
 echo ""
 echo " Submitting the CAS/ANO-L-VDZ single point now..."
 echo ""
-sleep 1
+#sleep 1
 
+#TMPFILE=`mktemp -d /scratch/photon_XXXXXX`
+#../../update_infos.sh "tempdir" $TMPFILE ../../Infos.dat
+#sed -i "s|TEMPFOLDER|$TMPFILE|g" molcas-job.sh
+#cp -r * $TMPFILE
+#current=$PWD
+#cd $TMPFILE
 sbatch molcas-job.sh
+#cd $current
 
 cd ..
 cp $templatedir/ASEC/1st_to_2nd_mod.sh .

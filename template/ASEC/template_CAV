@@ -1,0 +1,20 @@
+* template to be used for one step minimum optimization
+
+> EXPORT MOLCAS_MOLDEN=ON
+
+> COPY $InpDir/$Project.xyz $WorkDir
+> COPY $InpDir/$Project.key $WorkDir
+> COPY $InpDir/melacu51.prm $WorkDir
+
+&Gateway
+ Tinker
+ Group = NoSym
+ Basis = sto-3g
+
+&SEWARD
+&ESPF
+ External = Tinker
+ lamorok
+
+
+

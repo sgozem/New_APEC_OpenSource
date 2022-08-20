@@ -12,9 +12,9 @@
 &Gateway
  Tinker
  Group = NoSym
- Basis = ANO-L-MB
+ Basis = ANO-L-VDZ
 
-*>   Set   maxiter   200
+>   EXPORT MOLCAS_MAXITER=10
 >   Do   while
  
    &SEWARD
@@ -30,13 +30,14 @@
    &ALASKA
    &SLAPAF
     cartesian
-    rHidden = 2.75
+    rHidden = 4.0
 *    THRShld
 *    1.0D-3 3.0D-1
  end of input
 
 > COPY $WorkDir/$Project.xyz $InpDir/$Project.Final.xyz
 > COPY $WorkDir/$Project.xyz $InpDir/$Project.Final.xyz_$PASOS
+> COPY $WorkDir/$Project.out $InpDir/$Project.out
 
 *> EXPORT EST=00$CONT
 *> If ( -FILE $Project.$EST )

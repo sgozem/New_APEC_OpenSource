@@ -6,17 +6,50 @@ Project=`grep "Project" ../Infos.dat | awk '{ print $2 }'`
 prm=`grep "Parameters" ../Infos.dat | awk '{ print $2 }'`
 tinkerdir=`grep "Tinker" ../Infos.dat | awk '{ print $2 }'`
 templatedir=`grep "Template" ../Infos.dat | awk '{ print $2 }'`
+tempdir=`grep "tempdir" ../Infos.dat | awk '{ print $2 }'`
+
+sp=${Project}_VDZ
+
+if [[ -f $sp/$sp.out ]]; then
+   echo ""
+   echo " *************************************************************"
+   echo "                      Warning!"
+   echo ""
+   echo " $sp.out already excist. We are goint to use it..."
+   echo ""
+   echo " *************************************************************"
+   echo ""
+else
+   echo ""
+   echo " Collecting the SP CASSCF/VDZ from iRODS..."
+   echo ""
+   dir=`basename $tempdir`
+   iget -r /arctic/projects/CHEM9C4/$USER/$dir $sp
+   if [[ -f $sp/$dir/$sp.out ]]; then
+      mv $sp/$dir/* $sp
+      rm -r $sp/$dir
+      irm -r /arctic/projects/CHEM9C4/$USER/$dir
+   else
+      echo ""
+      echo "************************************************************************"
+      echo ""
+      echo " It seems that the MD is still running or it did not finish properly"
+      echo ""
+      echo "************************************************************************"
+      echo ""
+      exit 0
+   fi
+fi
 
 # Instructions to the user
 #
 echo ""
-echo " The current project is $Project. Checking the CAS/3-21G single point..."
+echo " The current project is $Project. Checking the SP CASSCF/VDZ single point..."
 echo ""
 
 #
 # Checking if the single point ended successfully, with control on folder existence
 #
-sp=${Project}_VDZ
 if [ -d $sp ]; then
    cd $sp
    if grep -q "Timing: Wall=" $sp.out; then
@@ -117,17 +150,24 @@ no=$PWD
 sed -i "s|NOMEDIRETTORI|${no}|" molcas-job.sh
 sed -i "s|MEMTOT|23000|" molcas-job.sh
 sed -i "s|MEMORIA|20000|" molcas-job.sh
-sed -i "s|hh:00:00|160:00:00|" molcas-job.sh
+sed -i "s|hh:00:00|120:00:00|" molcas-job.sh
 
 #
 # Job submission and template copy for the following step
 #
 echo ""
-echo " Submitting the CAS/3-21G optimization now..."
+echo " Submitting the CASSCF/VDZ optimization now..."
 echo ""
-sleep 1
+#sleep 1
 
+#TMPFILE=`mktemp -d /scratch/photon_XXXXXX`
+#../../update_infos.sh "tempdir" $TMPFILE ../../Infos.dat
+#sed -i "s|TEMPFOLDER|$TMPFILE|g" molcas-job.sh
+#cp -r * $TMPFILE
+#current=$PWD
+#cd $TMPFILE
 sbatch molcas-job.sh
+#cd $current
 
 cd ..
 cp $templatedir/ASEC/2nd_to_3rd_mod.sh .

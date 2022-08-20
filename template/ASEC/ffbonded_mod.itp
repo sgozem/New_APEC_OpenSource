@@ -1,0 +1,1024 @@
+[ bondtypes ]
+; i    j  func       b0          kb
+;  OW HW         1    0.09572   462750.4 ; P water
+;  HW HW         1    0.15136   462750.4 ; P water
+  C  CA         1    0.14090   392459.2 ; 7,(1986),230; TYR
+  C  CB         1    0.14190   374049.6 ; 7,(1986),230; GUA
+  C  CM         1    0.14440   343088.0 ; 7,(1986),230; THY,URA
+  C  CT         1    0.15220   265265.6 ; 7,(1986),230; AA
+  C  N*         1    0.13830   354803.2 ; 7,(1986),230; CYT,URA
+  C  NA         1    0.13880   349782.4 ; 7,(1986),230; GUA.URA
+  C  NC         1    0.13580   382417.6 ; 7,(1986),230; CYT
+  C  O          1    0.12290   476976.0 ; 7,(1986),230; AA,CYT,GUA,THY,URA
+  C  O2         1    0.12500   548940.8 ; 7,(1986),230; GLU,ASP
+  C  OH         1    0.13640   376560.0 ; 7,(1986),230; TYR
+  CA CA         1    0.14000   392459.2 ; 7,(1986),230; BENZENE,PHE,TRP,TYR
+  CA CB         1    0.14040   392459.2 ; 7,(1986),230; ADE,TRP
+  CA CM         1    0.14330   357313.6 ; 7,(1986),230; CYT
+  CA CT         1    0.15100   265265.6 ; 7,(1986),230; PHE,TYR
+  CA HA         1    0.10800   307105.6 ; ged from 340. bsd on C6H6 nmodes; PHE,TRP,TYR
+  CA H4         1    0.10800   307105.6 ; ged from 340. bsd on C6H6 nmodes; no assigned
+  CA N2         1    0.13400   402500.8 ; 7,(1986),230; ARG,CYT,GUA
+  CA NA         1    0.13810   357313.6 ; 7,(1986),230; GUA
+  CA NC         1    0.13390   404174.4 ; 7,(1986),230; ADE,CYT,GUA
+  CB CB         1    0.13700   435136.0 ; 7,(1986),230; ADE,GUA
+  CB N*         1    0.13740   364844.8 ; 7,(1986),230; ADE,GUA
+  CB NB         1    0.13910   346435.2 ; 7,(1986),230; ADE,GUA
+  CB NC         1    0.13540   385764.8 ; 7,(1986),230; ADE,GUA
+  CK H5         1    0.10800   307105.6 ; ged from 340. bsd on C6H6 nmodes; ADE,GUA
+  CK N*         1    0.13710   368192.0 ; 7,(1986),230; ADE,GUA
+  CK NB         1    0.13040   442667.2 ; 7,(1986),230; ADE,GUA
+  CM CM         1    0.13500   459403.2 ; 7,(1986),230; CYT,THY,URA
+  CM CT         1    0.15100   265265.6 ; 7,(1986),230; THY
+  CM HA         1    0.10800   307105.6 ; ged from 340. bsd on C6H6 nmodes; CYT,URA
+  CM H4         1    0.10800   307105.6 ; ged from 340. bsd on C6H6 nmodes; CYT,URA
+  CM H5         1    0.10800   307105.6 ; ged from 340. bsd on C6H6 nmodes; not assigned
+  CM N*         1    0.13650   374886.4 ; 7,(1986),230; CYT,THY,URA
+  CQ H5         1    0.10800   307105.6 ; ged from 340. bsd on C6H6 nmodes; ADE
+  CQ NC         1    0.13240   420073.6 ; 7,(1986),230; ADE
+  CT CT         1    0.15260   259408.0 ; 7,(1986),230; AA, SUGARS
+  CT HC         1    0.10900   284512.0 ; ged from 331 bsd on NMA nmodes; AA, SUGARS
+  CT H1         1    0.10900   284512.0 ; ged from 331 bsd on NMA nmodes; AA, RIBOSE
+  CT H2         1    0.10900   284512.0 ; ged from 331 bsd on NMA nmodes; SUGARS
+  CT H3         1    0.10900   284512.0 ; ged from 331 bsd on NMA nmodes; not assigned
+  CT HP         1    0.10900   284512.0 ; nged from 331; AA-lysine, methyl ammonium cation
+  CT N*         1    0.14750   282001.6 ; 7,(1986),230; ADE,CYT,GUA,THY,URA
+  CT N2         1    0.14630   282001.6 ; 7,(1986),230; ARG
+  CT OH         1    0.14100   267776.0 ; 7,(1986),230; SUGARS
+  CT OS         1    0.14100   267776.0 ; 7,(1986),230; NUCLEIC ACIDS
+  H  N2         1    0.10100   363171.2 ; 7,(1986),230; ADE,CYT,GUA,ARG
+  H  N*         1    0.10100   363171.2 ; plain unmethylated bases ADE,CYT,GUA,ARG
+  H  NA         1    0.10100   363171.2 ; 7,(1986),230; GUA,URA,HIS
+  HO OH         1    0.09600   462750.4 ; 7,(1986),230; SUGARS,SER,TYR
+  HO OS         1    0.09600   462750.4 ; 7,(1986),230; NUCLEOTIDE ENDS
+  O2 P          1    0.14800   439320.0 ; 7,(1986),230; NA PHOSPHATES
+  OH P          1    0.16100   192464.0 ; 7,(1986),230; NA PHOSPHATES
+  OS P          1    0.16100   192464.0 ; 7,(1986),230; NA PHOSPHATES
+  C* HC         1    0.10800   307105.6 ; ged from 340. bsd on C6H6 nmodes, not needed AA
+  C  N          1    0.13350   410032.0 ; 7,(1986),230; AA
+  C* CB         1    0.14590   324678.4 ; 7,(1986),230; TRP
+  C* CT         1    0.14950   265265.6 ; 7,(1986),230; TRP
+  C* CW         1    0.13520   456892.8 ; 7,(1986),230; TRP
+  CA CN         1    0.14000   392459.2 ; 7,(1986),230; TRP
+  CB CN         1    0.14190   374049.6 ; 7,(1986),230; TRP
+  CC CT         1    0.15040   265265.6 ; 7,(1986),230; HIS
+  CC CV         1    0.13750   428441.6 ; 7,(1986),230; HIS(delta)
+  CC CW         1    0.13710   433462.4 ; 7,(1986),230; HIS(epsilon)
+  CC NA         1    0.13850   353129.6 ; 7,(1986),230; HIS
+  CC NB         1    0.13940   343088.0 ; 7,(1986),230; HIS
+  CN NA         1    0.13800   358150.4 ; 7,(1986),230; TRP
+  CR H5         1    0.10800   307105.6 ; ged from 340. bsd on C6H6 nmodes;HIS
+  CR NA         1    0.13430   399153.6 ; 7,(1986),230; HIS
+  CR NB         1    0.13350   408358.4 ; 7,(1986),230; HIS
+  CT N          1    0.14490   282001.6 ; 7,(1986),230; AA
+  CT N3         1    0.14710   307105.6 ; 7,(1986),230; LYS
+  CT S          1    0.18100   189953.6 ; ged from 222.0 based on dimethylS nmodes
+  CT SH         1    0.18100   198321.6 ; ged from 222.0 based on methanethiol nmodes
+  CV H4         1    0.10800   307105.6 ; ged from 340. bsd on C6H6 nmodes; HIS
+  CV NB         1    0.13940   343088.0 ; 7,(1986),230; HIS
+  CW H4         1    0.10800   307105.6 ; ged from 340. bsd on C6H6 nmodes;HIS(epsilon,+)
+  CW NA         1    0.13810   357313.6 ; 7,(1986),230; HIS,TRP
+  H  N          1    0.10100   363171.2 ; 7,(1986),230; AA
+  H  N3         1    0.10100   363171.2 ; 7,(1986),230; LYS    
+  HS SH         1    0.13360   229283.2 ; 7,(1986),230; CYS
+  S  S          1    0.20380   138908.8 ; 7,(1986),230; CYX   (SCHERAGA)
+  CT F          1    0.13800   307105.6 ; 13,(1992),963;CF4; R0=1.332 FOR CHF3
+ 
+  N3  C2R       1    0.13400   402500.8 ; ret 
+  C3R C3R       1    0.15260   259408.0 ; ret
+  C3R C2R	1    0.15100   265265.6 ; ret
+  C3R HR        1    0.10900   284512.0 ; ret
+  C2R C2R       1    0.14000   392459.2 ; ret
+  C2R HR        1    0.10800   307105.6 ; ret
+
+;
+;    CAVITY  bondtypes
+;
+;
+  CCV  CACV         1    0.14090   0.000000 ; 7,(1986),230; TYR
+  CCV  CBCV         1    0.14190   0.000000 ; 7,(1986),230; GUA
+  CCV  CMCV         1    0.14440   0.000000 ; 7,(1986),230; THY,URA
+  CCV  CTCV         1    0.15220   0.000000 ; 7,(1986),230; AA
+  CCV  NCV*         1    0.13830   0.000000 ; 7,(1986),230; CYT,URA
+  CCV  NACV         1    0.13880   0.000000 ; 7,(1986),230; GUA.URA
+  CCV  NCCV         1    0.13580   0.000000 ; 7,(1986),230; CYT
+  CCV  OCV          1    0.12290   0.000000 ; 7,(1986),230; AA,CYT,GUA,THY,URA
+  CCV  O2CV         1    0.12500   0.000000 ; 7,(1986),230; GLU,ASP
+  CCV  OHCV         1    0.13640   0.000000 ; 7,(1986),230; TYR
+  CACV CACV         1    0.14000   0.000000 ; 7,(1986),230; BENZENE,PHE,TRP,TYR
+  CACV CBCV         1    0.14040   0.000000 ; 7,(1986),230; ADE,TRP
+  CACV CMCV         1    0.14330   0.000000 ; 7,(1986),230; CYT
+  CACV CTCV         1    0.15100   0.000000 ; 7,(1986),230; PHE,TYR
+  CACV HACV         1    0.10800   0.000000 ; ged from 340. bsd on C6H6 nmodes; PHE,TRP,TYR
+  CACV H4CV         1    0.10800   0.000000 ; ged from 340. bsd on C6H6 nmodes; no assigned
+  CACV N2CV         1    0.13400   0.000000 ; 7,(1986),230; ARG,CYT,GUA
+  CACV NACV         1    0.13810   0.000000 ; 7,(1986),230; GUA
+  CACV NCCV         1    0.13390   0.000000 ; 7,(1986),230; ADE,CYT,GUA
+  CBCV CBCV         1    0.13700   0.000000 ; 7,(1986),230; ADE,GUA
+  CBCV NCV*         1    0.13740   0.000000 ; 7,(1986),230; ADE,GUA
+  CBCV NBCV         1    0.13910   0.000000 ; 7,(1986),230; ADE,GUA
+  CBCV NCCV         1    0.13540   0.000000 ; 7,(1986),230; ADE,GUA
+  CKCV H5CV         1    0.10800   0.000000 ; ged from 340. bsd on C6H6 nmodes; ADE,GUA
+  CKCV NCV*         1    0.13710   0.000000 ; 7,(1986),230; ADE,GUA
+  CKCV NBCV         1    0.13040   0.000000 ; 7,(1986),230; ADE,GUA
+  CMCV CMCV         1    0.13500   0.000000 ; 7,(1986),230; CYT,THY,URA
+  CMCV CTCV         1    0.15100   0.000000 ; 7,(1986),230; THY
+  CMCV HACV         1    0.10800   0.000000 ; ged from 340. bsd on C6H6 nmodes; CYT,URA
+  CMCV H4CV         1    0.10800   0.000000 ; ged from 340. bsd on C6H6 nmodes; CYT,URA
+  CMCV H5CV         1    0.10800   0.000000 ; ged from 340. bsd on C6H6 nmodes; not assigned
+  CMCV NCV*         1    0.13650   0.000000 ; 7,(1986),230; CYT,THY,URA
+  CQCV H5CV         1    0.10800   0.000000 ; ged from 340. bsd on C6H6 nmodes; ADE
+  CQCV NCCV         1    0.13240   0.000000 ; 7,(1986),230; ADE
+  CTCV CTCV         1    0.15260   0.000000 ; 7,(1986),230; AA, SUGARS
+  CTCV HCCV         1    0.10900   0.000000 ; ged from 331 bsd on NMA nmodes; AA, SUGARS
+  CTCV H1CV         1    0.10900   0.000000 ; ged from 331 bsd on NMA nmodes; AA, RIBOSE
+  CTCV H2CV         1    0.10900   0.000000 ; ged from 331 bsd on NMA nmodes; SUGARS
+  CTCV H3CV         1    0.10900   0.000000 ; ged from 331 bsd on NMA nmodes; not assigned
+  CTCV HPCV         1    0.10900   0.000000 ; nged from 331; AA-lysine, methyl ammonium cation
+  CTCV NCV*         1    0.14750   0.000000 ; 7,(1986),230; ADE,CYT,GUA,THY,URA
+  CTCV N2CV         1    0.14630   0.000000 ; 7,(1986),230; ARG
+  CTCV OHCV         1    0.14100   0.000000 ; 7,(1986),230; SUGARS
+  CTCV OSCV         1    0.14100   0.000000 ; 7,(1986),230; NUCLEIC ACIDS
+  HCV  N2CV         1    0.10100   0.000000 ; 7,(1986),230; ADE,CYT,GUA,ARG
+  HCV  NCV*         1    0.10100   0.000000 ; plain unmethylated bases ADE,CYT,GUA,ARG
+  HCV  NACV         1    0.10100   0.000000 ; 7,(1986),230; GUA,URA,HIS
+  HOCV OHCV         1    0.09600   0.000000 ; 7,(1986),230; SUGARS,SER,TYR
+  HOCV OSCV         1    0.09600   0.000000 ; 7,(1986),230; NUCLEOTIDE ENDS
+  O2CV PCV          1    0.14800   0.000000 ; 7,(1986),230; NA PHOSPHATES
+  OHCV PCV          1    0.16100   0.000000 ; 7,(1986),230; NA PHOSPHATES
+  OSCV PCV          1    0.16100   0.000000 ; 7,(1986),230; NA PHOSPHATES
+  CCV* HCCV         1    0.10800   0.000000 ; ged from 340. bsd on C6H6 nmodes, not needed AA
+  CCV  NCV          1    0.13350   0.000000 ; 7,(1986),230; AA
+  CCV* CBCV         1    0.14590   0.000000 ; 7,(1986),230; TRP
+  CCV* CTCV         1    0.14950   0.000000 ; 7,(1986),230; TRP
+  CCV* CWCV         1    0.13520   0.000000 ; 7,(1986),230; TRP
+  CACV CNCV         1    0.14000   0.000000 ; 7,(1986),230; TRP
+  CBCV CNCV         1    0.14190   0.000000 ; 7,(1986),230; TRP
+  CCCV CTCV         1    0.15040   0.000000 ; 7,(1986),230; HIS
+  CCCV CVCV         1    0.13750   0.000000 ; 7,(1986),230; HIS(delta)
+  CCCV CWCV         1    0.13710   0.000000 ; 7,(1986),230; HIS(epsilon)
+  CCCV NACV         1    0.13850   0.000000 ; 7,(1986),230; HIS
+  CCCV NBCV         1    0.13940   0.000000 ; 7,(1986),230; HIS
+  CNCV NACV         1    0.13800   0.000000 ; 7,(1986),230; TRP
+  CRCV H5CV         1    0.10800   0.000000 ; ged from 340. bsd on C6H6 nmodes;HIS
+  CRCV NACV         1    0.13430   0.000000 ; 7,(1986),230; HIS
+  CRCV NBCV         1    0.13350   0.000000 ; 7,(1986),230; HIS
+  CTCV NCV          1    0.14490   0.000000 ; 7,(1986),230; AA
+  CTCV N3CV         1    0.14710   0.000000 ; 7,(1986),230; LYS
+  CTCV SCV          1    0.18100   0.000000 ; ged from 222.0 based on dimethylS nmodes
+  CTCV SHCV         1    0.18100   0.000000 ; ged from 222.0 based on methanethiol nmodes
+  CVCV H4CV         1    0.10800   0.000000 ; ged from 340. bsd on C6H6 nmodes; HIS
+  CVCV NBCV         1    0.13940   0.000000 ; 7,(1986),230; HIS
+  CWCV H4CV         1    0.10800   0.000000 ; ged from 340. bsd on C6H6 nmodes;HIS(epsilon,+)
+  CWCV NACV         1    0.13810   0.000000 ; 7,(1986),230; HIS,TRP
+  HCV  NCV          1    0.10100   0.000000 ; 7,(1986),230; AA
+  HCV  N3CV         1    0.10100   0.000000 ; 7,(1986),230; LYS
+  HSCV SHCV         1    0.13360   0.000000 ; 7,(1986),230; CYS
+  SCV  SCV          1    0.20380   0.000000 ; 7,(1986),230; CYX   (SCHERAGA)
+  CTCV FCV          1    0.13800   0.000000 ; 13,(1992),963;CF4; R0=1.332 FOR CHF3
+
+  N3CV C2RC         1    0.13400   0.000000 ; ret
+  C3RC C3RC         1    0.15260   0.000000 ; ret
+  C3RC C2RC         1    0.15100   0.000000 ; ret
+  C3RC HRCV         1    0.10900   0.000000 ; ret
+  C2RC C2RC         1    0.14000   0.000000 ; ret
+  C2RC HRCV         1    0.10800   0.000000 ; ret
+;
+; FRONTERA
+;
+  CTCV CT         1    0.15260   0.000000 ; 7,(1986),230; AA, SUGARS
+  CTCV N          1    0.14490   0.000000 ; 7,(1986),230; AA
+  CT   H1CV       1    0.10900   0.000000 ; #for GLY# ged from 331 bsd on NMA nmodes; AA, RIBOSE
+
+; additional frontiers for specific cases
+  S  SCV          1    0.20380   0.000000 ; 7,(1986),230; CYX   (SCHERAGA)
+  
+  
+[ constrainttypes ]
+; this section is implemented manually from bond & angle values
+
+; constraints for rigid CH3 groups
+ MCH3   CT      2    0.166426
+ MCH3   S       2    0.193875
+ MCH3   MCH3    2    0.092163
+; constraints for rigid NH3 groups
+ MNH3   CT      2    0.158254
+ MNH3   MNH3    2    0.080229
+
+; angle-derived constraints for OH and SH groups in proteins
+; The constraint A-C is calculated from the angle A-B-C and bonds A-B, B-C.
+  C     HO      2    0.195074
+  CA    HO      2    0.195074
+  CT    HO      2    0.194132
+  CT    HS      2    0.235935
+
+
+
+[ angletypes ]
+;  i    j    k  func       th0       cth
+;HW  OW  HW           1   104.520    836.800 ; TIP3P water
+;HW  HW  OW           1   127.740      0.000 ; (found in crystallographic water with 3 bonds)
+CB  C   NA           1   111.300    585.760 ; NA
+CB  C   O            1   128.800    669.440 ; 
+CM  C   NA           1   114.100    585.760 ; 
+CM  C   O            1   125.300    669.440 ; 
+CT  C   O            1   120.400    669.440 ; 
+CT  C   O2           1   117.000    585.760 ; 
+CT  C   OH           1   117.000    585.760 ; 
+N*  C   NA           1   115.400    585.760 ; 
+N*  C   NC           1   118.600    585.760 ; 
+N*  C   O            1   120.900    669.440 ; 
+NA  C   O            1   120.600    669.440 ; 
+NC  C   O            1   122.500    669.440 ; 
+CT  C   N            1   116.600    585.760 ; AA general
+N   C   O            1   122.900    669.440 ; AA general
+O   C   O            1   126.000    669.440 ; AA COO- terminal residues
+O2  C   O2           1   126.000    669.440 ; AA GLU            (SCH JPC 79,2379)
+O   C   OH           1   126.000    669.440 ; 
+CA  C   CA           1   120.000    527.184 ; changed from 85.0  bsd on C6H6 nmodes; AA tyr
+CA  C   OH           1   120.000    585.760 ; AA tyr
+C   CA  CA           1   120.000    527.184 ; changed from 85.0  bsd on C6H6 nmodes
+CA  CA  CA           1   120.000    527.184 ; changed from 85.0  bsd on C6H6 nmodes
+CA  CA  CB           1   120.000    527.184 ; changed from 85.0  bsd on C6H6 nmodes
+CA  CA  CT           1   120.000    585.760 ; 
+CA  CA  HA           1   120.000    292.880 ; 
+CA  CA  H4           1   120.000    292.880 ; 
+CB  CA  HA           1   120.000    292.880 ; 
+CB  CA  H4           1   120.000    292.880 ; 
+CB  CA  N2           1   123.500    585.760 ; 
+CB  CA  NC           1   117.300    585.760 ; 
+CM  CA  N2           1   120.100    585.760 ; 
+CM  CA  NC           1   121.500    585.760 ; 
+N2  CA  NA           1   116.000    585.760 ; 
+N2  CA  NC           1   119.300    585.760 ; 
+NA  CA  NC           1   123.300    585.760 ; 
+C   CA  HA           1   120.000    292.880 ; AA tyr
+N2  CA  N2           1   120.000    585.760 ; AA arg
+CN  CA  HA           1   120.000    292.880 ; AA trp
+CA  CA  CN           1   120.000    527.184 ; changed from 85.0  bsd on C6H6 nmodes; AA trp
+C   CB  CB           1   119.200    527.184 ; changed from 85.0  bsd on C6H6 nmodes; NA gua
+C   CB  NB           1   130.000    585.760 ; 
+CA  CB  CB           1   117.300    527.184 ; changed from 85.0  bsd on C6H6 nmodes; NA ade
+CA  CB  NB           1   132.400    585.760 ; 
+CB  CB  N*           1   106.200    585.760 ; 
+CB  CB  NB           1   110.400    585.760 ; 
+CB  CB  NC           1   127.700    585.760 ; 
+N*  CB  NC           1   126.200    585.760 ; 
+C*  CB  CA           1   134.900    527.184 ; changed from 85.0  bsd on C6H6 nmodes; AA trp
+C*  CB  CN           1   108.800    527.184 ; changed from 85.0  bsd on C6H6 nmodes; AA trp
+CA  CB  CN           1   116.200    527.184 ; changed from 85.0  bsd on C6H6 nmodes; AA trp
+H5  CK  N*           1   123.050    292.880 ; 
+H5  CK  NB           1   123.050    292.880 ; 
+N*  CK  NB           1   113.900    585.760 ; 
+C   CM  CM           1   120.700    527.184 ; changed from 85.0  bsd on C6H6 nmodes; NA thy
+C   CM  CT           1   119.700    585.760 ; 
+C   CM  HA           1   119.700    292.880 ; 
+C   CM  H4           1   119.700    292.880 ; 
+CA  CM  CM           1   117.000    527.184 ; changed from 85.0  bsd on C6H6 nmodes; NA cyt
+CA  CM  HA           1   123.300    292.880 ; 
+CA  CM  H4           1   123.300    292.880 ; 
+CM  CM  CT           1   119.700    585.760 ; 
+CM  CM  HA           1   119.700    292.880 ; 
+CM  CM  H4           1   119.700    292.880 ; 
+CM  CM  N*           1   121.200    585.760 ; 
+H4  CM  N*           1   119.100    292.880 ; 
+H5  CQ  NC           1   115.450    292.880 ; 
+NC  CQ  NC           1   129.100    585.760 ; 
+CM  CT  HC           1   109.500    418.400 ; changed based on NMA nmodes
+CT  CT  CT           1   109.500    334.720 ; 
+CT  CT  HC           1   109.500    418.400 ; changed based on NMA nmodes
+CT  CT  H1           1   109.500    418.400 ; changed based on NMA nmodes
+CT  CT  H2           1   109.500    418.400 ; changed based on NMA nmodes
+CT  CT  HP           1   109.500    418.400 ; changed based on NMA nmodes
+CT  CT  N*           1   109.500    418.400 ; 
+CT  CT  OH           1   109.500    418.400 ; 
+CT  CT  OS           1   109.500    418.400 ; 
+HC  CT  HC           1   109.500    292.880 ; 
+H1  CT  H1           1   109.500    292.880 ; 
+HP  CT  HP           1   109.500    292.880 ; AA lys, ch3nh4+
+H2  CT  N*           1   109.500    418.400 ; changed based on NMA nmodes
+H1  CT  N*           1   109.500    418.400 ; changed based on NMA nmodes
+H1  CT  OH           1   109.500    418.400 ; changed based on NMA nmodes 
+H1  CT  OS           1   109.500    418.400 ; changed based on NMA nmodes 
+H2  CT  OS           1   109.500    418.400 ; changed based on NMA nmodes
+N*  CT  OS           1   109.500    418.400 ; 
+H1  CT  N            1   109.500    418.400 ; AA general  changed based on NMA nmodes
+C   CT  H1           1   109.500    418.400 ; AA general  changed based on NMA nmodes
+C   CT  HP           1   109.500    418.400 ; AA zwitterion  changed based on NMA nmodes
+H1  CT  S            1   109.500    418.400 ; AA cys     changed based on NMA nmodes
+H1  CT  SH           1   109.500    418.400 ; AA cyx     changed based on NMA nmodes
+CT  CT  S            1   114.700    418.400 ; AA cyx            (SCHERAGA  JPC 79,1428)
+CT  CT  SH           1   108.600    418.400 ; AA cys
+H2  CT  H2           1   109.500    292.880 ; AA lys
+H1  CT  N2           1   109.500    418.400 ; AA arg     changed based on NMA nmodes
+HP  CT  N3           1   109.500    418.400 ; AA lys, ch3nh3+, changed based on NMA nmodes
+CA  CT  CT           1   114.000    527.184 ; AA phe tyr          (SCH JPC  79,2379)
+C   CT  HC           1   109.500    418.400 ; AA gln      changed based on NMA nmodes
+C   CT  N            1   110.100    527.184 ; AA general
+CT  CT  N2           1   111.200    669.440 ; AA arg             (JCP 76, 1439)
+CT  CT  N            1   109.700    669.440 ; AA ala, general    (JACS 94, 2657)
+C   CT  CT           1   111.100    527.184 ; AA general
+CA  CT  HC           1   109.500    418.400 ; AA tyr     changed based on NMA nmodes
+CT  CT  N3           1   111.200    669.440 ; AA lys             (JCP 76, 1439)
+CC  CT  CT           1   113.100    527.184 ; AA his
+CC  CT  HC           1   109.500    418.400 ; AA his     changed based on NMA nmodes
+C   CT  N3           1   111.200    669.440 ; AA amino terminal residues
+C*  CT  CT           1   115.600    527.184 ; AA trp
+C*  CT  HC           1   109.500    418.400 ; AA trp    changed based on NMA nmodes
+CT  CC  NA           1   120.000    585.760 ; AA his
+CT  CC  CV           1   120.000    585.760 ; AA his
+CT  CC  NB           1   120.000    585.760 ; AA his
+CV  CC  NA           1   120.000    585.760 ; AA his
+CW  CC  NA           1   120.000    585.760 ; AA his
+CW  CC  NB           1   120.000    585.760 ; AA his
+CT  CC  CW           1   120.000    585.760 ; AA his
+H5  CR  NA           1   120.000    292.880 ; AA his
+H5  CR  NB           1   120.000    292.880 ; AA his
+NA  CR  NA           1   120.000    585.760 ; AA his
+NA  CR  NB           1   120.000    585.760 ; AA his
+CC  CV  H4           1   120.000    292.880 ; AA his
+CC  CV  NB           1   120.000    585.760 ; AA his
+H4  CV  NB           1   120.000    292.880 ; AA his
+CC  CW  H4           1   120.000    292.880 ; AA his
+CC  CW  NA           1   120.000    585.760 ; AA his
+H4  CW  NA           1   120.000    292.880 ; AA his
+C*  CW  H4           1   120.000    292.880 ; AA trp
+C*  CW  NA           1   108.700    585.760 ; AA trp
+CT  C*  CW           1   125.000    585.760 ; AA trp
+CB  C*  CT           1   128.600    585.760 ; AA trp
+CB  C*  CW           1   106.400    527.184 ; changed from 85.0  bsd on C6H6 nmodes; AA trp
+CA  CN  NA           1   132.800    585.760 ; AA trp
+CB  CN  NA           1   104.400    585.760 ; AA trp
+CA  CN  CB           1   122.700    527.184 ; changed from 85.0  bsd on C6H6 nmodes; AA trp
+C   N   CT           1   121.900    418.400 ; AA general
+C   N   H            1   120.000    251.040 ; AA general, gln, asn,changed based on NMA nmodes
+CT  N   H            1   118.040    251.040 ; AA general,     changed based on NMA nmodes
+CT  N   CT           1   118.000    418.400 ; AA pro             (DETAR JACS 99,1232)
+H   N   H            1   120.000    292.880 ; ade,cyt,gua,gln,asn     **
+C   N*  CM           1   121.600    585.760 ; 
+C   N*  CT           1   117.600    585.760 ; 
+C   N*  H            1   119.200    251.040 ; changed based on NMA nmodes
+CB  N*  CK           1   105.400    585.760 ; 
+CB  N*  CT           1   125.800    585.760 ; 
+CB  N*  H            1   125.800    251.040 ; for unmethylated n.a. bases,chngd bsd NMA nmodes
+CK  N*  CT           1   128.800    585.760 ; 
+CK  N*  H            1   128.800    251.040 ; for unmethylated n.a. bases,chngd bsd NMA nmodes
+CM  N*  CT           1   121.200    585.760 ; 
+CM  N*  H            1   121.200    251.040 ; for unmethylated n.a. bases,chngd bsd NMA nmodes
+CA  N2  H            1   120.000    292.880 ; 
+H   N2  H            1   120.000    292.880 ; 
+CT  N2  H            1   118.400    292.880 ; AA arg
+CA  N2  CT           1   123.200    418.400 ; AA arg
+CT  N3  H            1   109.500    418.400 ; AA lys,     changed based on NMA nmodes
+CT  N3  CT           1   109.500    418.400 ; AA pro/nt
+H   N3  H            1   109.500    292.880 ; AA lys, AA(end)
+C   NA  C            1   126.400    585.760 ; 
+C   NA  CA           1   125.200    585.760 ; 
+C   NA  H            1   116.800    251.040 ; changed based on NMA nmodes
+CA  NA  H            1   118.000    251.040 ; changed based on NMA nmodes
+CC  NA  CR           1   120.000    585.760 ; AA his
+CC  NA  H            1   120.000    251.040 ; AA his,    changed based on NMA nmodes
+CR  NA  CW           1   120.000    585.760 ; AA his
+CR  NA  H            1   120.000    251.040 ; AA his,    changed based on NMA nmodes
+CW  NA  H            1   120.000    251.040 ; AA his,    changed based on NMA nmodes
+CN  NA  CW           1   111.600    585.760 ; AA trp
+CN  NA  H            1   123.100    251.040 ; AA trp,    changed based on NMA nmodes
+CB  NB  CK           1   103.800    585.760 ; 
+CC  NB  CR           1   117.000    585.760 ; AA his
+CR  NB  CV           1   117.000    585.760 ; AA his
+C   NC  CA           1   120.500    585.760 ; 
+CA  NC  CB           1   112.200    585.760 ; 
+CA  NC  CQ           1   118.600    585.760 ; 
+CB  NC  CQ           1   111.000    585.760 ; 
+C   OH  HO           1   113.000    292.880 ; 
+CT  OH  HO           1   108.500    460.240 ; 
+HO  OH  P            1   108.500    376.560 ; 
+CT  OS  CT           1   109.500    502.080 ; 
+CT  OS  P            1   120.500    836.800 ; 
+P   OS  P            1   120.500    836.800 ; 
+O2  P   OH           1   108.230    376.560 ; 
+O2  P   O2           1   119.900   1171.520 ; 
+O2  P   OS           1   108.230    836.800 ; 
+OH  P   OS           1   102.600    376.560 ; 
+OS  P   OS           1   102.600    376.560 ; 
+CT  S   CT           1    98.900    518.816 ; AA met
+CT  S   S            1   103.700    569.024 ; AA cyx             (SCHERAGA  JPC 79,1428)
+CT  SH  HS           1    96.000    359.824 ; changed from 44.0 based on methanethiol nmodes
+HS  SH  HS           1    92.070    292.880 ; AA cys
+F   CT  F            1   109.100    644.336 ; JCC,13,(1992),963;
+F   CT  H1           1   109.500    292.880 ; JCC,13,(1992),963;
+N   C   N            1   120.000    585.760 ; Added for Urea (same as N2-CA-N2) - EJS
+
+
+CT  N3  C2R          1   123.200    418.400
+H   N3  C2R          1   120.000    292.880
+C3R C3R C2R          1   114.000    527.184
+C3R C3R C3R          1   109.500    334.720
+C2R C3R C3R          1   114.000    527.184
+C3R C3R HR           1   109.500    418.400
+HR  C3R HR           1   109.500    292.880
+C2R C3R HR           1   109.500    418.400
+C3R C2R C2R          1   120.000    585.760
+C3R C2R C3R          1   120.000    585.760
+C2R C2R C2R          1   120.000    527.184
+C2R C2R HR           1   120.000    292.880
+C2R C2R C3R          1   120.000    585.760
+N3  C2R C2R          1   120.000    527.184
+N3  C2R HR           1   120.000    292.880
+C2R C3R HR           1   109.500    418.400
+;
+;
+;  CAVITY angletypes
+;
+;
+CBCV  CCV   NACV           1   111.300    0.00000 ; NA
+CBCV  CCV   OCV            1   128.800    0.00000 ;
+CMCV  CCV   NACV           1   114.100    0.00000 ;
+CMCV  CCV   OCV            1   125.300    0.00000 ;
+CTCV  CCV   OCV            1   120.400    0.00000 ;
+CTCV  CCV   O2CV           1   117.000    0.00000 ;
+CTCV  CCV   OHCV           1   117.000    0.00000 ;
+NCV*  CCV   NACV           1   115.400    0.00000 ;
+NCV*  CCV   NCCV           1   118.600    0.00000 ;
+NCV*  CCV   OCV            1   120.900    0.00000 ;
+NACV  CCV   OCV            1   120.600    0.00000 ;
+NCCV  CCV   OCV            1   122.500    0.00000 ;
+CTCV  CCV   NCV            1   116.600    0.00000 ; AA general
+NCV   CCV   OCV            1   122.900    0.00000 ; AA general
+OCV   CCV   OCV            1   126.000    0.00000 ; AA COO- terminal residues
+O2CV  CCV   O2CV           1   126.000    0.00000 ; AA GLU            (SCH JPC 79,2379)
+OCV   CCV   OHCV           1   126.000    0.00000 ;
+CACV  CCV   CACV           1   120.000    0.00000 ; changed from 85.0  bsd on C6H6 nmodes; AA tyr
+CACV  CCV   OHCV           1   120.000    0.00000 ; AA tyr
+CCV   CACV  CACV           1   120.000    0.00000 ; changed from 85.0  bsd on C6H6 nmodes
+CACV  CACV  CACV           1   120.000    0.00000 ; changed from 85.0  bsd on C6H6 nmodes
+CACV  CACV  CBCV           1   120.000    0.00000 ; changed from 85.0  bsd on C6H6 nmodes
+CACV  CACV  CTCV           1   120.000    0.00000 ;
+CACV  CACV  HACV           1   120.000    0.00000 ;
+CACV  CACV  H4CV           1   120.000    0.00000 ;
+CBCV  CACV  HACV           1   120.000    0.00000 ;
+CBCV  CACV  H4CV           1   120.000    0.00000 ;
+CBCV  CACV  N2CV           1   123.500    0.00000 ;
+CBCV  CACV  NCCV           1   117.300    0.00000 ;
+CMCV  CACV  N2CV           1   120.100    0.00000 ;
+CMCV  CACV  NCCV           1   121.500    0.00000 ;
+N2CV  CACV  NACV           1   116.000    0.00000 ;
+N2CV  CACV  NCCV           1   119.300    0.00000 ;
+NACV  CACV  NCCV           1   123.300    0.00000 ;
+CCV   CACV  HACV           1   120.000    0.00000 ; AA tyr
+N2CV  CACV  N2CV           1   120.000    0.00000 ; AA arg
+CNCV  CACV  HACV           1   120.000    0.00000 ; AA trp
+CACV  CACV  CNCV           1   120.000    0.00000 ; changed from 85.0  bsd on C6H6 nmodes; AA trp
+CCV   CBCV  CBCV           1   119.200    0.00000 ; changed from 85.0  bsd on C6H6 nmodes; NA gua
+CCV   CBCV  NBCV           1   130.000    0.00000 ;
+CACV  CBCV  CBCV           1   117.300    0.00000 ; changed from 85.0  bsd on C6H6 nmodes; NA ade
+CACV  CBCV  NBCV           1   132.400    0.00000 ;
+CBCV  CBCV  NCV*           1   106.200    0.00000 ;
+CBCV  CBCV  NBCV           1   110.400    0.00000 ;
+CBCV  CBCV  NCCV           1   127.700    0.00000 ;
+NCV*  CBCV  NCCV           1   126.200    0.00000 ;
+CCV*  CBCV  CACV           1   134.900    0.00000 ; changed from 85.0  bsd on C6H6 nmodes; AA trp
+CCV*  CBCV  CNCV           1   108.800    0.00000 ; changed from 85.0  bsd on C6H6 nmodes; AA trp
+CACV  CBCV  CNCV           1   116.200    0.00000 ; changed from 85.0  bsd on C6H6 nmodes; AA trp
+H5CV  CKCV  NCV*           1   123.050    0.00000 ;
+H5CV  CKCV  NBCV           1   123.050    0.00000 ;
+NCV*  CKCV  NBCV           1   113.900    0.00000 ;
+CCV   CMCV  CMCV           1   120.700    0.00000 ; changed from 85.0  bsd on C6H6 nmodes; NA thy
+CCV   CMCV  CTCV           1   119.700    0.00000 ;
+CCV   CMCV  HACV           1   119.700    0.00000 ;
+CCV   CMCV  H4CV           1   119.700    0.00000 ;
+CACV  CMCV  CMCV           1   117.000    0.00000 ; changed from 85.0  bsd on C6H6 nmodes; NA cyt
+CACV  CMCV  HACV           1   123.300    0.00000 ;
+CACV  CMCV  H4CV           1   123.300    0.00000 ;
+CMCV  CMCV  CTCV           1   119.700    0.00000 ;
+CMCV  CMCV  HACV           1   119.700    0.00000 ;
+CMCV  CMCV  H4CV           1   119.700    0.00000 ;
+CMCV  CMCV  NCV*           1   121.200    0.00000 ;
+H4CV  CMCV  NCV*           1   119.100    0.00000 ;
+H5CV  CQCV  NCCV           1   115.450    0.00000 ;
+NCCV  CQCV  NCCV           1   129.100    0.00000 ;
+CMCV  CTCV  HCCV           1   109.500    0.00000 ; changed based on NMA nmodes
+CTCV  CTCV  CTCV           1   109.500    0.00000 ;
+CTCV  CTCV  HCCV           1   109.500    0.00000 ; changed based on NMA nmodes
+CTCV  CTCV  H1CV           1   109.500    0.00000 ; changed based on NMA nmodes
+CTCV  CTCV  H2CV           1   109.500    0.00000 ; changed based on NMA nmodes
+CTCV  CTCV  HPCV           1   109.500    0.00000 ; changed based on NMA nmodes
+CTCV  CTCV  NCV*           1   109.500    0.00000 ;
+CTCV  CTCV  OHCV           1   109.500    0.00000 ;
+CTCV  CTCV  OSCV           1   109.500    0.00000 ;
+HCCV  CTCV  HCCV           1   109.500    0.00000 ;
+H1CV  CTCV  H1CV           1   109.500    0.00000 ;
+HPCV  CTCV  HPCV           1   109.500    0.00000 ; AA lys, ch3nh4+
+H2CV  CTCV  NCV*           1   109.500    0.00000 ; changed based on NMA nmodes
+H1CV  CTCV  NCV*           1   109.500    0.00000 ; changed based on NMA nmodes
+H1CV  CTCV  OHCV           1   109.500    0.00000 ; changed based on NMA nmodes
+H1CV  CTCV  OSCV           1   109.500    0.00000 ; changed based on NMA nmodes
+H2CV  CTCV  OSCV           1   109.500    0.00000 ; changed based on NMA nmodes
+NCV*  CTCV  OSCV           1   109.500    0.00000 ;
+H1CV  CTCV  NCV            1   109.500    0.00000 ; AA general  changed based on NMA nmodes
+CCV   CTCV  H1CV           1   109.500    0.00000 ; AA general  changed based on NMA nmodes
+CCV   CTCV  HPCV           1   109.500    0.00000 ; AA zwitterion  changed based on NMA nmodes
+H1CV  CTCV  SCV            1   109.500    0.00000 ; AA cys     changed based on NMA nmodes
+H1CV  CTCV  SHCV           1   109.500    0.00000 ; AA cyx     changed based on NMA nmodes
+CTCV  CTCV  SCV            1   114.700    0.00000 ; AA cyx            (SCHERAGA  JPC 79,1428)
+CTCV  CTCV  SHCV           1   108.600    0.00000 ; AA cys
+H2CV  CTCV  H2CV           1   109.500    0.00000 ; AA lys
+H1CV  CTCV  N2CV           1   109.500    0.00000 ; AA arg     changed based on NMA nmodes
+HPCV  CTCV  N3CV           1   109.500    0.00000 ; AA lys, ch3nh3+, changed based on NMA nmodes
+CACV  CTCV  CTCV           1   114.000    0.00000 ; AA phe tyr          (SCH JPC  79,2379)
+CCV   CTCV  HCCV           1   109.500    0.00000 ; AA gln      changed based on NMA nmodes
+CCV   CTCV  NCV            1   110.100    0.00000 ; AA general
+CTCV  CTCV  N2CV           1   111.200    0.00000 ; AA arg             (JCP 76, 1439)
+CTCV  CTCV  NCV            1   109.700    0.00000 ; AA ala, general    (JACS 94, 2657)
+CCV   CTCV  CTCV           1   111.100    0.00000 ; AA general
+CACV  CTCV  HCCV           1   109.500    0.00000 ; AA tyr     changed based on NMA nmodes
+CTCV  CTCV  N3CV           1   111.200    0.00000 ; AA lys             (JCP 76, 1439)
+CCCV  CTCV  CTCV           1   113.100    0.00000 ; AA his
+CCCV  CTCV  HCCV           1   109.500    0.00000 ; AA his     changed based on NMA nmodes
+CCV   CTCV  N3CV           1   111.200    0.00000 ; AA amino terminal residues
+CCV*  CTCV  CTCV           1   115.600    0.00000 ; AA trp
+CCV*  CTCV  HCCV           1   109.500    0.00000 ; AA trp    changed based on NMA nmodes
+CTCV  CCCV  NACV           1   120.000    0.00000 ; AA his
+CTCV  CCCV  CVCV           1   120.000    0.00000 ; AA his
+CTCV  CCCV  NBCV           1   120.000    0.00000 ; AA his
+CVCV  CCCV  NACV           1   120.000    0.00000 ; AA his
+CWCV  CCCV  NACV           1   120.000    0.00000 ; AA his
+CWCV  CCCV  NBCV           1   120.000    0.00000 ; AA his
+CTCV  CCCV  CWCV           1   120.000    0.00000 ; AA his
+H5CV  CRCV  NACV           1   120.000    0.00000 ; AA his
+H5CV  CRCV  NBCV           1   120.000    0.00000 ; AA his
+NACV  CRCV  NACV           1   120.000    0.00000 ; AA his
+NACV  CRCV  NBCV           1   120.000    0.00000 ; AA his
+CCCV  CVCV  H4CV           1   120.000    0.00000 ; AA his
+CCCV  CVCV  NBCV           1   120.000    0.00000 ; AA his
+H4CV  CVCV  NBCV           1   120.000    0.00000 ; AA his
+CCCV  CWCV  H4CV           1   120.000    0.00000 ; AA his
+CCCV  CWCV  NACV           1   120.000    0.00000 ; AA his
+H4CV  CWCV  NACV           1   120.000    0.00000 ; AA his
+CCV*  CWCV  H4CV           1   120.000    0.00000 ; AA trp
+CCV*  CWCV  NACV           1   108.700    0.00000 ; AA trp
+CTCV  CCV*  CWCV           1   125.000    0.00000 ; AA trp
+CBCV  CCV*  CTCV           1   128.600    0.00000 ; AA trp
+CBCV  CCV*  CWCV           1   106.400    0.00000 ; changed from 85.0  bsd on C6H6 nmodes; AA trp
+CACV  CNCV  NACV           1   132.800    0.00000 ; AA trp
+CBCV  CNCV  NACV           1   104.400    0.00000 ; AA trp
+CACV  CNCV  CBCV           1   122.700    0.00000 ; changed from 85.0  bsd on C6H6 nmodes; AA trp
+CCV   NCV   CTCV           1   121.900    0.00000 ; AA general
+CCV   NCV   HCV            1   120.000    0.00000 ; AA general, gln, asn,changed based on NMA nmodes
+CTCV  NCV   HCV            1   118.040    0.00000 ; AA general,     changed based on NMA nmodes
+CTCV  NCV   CTCV           1   118.000    0.00000 ; AA pro             (DETAR JACS 99,1232)
+HCV   NCV   HCV            1   120.000    0.00000 ; ade,cyt,gua,gln,asn     **
+CCV   NCV*  CMCV           1   121.600    0.00000 ;
+CCV   NCV*  CTCV           1   117.600    0.00000 ;
+CCV   NCV*  HCV            1   119.200    0.00000 ; changed based on NMA nmodes
+CBCV  NCV*  CKCV           1   105.400    0.00000 ;
+CBCV  NCV*  CTCV           1   125.800    0.00000 ;
+CBCV  NCV*  HCV            1   125.800    0.00000 ; for unmethylated n.a. bases,chngd bsd NMA nmodes
+CKCV  NCV*  CTCV           1   128.800    0.00000 ;
+CKCV  NCV*  HCV            1   128.800    0.00000 ; for unmethylated n.a. bases,chngd bsd NMA nmodes
+CMCV  NCV*  CTCV           1   121.200    0.00000 ;
+CMCV  NCV*  HCV            1   121.200    0.00000 ; for unmethylated n.a. bases,chngd bsd NMA nmodes
+CACV  N2CV  HCV            1   120.000    0.00000 ;
+HCV   N2CV  HCV            1   120.000    0.00000 ;
+CTCV  N2CV  HCV            1   118.400    0.00000 ; AA arg
+CACV  N2CV  CTCV           1   123.200    0.00000 ; AA arg
+CTCV  N3CV  HCV            1   109.500    0.00000 ; AA lys,     changed based on NMA nmodes
+CTCV  N3CV  CTCV           1   109.500    0.00000 ; AA pro/nt
+HCV   N3CV  HCV            1   109.500    0.00000 ; AA lys, AA(end)
+CCV   NACV  CCV            1   126.400    0.00000 ;
+CCV   NACV  CACV           1   125.200    0.00000 ;
+CCV   NACV  HCV            1   116.800    0.00000 ; changed based on NMA nmodes
+CACV  NACV  HCV            1   118.000    0.00000 ; changed based on NMA nmodes
+CCCV  NACV  CRCV           1   120.000    0.00000 ; AA his
+CCCV  NACV  HCV            1   120.000    0.00000 ; AA his,    changed based on NMA nmodes
+CRCV  NACV  CWCV           1   120.000    0.00000 ; AA his
+CRCV  NACV  HCV            1   120.000    0.00000 ; AA his,    changed based on NMA nmodes
+CWCV  NACV  HCV            1   120.000    0.00000 ; AA his,    changed based on NMA nmodes
+CNCV  NACV  CWCV           1   111.600    0.00000 ; AA trp
+CNCV  NACV  HCV            1   123.100    0.00000 ; AA trp,    changed based on NMA nmodes
+CBCV  NBCV  CKCV           1   103.800    0.00000 ;
+CCCV  NBCV  CRCV           1   117.000    0.00000 ; AA his
+CRCV  NBCV  CVCV           1   117.000    0.00000 ; AA his
+CCV   NCCV  CACV           1   120.500    0.00000 ;
+CACV  NCCV  CBCV           1   112.200    0.00000 ;
+CACV  NCCV  CQCV           1   118.600    0.00000 ;
+CBCV  NCCV  CQCV           1   111.000    0.00000 ;
+CCV   OHCV  HOCV           1   113.000    0.00000 ;
+CTCV  OHCV  HOCV           1   108.500    0.00000 ;
+HOCV  OHCV  PCV            1   108.500    0.00000 ;
+CTCV  OSCV  CTCV           1   109.500    0.00000 ;
+CTCV  OSCV  PCV            1   120.500    0.00000 ;
+PCV   OSCV  PCV            1   120.500    0.00000 ;
+O2CV  PCV   OHCV           1   108.230    0.00000 ;
+O2CV  PCV   O2CV           1   119.900    0.00000 ;
+O2CV  PCV   OSCV           1   108.230    0.00000 ;
+OHCV  PCV   OSCV           1   102.600    0.00000 ;
+OSCV  PCV   OSCV           1   102.600    0.00000 ;
+CTCV  SCV   CTCV           1    98.900    0.00000 ; AA met
+CTCV  SCV   SCV            1   103.700    0.00000 ; AA cyx             (SCHERAGA  JPC 79,1428)
+CTCV  SHCV  HSCV           1    96.000    0.00000 ; changed from 44.0 based on methanethiol nmodes
+HSCV  SHCV  HSCV           1    92.070    0.00000 ; AA cys
+FCV   CTCV  FCV            1   109.100    0.00000 ; JCC,13,(1992),963;
+FCV   CTCV  H1CV           1   109.500    0.00000 ; JCC,13,(1992),963;
+NCV   CCV   NCV            1   120.000    0.00000 ; Added for Urea (same as N2-CA-N2) - EJS
+
+CTCV N3CV C2RC           1   123.200    0.00000
+HCV  N3CV C2RC           1   120.000    0.00000
+C3RC C3RC C2RC           1   114.000    0.00000
+C3RC C3RC C3RC           1   109.500    0.00000
+C2RC C3RC C3RC           1   114.000    0.00000
+C3RC C3RC HRCV           1   109.500    0.00000
+HRCV C3RC HRCV           1   109.500    0.00000
+C2RC C3RC HRCV           1   109.500    0.00000
+C3RC C2RC C2RC           1   120.000    0.00000
+C3RC C2RC C3RC           1   120.000    0.00000
+C2RC C2RC C2RC           1   120.000    0.00000
+C2RC C2RC HRCV           1   120.000    0.00000
+C2RC C2RC C3RC           1   120.000    0.00000
+N3CV C2RC C2RC           1   120.000    0.00000
+N3CV C2RC HRCV           1   120.000    0.00000
+C2RC C3RC HRCV           1   109.500    0.00000
+;
+;    FRONTERAS
+;
+CTCV CT   HP             1   109.500    0.00000 ; changed based on NMA nmodes
+CT   CTCV HPCV           1   109.500    0.00000 ; changed based on NMA nmodes
+CT   CTCV HCCV           1   109.500    0.00000 ; changed based on NMA nmodes
+CTCV CT   HC             1   109.500    0.00000 ; changed based on NMA nmodes
+CTCV CTCV CT             1   109.500    0.00000 ;
+CTCV CT   CT             1   109.500    0.00000 ;
+CT   CTCV N3CV           1   111.200    0.00000 ; AA lys             (JCP 76, 1439)
+CTCV CT   N3             1   111.200    0.00000 ; AA lys             (JCP 76, 1439)
+CTCV CT   N              1   109.700    0.00000 ; AA ala, general    (JACS 94, 2657)
+CTCV CT   H1             1   109.500    0.00000 ; changed based on NMA nmodes
+CT   CTCV H1CV           1   109.500    0.00000 ; changed based on NMA nmodes
+C    CT   CTCV           1   111.100    0.00000 ; AA general
+C    N    CTCV           1   121.900    0.00000 ; AA general
+H1CV CTCV N              1   109.500    0.00000 ; AA general  changed based on NMA nmodes
+H1CV CT   N              1   109.500    0.00000 ; AA general  changed based on NMA nmodes
+CTCV CTCV N              1   109.700    0.00000 ; AA ala, general    (JACS 94, 2657)
+CT   N    CTCV           1   118.000    0.00000 ; AA pro             (DETAR JACS 99,1232)
+CT   CTCV OHCV           1   109.500    0.00000 ;
+CT   S    SCV            1   103.700    0.00000 ; AA cyx             (SCHERAGA  JPC 79,1428)
+H1CV CT   H1             1   109.500    0.00000 ;
+C    CT   H1CV           1   109.500    0.00000 ; AA general  changed based on NMA nmodes
+CACV CTCV CT             1   114.000    0.00000 ; AA phe tyr          (SCH JPC  79,2379)
+CT   CTCV SCV            1   114.700    0.00000 ; AA cyx            (SCHERAGA  JPC 79,1428)
+CTCV SCV  S              1   103.700    0.00000 ; AA cyx             (SCHERAGA  JPC 79,1428)
+CCCV CTCV CT             1   113.100    0.00000 ; AA his
+CCV* CTCV CT             1   115.600    0.00000 ; AA trp
+CCV  CTCV CT             1   111.100    0.00000 ; AA general
+
+
+[ dihedraltypes ]
+;i  j   k  l	 func      phase      kd      pn
+;impropers treated as propers in GROMACS to use correct AMBER analytical function
+CB  CK  N*  CT       4      180.00     4.18400     2	; 
+CK  CB  N*  CT       4      180.00     4.18400     2	; 
+CM  C   N*  CT       4      180.00     4.18400     2    ; dac guess, 9/94
+C   CM  N*  CT       4      180.00     4.18400     2	; dac guess, 9/94
+CT  N*  C   CM       4      180.00     4.18400     2    ; 
+CM  C   CM  CT       4      180.00     4.60240     2	; 
+C   CM  CM  CT       4      180.00     4.60240     2	; 
+CT  O   C   OH       4      180.00    43.93200     2	; 
+CT  CV  CC  NA       4      180.00     4.60240     2	; 
+NA  CV  CC  CT       4      180.00     4.60240     2	; 
+CT  CW  CC  NB       4      180.00     4.60240     2	; 
+NB  CW  CC  CT       4      180.00     4.60240     2	; 
+CT  CW  CC  NA       4      180.00     4.60240     2    ;
+NA  CW  CC  CT       4      180.00     4.60240     2	; 
+CB  CT  C*  CW       4      180.00     4.60240     2	; 
+CW  CB  C*  CT       4      180.00     4.60240     2	; 
+CA  CA  CA  CT       4      180.00     4.60240     2	; 
+C   CM  CM  CT       4      180.00     4.60240     2	; dac guess, 9/94
+CM  N2  CA  NC       4      180.00     4.60240     2	; dac guess, 9/94
+NC  CM  CA  N2       4      180.00     4.60240     2	; dac guess, 9/94
+CB  N2  CA  NC       4      180.00     4.60240     2	; dac, 10/94
+CB  NC  CA  N2       4      180.00     4.60240     2	; dac, 10/94
+N2  NA  CA  NC       4      180.00     4.60240     2	; dac, 10/94
+NA  NC  CA  N2       4      180.00     4.60240     2	; dac, 10/94
+CA  CA  C   OH       4      180.00     4.60240     2	; 
+N   N   C   O        4      180.00    43.93200     2	; urea
+X   O2  C   O2       4      180.00    43.93200     2	; JCC,7,(1986),230
+X   N2  CA  N2       4      180.00    43.93200     2	; JCC,7,(1986),230
+X   CT  N   CT       4      180.00     4.18400     2	; JCC,7,(1986),230
+X   X   C   O        4      180.00    43.93200     2	; JCC,7,(1986),230
+X   X   N   H        4      180.00     4.18400     2	; JCC,7,(1986),230
+X   X   N2  H        4      180.00     4.18400     2	; JCC,7,(1986),230
+X   X   NA  H        4      180.00     4.18400     2	; JCC,7,(1986),230
+X   X   CA  HA       4      180.00     4.60240     2	; bsd.on C6H6 nmodes
+X   X   CW  H4       4      180.00     4.60240     2	; 
+X   X   CR  H5       4      180.00     4.60240     2	; 
+X   X   CV  H4       4      180.00     4.60240     2	; 
+X   X   CQ  H5       4      180.00     4.60240     2	; 
+X   X   CK  H5       4      180.00     4.60240     2	; 
+X   X   CM  H4       4      180.00     4.60240     2	; 
+X   X   CM  HA       4      180.00     4.60240     2	; 
+X   X   CA  H4       4      180.00     4.60240     2	; bsd.on C6H6 nmodes 
+X   X   CA  H5       4      180.00     4.60240     2	; bsd.on C6H6 nmodes
+;
+;
+;  CAVITY dihedraltypes propers
+;
+;
+CBCV CKCV  NCV*  CTCV       4      180.00     0.00000     2     ;
+CKCV CBCV  NCV*  CTCV       4      180.00     0.00000     2     ;
+CMCV CCV   NCV*  CTCV       4      180.00     0.00000     2    ; dac guess, 9/94
+CCV  CMCV  NCV*  CTCV       4      180.00     0.00000     2     ; dac guess, 9/94
+CTCV NCV*  CCV   CMCV       4      180.00     0.00000     2    ;
+CMCV CCV   CMCV  CTCV       4      180.00     0.00000     2     ;
+CCV  CMCV  CMCV  CTCV       4      180.00     0.00000     2     ;
+CTCV OCV   CCV   OHCV       4      180.00     0.00000     2     ;
+CTCV CVCV  CCCV  NACV       4      180.00     0.00000     2     ;
+NACV CVCV  CCCV  CTCV       4      180.00     0.00000     2     ;
+CTCV CWCV  CCCV  NBCV       4      180.00     0.00000     2     ;
+NBCV CWCV  CCCV  CTCV       4      180.00     0.00000     2     ;
+CTCV CWCV  CCCV  NACV       4      180.00     0.00000     2    ;
+NACV CWCV  CCCV  CTCV       4      180.00     0.00000     2     ;
+CBCV CTCV  CCV*  CWCV       4      180.00     0.00000     2     ;
+CWCV CBCV  CCV*  CTCV       4      180.00     0.00000     2     ;
+CACV CACV  CACV  CTCV       4      180.00     0.00000     2     ;
+CCV  CMCV  CMCV  CTCV       4      180.00     0.00000     2     ; dac guess, 9/94
+CMCV N2CV  CACV  NCCV       4      180.00     0.00000     2     ; dac guess, 9/94
+NCCV CMCV  CACV  N2CV       4      180.00     0.00000     2     ; dac guess, 9/94
+CBCV N2CV  CACV  NCCV       4      180.00     0.00000     2     ; dac, 10/94
+CBCV NCCV  CACV  N2CV       4      180.00     0.00000     2     ; dac, 10/94
+N2CV NACV  CACV  NCCV       4      180.00     0.00000     2     ; dac, 10/94
+NACV NCCV  CACV  N2CV       4      180.00     0.00000     2     ; dac, 10/94
+CACV CACV  CCV   OHCV       4      180.00     0.00000     2     ;
+NCV  NCV   CCV   OCV        4      180.00     0.00000     2     ; urea
+X    O2CV  CCV   O2CV       4      180.00     0.00000     2     ; JCC,7,(1986),230
+X    N2CV  CACV  N2CV       4      180.00     0.00000     2     ; JCC,7,(1986),230
+X    CTCV  NCV   CTCV       4      180.00     0.00000     2     ; JCC,7,(1986),230
+X    X     CCV   OCV        4      180.00     0.00000     2     ; JCC,7,(1986),230
+X    X     NCV   HCV        4      180.00     0.00000     2     ; JCC,7,(1986),230
+X    X     N2CV  HCV        4      180.00     0.00000     2     ; JCC,7,(1986),230
+X    X     NACV  HCV        4      180.00     0.00000     2     ; JCC,7,(1986),230
+X    X     CACV  HACV       4      180.00     0.00000     2     ; bsd.on C6H6 nmodes
+X    X     CWCV  H4CV       4      180.00     0.00000     2     ;
+X    X     CRCV  H5CV       4      180.00     0.00000     2     ;
+X    X     CVCV  H4CV       4      180.00     0.00000     2     ;
+X    X     CQCV  H5CV       4      180.00     0.00000     2     ;
+X    X     CKCV  H5CV       4      180.00     0.00000     2     ;
+X    X     CMCV  H4CV       4      180.00     0.00000     2     ;
+X    X     CMCV  HACV       4      180.00     0.00000     2     ;
+X    X     CACV  H4CV       4      180.00     0.00000     2     ; bsd.on C6H6 nmodes
+X    X     CACV  H5CV       4      180.00     0.00000     2     ; bsd.on C6H6 nmodes
+;
+;  FRONTERA
+;
+X   CT   N   CTCV       4      180.00     0.00000     2 ; JCC,7,(1986),230
+X   CTCV N   CT         4      180.00     0.00000     2     ; JCC,7,(1986),230
+
+
+[ dihedraltypes ]
+;i  j   k  l	 func	C0  ...  C5
+ CT  CT  OS  CT    9     180.0      0.41840     2  ; 
+ CT  CT  OS  CT    9       0.0      1.60247     3  ; 
+ C   N   CT  C     9     180.0      0.83680     2  ; 
+ N   CT  C   N     9     180.0      3.13800     1  ; 
+ N   CT  C   N     9     180.0      5.64840     2  ; 
+ N   CT  C   N     9     180.0      1.67360     4  ; 
+ CT  CT  N   C     9       0.0      2.21752     1  ; 
+ CT  CT  N   C     9     180.0      0.62760     3  ; 
+ CT  CT  N   C     9     180.0      2.09200     4  ; 
+ CT  CT  C   N     9       0.0      0.29288     2  ; 
+ CT  CT  C   N     9       0.0      0.41840     4  ; 
+ H   N   C   O     9       0.0      8.36800     1  ; J.C.cistrans-NMA DE
+ H   N   C   O     9     180.0     10.46000     2  ; JCC,7,(1986),230
+ CT  S   S   CT    9       0.0     14.64400     2  ; JCC,7,(1986),230
+ CT  S   S   CT    9       0.0      2.51040     3  ; JCC,7,(1986),230
+ OS  CT  CT  OS    9       0.0      4.18400     2  ; pucker anal (93')
+ OS  CT  CT  OS    9       0.0      0.60250     3  ; JCC,7,(1986),230
+ OS  CT  CT  OH    9       0.0      4.18400     2  ; pucker anal (93')
+ OS  CT  CT  OH    9       0.0      0.60250     3  ; JCC,7,(1986),230
+ OH  CT  CT  OH    9       0.0      4.18400     2  ; check glicolWC? puc
+ OH  CT  CT  OH    9       0.0      0.60250     3  ; JCC,7,(1986),230
+ OH  P   OS  CT    9       0.0      5.02080     2  ; gg&gt ene.631g*/mp2
+ OH  P   OS  CT    9       0.0      1.04600     3  ; JCC,7,(1986),230
+ OS  P   OS  CT    9       0.0      5.02080     2  ; gg&gt ene.631g*/mp2
+ OS  P   OS  CT    9       0.0      1.04600     3  ; JCC,7,(1986),230
+ OS  CT  N*  CK    9       0.0     10.46000     1  ; sugar frag calc (PC)
+ OS  CT  N*  CK    9     180.0      2.09200     2  ; sugar frag calc (PC)
+ OS  CT  N*  CM    9       0.0     10.46000     1  ; sugar frag calc (PC)
+ OS  CT  N*  CM    9     180.0      2.09200     2  ; sugar frag calc (PC)
+ X   C   CA  X     9     180.0     15.16700     2  ; intrpol.bsd.on C6H6
+ X   C   CB  X     9     180.0     12.55200     2  ; intrpol.bsd.on C6H6
+ X   C   CM  X     9     180.0      9.10020     2  ; intrpol.bsd.on C6H6
+ X   C   N*  X     9     180.0      6.06680     2  ; JCC,7,(1986),230
+ X   C   NA  X     9     180.0      5.64840     2  ; JCC,7,(1986),230
+ X   C   NC  X     9     180.0     16.73600     2  ; JCC,7,(1986),230
+ X   C   OH  X     9     180.0      3.76560     2  ; JCC,7,(1986),230
+ X   C   CT  X     9       0.0      0.00000     2  ; JCC,7,(1986),230
+ X   CA  CA  X     9     180.0     15.16700     2  ; intrpol.bsd.on C6H6
+ X   CA  CB  X     9     180.0     14.64400     2  ; intrpol.bsd.on C6H6
+ X   CA  CM  X     9     180.0     10.66920     2  ; intrpol.bsd.on C6H6
+ X   CA  CT  X     9       0.0      0.00000     2  ; JCC,7,(1986),230
+ X   CA  N2  X     9     180.0     10.04160     2  ; reinterpolated 93'
+ X   CA  NA  X     9     180.0      6.27600     2  ; JCC,7,(1986),230
+ X   CA  NC  X     9     180.0     20.08320     2  ; JCC,7,(1986),230
+ X   CB  CB  X     9     180.0     22.80280     2  ; intrpol.bsd.on C6H6
+ X   CB  N*  X     9     180.0      6.90360     2  ; JCC,7,(1986),230
+ X   CB  NB  X     9     180.0     10.66920     2  ; JCC,7,(1986),230
+ X   CB  NC  X     9     180.0     17.36360     2  ; JCC,7,(1986),230
+ X   CK  N*  X     9     180.0      7.11280     2  ; JCC,7,(1986),230
+ X   CK  NB  X     9     180.0     41.84000     2  ; JCC,7,(1986),230
+ X   CM  CM  X     9     180.0     27.82360     2  ; intrpol.bsd.on C6H6
+ X   CM  CT  X     9       0.0      0.00000     3  ; JCC,7,(1986),230
+ X   CM  N*  X     9     180.0      7.74040     2  ; JCC,7,(1986),230
+ X   CQ  NC  X     9     180.0     28.45120     2  ; JCC,7,(1986),230
+ X   CT  CT  X     9       0.0      0.65084     3  ; JCC,7,(1986),230
+ X   CT  N   X     9       0.0      0.00000     2  ; JCC,7,(1986),230
+ X   CT  N*  X     9       0.0      0.00000     2  ; JCC,7,(1986),230
+ X   CT  N2  X     9       0.0      0.00000     3  ; JCC,7,(1986),230
+ X   CT  OH  X     9       0.0      0.69733     3  ; JCC,7,(1986),230
+ X   CT  OS  X     9       0.0      1.60387     3  ; JCC,7,(1986),230
+ X   OH  P   X     9       0.0      1.04600     3  ; JCC,7,(1986),230
+ X   OS  P   X     9       0.0      1.04600     3  ; JCC,7,(1986),230
+ X   C   N   X     9     180.0     10.46000     2  ; AA|check Wendy?&NMA
+ X   CT  N3  X     9       0.0      0.65084     3  ; JCC,7,(1986),230
+ X   CT  S   X     9       0.0      1.39467     3  ; JCC,7,(1986),230
+ X   CT  SH  X     9       0.0      1.04600     3  ; JCC,7,(1986),230
+ X   C*  CB  X     9     180.0      7.00820     2  ; intrpol.bsd.onC6H6aa
+ X   C*  CT  X     9       0.0      0.00000     2  ; JCC,7,(1986),230
+ X   C*  CW  X     9     180.0     27.30060     2  ; intrpol.bsd.on C6H6
+ X   CA  CN  X     9     180.0     15.16700     2  ; reinterpolated 93'
+ X   CB  CN  X     9     180.0     12.55200     2  ; reinterpolated 93'
+ X   CC  CT  X     9       0.0      0.00000     2  ; JCC,7,(1986),230
+ X   CC  CV  X     9     180.0     21.54760     2  ; intrpol.bsd.on C6H6
+ X   CC  CW  X     9     180.0     22.48900     2  ; intrpol.bsd.on C6H6
+ X   CC  NA  X     9     180.0      5.85760     2  ; JCC,7,(1986),230
+ X   CC  NB  X     9     180.0     10.04160     2  ; JCC,7,(1986),230
+ X   CN  NA  X     9     180.0      6.38060     2  ; reinterpolated 93'
+ X   CR  NA  X     9     180.0      9.72780     2  ; JCC,7,(1986),230
+ X   CR  NB  X     9     180.0     20.92000     2  ; JCC,7,(1986),230
+ X   CV  NB  X     9     180.0     10.04160     2  ; JCC,7,(1986),230
+ X   CW  NA  X     9     180.0      6.27600     2  ; JCC,7,(1986),230
+
+ HP  CT  N3  C2R   9       0.0      0.00000     2
+ CT  N3  C2R C2R   9     180.0      15.1670     2
+ CT  N3  C2R HR    9     180.0      15.1670     2
+ H   N3  C2R C2R   9     180.0      15.1670     2
+ H   N3  C2R HR    9     180.0      15.1670     2
+ C2R C3R C3R C3R   9       0.0      0.65084     3
+ C2R C3R C3R HR    9       0.0      0.65084     3
+ C3R C3R C3R C3R   9       0.0      0.65084     3
+ C3R C3R C3R HR    9       0.0      0.65084     3
+ C3R C3R C2R C2R   9       0.0      0.00000     2
+ HR  C3R C3R C3R   9       0.0      0.65084     3
+ HR  C3R C3R HR    9       0.0      0.65084     3
+ HR  C3R C3R C2R   9       0.0      0.65084     3
+ C3R C3R C3R C2R   9       0.0      0.65084     3
+ C3R C3R C2R C3R   9       0.0      0.00000     2
+ HR  C3R C2R C2R   9       0.0      0.00000     2
+ HR  C3R C2R C3R   9       0.0      0.00000     2
+ C3R C2R C2R C3R   9     180.0      15.1670     2
+ C3R C2R C2R C2R   9     180.0      15.1670     2
+ C3R C2R C3R HR    9       0.0      0.00000     2
+ C2R C2R C3R HR    9       0.0      0.00000     2
+ C3R C2R C2R HR    9     180.0      15.1670     2
+ C2R C2R C2R C2R   9     180.0      15.1670     2
+ C2R C2R C2R HR    9     180.0      15.1670     2
+ HR  C2R C2R C2R   9     180.0      15.1670     2
+ HR  C2R C2R HR    9     180.0      15.1670     2
+ C2R C2R C2R C3R   9     180.0      15.1670     2
+ C2R C2R C2R N3    9     180.0      15.1670     2
+ HR  C2R C2R N3    9     180.0      15.1670     2
+ CT  CT  N3  C2R   9       0.0      3.13800     1   
+;
+;
+;  CAVITY dihedraltypes impropers
+;
+;
+ CTCV CTCV OSCV CTCV    9     180.0      0.00000     2  ;
+ CTCV CTCV OSCV CTCV    9       0.0      0.00000     3  ;
+ CCV  NCV  CTCV CCV     9     180.0      0.00000     2  ;
+ NCV  CTCV CCV  NCV     9     180.0      0.00000     1  ;
+ NCV  CTCV CCV  NCV     9     180.0      0.00000     2  ;
+ NCV  CTCV CCV  NCV     9     180.0      0.00000     4  ;
+ CTCV CTCV NCV  CCV     9       0.0      0.00000     1  ;
+ CTCV CTCV NCV  CCV     9     180.0      0.00000     3  ;
+ CTCV CTCV NCV  CCV     9     180.0      0.00000     4  ;
+ CTCV CTCV CCV  NCV     9       0.0      0.00000     2  ;
+ CTCV CTCV CCV  NCV     9       0.0      0.00000     4  ;
+ HCV  NCV  CCV  OCV     9       0.0      0.00000     1  ; J.C.cistrans-NMA DE
+ HCV  NCV  CCV  OCV     9     180.0      0.00000     2  ; JCC,7,(1986),230
+ CTCV SCV  SCV  CTCV    9       0.0      0.00000     2  ; JCC,7,(1986),230
+ CTCV SCV  SCV  CTCV    9       0.0      0.00000     3  ; JCC,7,(1986),230
+ OSCV CTCV CTCV OSCV    9       0.0      0.00000     2  ; pucker anal (93')
+ OSCV CTCV CTCV OSCV    9       0.0      0.00000     3  ; JCC,7,(1986),230
+ OSCV CTCV CTCV OHCV    9       0.0      0.00000     2  ; pucker anal (93')
+ OSCV CTCV CTCV OHCV    9       0.0      0.00000     3  ; JCC,7,(1986),230
+ OHCV CTCV CTCV OHCV    9       0.0      0.00000     2  ; check glicolWC? puc
+ OHCV CTCV CTCV OHCV    9       0.0      0.00000     3  ; JCC,7,(1986),230
+ OHCV PCV  OSCV CTCV    9       0.0      0.00000     2  ; gg&gt ene.631g*/mp2
+ OHCV PCV  OSCV CTCV    9       0.0      0.00000     3  ; JCC,7,(1986),230
+ OSCV PCV  OSCV CTCV    9       0.0      0.00000     2  ; gg&gt ene.631g*/mp2
+ OSCV PCV  OSCV CTCV    9       0.0      0.00000     3  ; JCC,7,(1986),230
+ OSCV CTCV NCV* CKCV    9       0.0      0.00000     1  ; sugar frag calc (PC)
+ OSCV CTCV NCV* CKCV    9     180.0      0.00000     2  ; sugar frag calc (PC)
+ OSCV CTCV NCV* CMCV    9       0.0      0.00000     1  ; sugar frag calc (PC)
+ OSCV CTCV NCV* CMCV    9     180.0      0.00000     2  ; sugar frag calc (PC)
+ X    CCV  CACV X       9     180.0      0.00000     2  ; intrpol.bsd.on C6H6
+ X    CCV  CBCV X       9     180.0      0.00000     2  ; intrpol.bsd.on C6H6
+ X    CCV  CMCV X       9     180.0      0.00000     2  ; intrpol.bsd.on C6H6
+ X    CCV  NCV* X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CCV  NACV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CCV  NCCV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CCV  OHCV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CCV  CTCV X       9       0.0      0.00000     2  ; JCC,7,(1986),230
+ X    CACV CACV X       9     180.0      0.00000     2  ; intrpol.bsd.on C6H6
+ X    CACV CBCV X       9     180.0      0.00000     2  ; intrpol.bsd.on C6H6
+ X    CACV CMCV X       9     180.0      0.00000     2  ; intrpol.bsd.on C6H6
+ X    CACV CTCV X       9       0.0      0.00000     2  ; JCC,7,(1986),230
+ X    CACV N2CV X       9     180.0      0.00000     2  ; reinterpolated 93'
+ X    CACV NACV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CACV NCCV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CBCV CBCV X       9     180.0      0.00000     2  ; intrpol.bsd.on C6H6
+ X    CBCV NCV* X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CBCV NBCV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CBCV NCCV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CKCV NCV* X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CKCV NBCV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CMCV CMCV X       9     180.0      0.00000     2  ; intrpol.bsd.on C6H6
+ X    CMCV CTCV X       9       0.0      0.00000     3  ; JCC,7,(1986),230
+ X    CMCV NCV* X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CQCV NCCV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CTCV CTCV X       9       0.0      0.00000     3  ; JCC,7,(1986),230
+ X    CTCV NCV  X       9       0.0      0.00000     2  ; JCC,7,(1986),230
+ X    CTCV NCV* X       9       0.0      0.00000     2  ; JCC,7,(1986),230
+ X    CTCV N2CV X       9       0.0      0.00000     3  ; JCC,7,(1986),230
+ X    CTCV OHCV X       9       0.0      0.00000     3  ; JCC,7,(1986),230
+ X    CTCV OSCV X       9       0.0      0.00000     3  ; JCC,7,(1986),230
+ X    OHCV PCV  X       9       0.0      0.00000     3  ; JCC,7,(1986),230
+ X    OSCV PCV  X       9       0.0      0.00000     3  ; JCC,7,(1986),230
+ X    CCV  NCV  X       9     180.0      0.00000     2  ; AA|check Wendy?&NMA
+ X    CTCV N3CV X       9       0.0      0.00000     3  ; JCC,7,(1986),230
+ X    CTCV SCV  X       9       0.0      0.00000     3  ; JCC,7,(1986),230
+ X    CTCV SHCV X       9       0.0      0.00000     3  ; JCC,7,(1986),230
+ X    CCV* CBCV X       9     180.0      0.00000     2  ; intrpol.bsd.onC6H6aa
+ X    CCV* CTCV X       9       0.0      0.00000     2  ; JCC,7,(1986),230
+ X    CCV* CWCV X       9     180.0      0.00000     2  ; intrpol.bsd.on C6H6
+ X    CACV CNCV X       9     180.0      0.00000     2  ; reinterpolated 93'
+ X    CBCV CNCV X       9     180.0      0.00000     2  ; reinterpolated 93'
+ X    CCCV CTCV X       9       0.0      0.00000     2  ; JCC,7,(1986),230
+ X    CCCV CVCV X       9     180.0      0.00000     2  ; intrpol.bsd.on C6H6
+ X    CCCV CWCV X       9     180.0      0.00000     2  ; intrpol.bsd.on C6H6
+ X    CCCV NACV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CCCV NBCV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CNCV NACV X       9     180.0      0.00000     2  ; reinterpolated 93'
+ X    CRCV NACV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CRCV NBCV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CVCV NBCV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+ X    CWCV NACV X       9     180.0      0.00000     2  ; JCC,7,(1986),230
+
+ HPCV CTCV N3CV C2RC    9       0.0      0.00000     2
+ CTCV N3CV C2RC C2RC    9     180.0      0.00000     2
+ CTCV N3CV C2RC HRCV    9     180.0      0.00000     2
+ HCV  N3CV C2RC C2RC    9     180.0      0.00000     2
+ HCV  N3CV C2RC HRCV    9     180.0      0.00000     2
+ C2RC C3RC C3RC C3RC    9       0.0      0.00000     3
+ C2RC C3RC C3RC HRCV    9       0.0      0.00000     3
+ C3RC C3RC C3RC C3RC    9       0.0      0.00000     3
+ C3RC C3RC C3RC HRCV    9       0.0      0.00000     3
+ C3RC C3RC C2RC C2RC    9       0.0      0.00000     2
+ HRCV C3RC C3RC C3RC    9       0.0      0.00000     3
+ HRCV C3RC C3RC HRCV    9       0.0      0.00000     3
+ HRCV C3RC C3RC C2RC    9       0.0      0.00000     3
+ C3RC C3RC C3RC C2RC    9       0.0      0.00000     3
+ C3RC C3RC C2RC C3RC    9       0.0      0.00000     2
+ HRCV C3RC C2RC C2RC    9       0.0      0.00000     2
+ HRCV C3RC C2RC C3RC    9       0.0      0.00000     2
+ C3RC C2RC C2RC C3RC    9     180.0      0.00000     2
+ C3RC C2RC C2RC C2RC    9     180.0      0.00000     2
+ C3RC C2RC C3RC HRCV    9       0.0      0.00000     2
+ C2RC C2RC C3RC HRCV    9       0.0      0.00000     2
+ C3RC C2RC C2RC HRCV    9     180.0      0.00000     2
+ C2RC C2RC C2RC C2RC    9     180.0      0.00000     2
+ C2RC C2RC C2RC HRCV    9     180.0      0.00000     2
+ HRCV C2RC C2RC C2RC    9     180.0      0.00000     2
+ HRCV C2RC C2RC HRCV    9     180.0      0.00000     2
+ C2RC C2RC C2RC C3RC    9     180.0      0.00000     2
+ C2RC C2RC C2RC N3CV    9     180.0      0.00000     2
+ HRCV C2RC C2RC N3CV    9     180.0      0.00000     2
+ CTCV CTCV N3CV C2RC    9       0.0      0.00000     1
+;
+;
+;  FRONTERA
+;
+ CTCV CT   N    C       9       0.0      0.00000     1  ;
+ CTCV CT   N    C       9     180.0      0.00000     3  ;
+ CTCV CT   N    C       9     180.0      0.00000     4  ;
+ X    CTCV CT   X       9       0.0      0.00000     3  ; JCC,7,(1986),230
+ CTCV CT   C    N       9       0.0      0.00000     2  ;
+ CTCV CT   C    N       9       0.0      0.00000     4  ;
+ CTCV CT   N3   C2R     9       0.0      0.00000     1
+ X    CTCV N    X       9       0.0      0.00000     2  ; JCC,7,(1986),230
+ CTCV CTCV N    C       9       0.0      0.00000     1  ;  
+ CTCV CTCV N    C       9     180.0      0.00000     3  ;  
+ CTCV CTCV N    C       9     180.0      0.00000     4  ;
+ CT   S    SCV  CTCV    9       0.0      0.00000     2  ; JCC,7,(1986),230
+ CT   S    SCV  CTCV    9       0.0      0.00000     3  ; JCC,7,(1986),230
+
+ 
+ 

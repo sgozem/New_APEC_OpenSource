@@ -144,8 +144,8 @@ echo "QMMM-microiteration ON" >> $Project.key
 #echo "QMMM-ELECTROSTATICS ESPF" >> ${Project}_nolink.key
 echo "QMMM-microiteration ON" >> ${Project}_nolink.key
 
-cat chargemm0 >> $Project.key
-cat chargemm0 >> ${Project}_nolink.key
+cat chargemm >> $Project.key
+cat chargemm >> ${Project}_nolink.key
 cat qm >> mm
 for i in $(eval echo "{1..$(($chratoms-$xx-$fx))}"); do
    active=`head -n $i mm | tail -n1 | awk '{ print $2 }'`
@@ -168,7 +168,7 @@ EOF
 if [[ -f $Project-tk.xyz_2 ]] ; then
    if grep -q "HLA " $Project-tk.xyz_2; then
       if [[ $Molcami_OptSCF != "YES" ]]; then
-         ./update_infos.sh "Shell" $(($shell+1)) Infos.dat
+#         ./update_infos.sh "Shell" $(($shell+1)) Infos.dat
          ./update_infos.sh "Molcami_OptSCF" "YES" Infos.dat
       fi
 #
@@ -193,7 +193,7 @@ YOE
       rm $Project-tk.xyz_2
       mv $Project-tk.xyz_new $Project-tk.xyz_2
       rm $Project-tk.key
-      rm $Project-tk.input
+#      rm $Project-tk.input
    else
       echo "*********************************"
       echo " It seems to be something wrong"
@@ -275,9 +275,9 @@ else
  if [[ $calcul == 1 ]]; then
    cp $templatedir/ASEC/template_CASSCF_min calculations/${newdir}/template_CASSCF
    sed -i "s|> COPY \$InpDir/\$Project.Espf.Data \$WorkDir|*> COPY \$InpDir/\$Project.Espf.Data \$WorkDir|" calculations/${newdir}/template_CASSCF
-   if [[ $state -eq 1 ]]; then
-      sed -i "/Ras2=/a\ \ \ \ ciroot=2 2 1" calculations/${newdir}/template_CASSCF
-      sed -i "/ciroot=/a\ \ \ \ rlxroot=2" calculations/${newdir}/template_CASSCF
+   if [[ $state -gt 1 ]]; then
+      sed -i "/Ras2=/a\ \ \ \ ciroot=$state $state 1" calculations/${newdir}/template_CASSCF
+      sed -i "/ciroot=/a\ \ \ \ rlxroot=$state" calculations/${newdir}/template_CASSCF
       if [[ $Step -eq 1 ]]; then
          sed -i "/\ \ \ \ cirestart/d" calculations/${newdir}/template_CASSCF
       fi
@@ -305,7 +305,7 @@ no=$PWD
 sed -i "s|NOMEDIRETTORI|${no}|" molcas-job.sh
 sed -i "s|MEMTOT|23000|" molcas-job.sh
 sed -i "s|MEMORIA|20000|" molcas-job.sh
-sed -i "s|hh:00:00|230:00:00|" molcas-job.sh
+sed -i "s|hh:00:00|120:00:00|" molcas-job.sh
 
 sed -i "s|PARAMETRI|${prm}|" template_CASSCF
 

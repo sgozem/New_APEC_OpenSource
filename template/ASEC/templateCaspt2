@@ -1,0 +1,55 @@
+* template for CASPT2 single point
+
+> EXPORT MOLCAS_MOLDEN=ON
+
+> COPY $InpDir/$Project.xyz $WorkDir
+> COPY $InpDir/$Project.key $WorkDir
+> COPY $InpDir/$Project.JobIph $WorkDir/$Project.JobOld
+> COPY $InpDir/PARAMETRI.prm $WorkDir
+
+&Gateway
+ Tinker
+ Group = NoSym
+ Basis = 6-31G*
+
+   &SEWARD
+ cholesky
+
+   &ESPF
+ External = Tinker
+ lamorok
+
+   &RASSCF
+jobiph
+nactel = 12 0 0
+inactive = 76
+ras2 = 12
+ciroot = 3 3 1
+thrs = 0.000001  0.001 0.001
+cholesky
+cimx = 200
+iter = 200 50
+
+> COPY $Project.JobIph $InpDir/$Project.JobIph.new
+
+ &GRID_IT
+   SELEct
+   1:67-98
+ &GRID_IT
+   FILEORB = $Project.RasOrb; NAME = average
+   SELEct
+   1:67-98
+
+   &RASSI
+nrof jobiphs
+1 3
+1 2 3
+
+   &CASPT2
+maxiter = 300
+multi = 3 1 2 3
+nomult
+imag = 0.2
+ipea = 0.0
+
+

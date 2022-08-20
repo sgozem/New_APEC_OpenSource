@@ -3,30 +3,32 @@
 #SBATCH -N 1
 #SBATCH -n 16
 #SBATCH -t 23:59:00
-#SBATCH --mem=45G 
-#SBATCH -p qPHO
-#SBATCH --exclude photon01,photon02,photon03,photon04
+#SBATCH --mem=16G 
+#SBATCH -p qGPU48
+#SBATCH --gres=gpu:V100:1
+#SBATCH -A CHEM9C4
+#SBATCH --mail-type=BEGIN
 #--------------------------------------------------------------#
-#NPROCS=`wc -l < $SLURM_JOB_NODELIST`
-cd $SLURM_SUBMIT_DIR
+#cd /scratch
+#mkdir $SLURM_JOB_ID
+#cd $SLURM_JOB_ID
 
-module load ComputationalChemistry/Gromacs2019
+module load GROMACS/2019.6
 
-export CUDA_VISIBLE_DEVICES=0
 export Project=$SLURM_JOB_NAME
-export WorkDir=/runjobs/RS10237/$SLURM_JOB_ID
+export WorkDir=/scratch/$SLURM_JOB_ID
 export InpDir=NOMEDIRETTORI
 export outdir=NOMEDIRETTORI/output
 echo $SLURM_JOB_NODELIST > $InpDir/nodename
 echo $SLURM_JOB_ID > $InpDir/jobid
 mkdir $outdir
 mkdir -p $WorkDir
-#--------------------------------------------------------------#
+#-------------------------------------------------------------#
 # Start job
-#--------------------------------------------------------------#
+#-------------------------------------------------------------#
 cp $InpDir/* $WorkDir
 cd $WorkDir
-/apps/Computation_Chemistry/gromacs-2019/Debug_Build-Skylake-GPU/bin/gmx mdrun -nt 16 -s $Project.tpr -o $Project.trr -x $Project.xtc -c final-$Project.gro
+gmx mdrun -nt 16 -s $Project.tpr -o $Project.trr -x $Project.xtc -c final-$Project.gro -nb gpu
 cp $WorkDir/* $outdir/
 
 rm -r $WorkDir

@@ -1,0 +1,40 @@
+* template to be used for the initial HF optimization
+
+> EXPORT MOLCAS_MOLDEN=ON
+
+> COPY $InpDir/$Project.xyz $WorkDir
+> COPY $InpDir/$Project.key $WorkDir
+> COPY $InpDir/PARAMETRI.prm $WorkDir
+
+> EXPORT CONT=0
+
+>   Set   maxiter   100
+>   Do   while
+ 
+   &SEWARD
+   &ESPF
+    External = Tinker
+    lamorok
+   &SCF
+     Charge = 0 
+   &ALASKA
+   &SLAPAF
+    cartesian
+    rHidden = 10.0
+
+> COPY $Project.xyz $InpDir/$Project.Final.xyz
+
+> EXPORT EST=00$CONT
+> If ( -FILE $Project.$EST )
+> COPY $WorkDir/$Project.$EST $InpDir
+> EndIf
+
+> EXPORT EST=0$CONT
+> If ( -FILE $Project.$EST )
+> COPY $WorkDir/$Project.$EST $InpDir
+> EndIf
+
+> EVAL CONT=$CONT+1
+
+>   EndDo
+

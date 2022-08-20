@@ -29,20 +29,21 @@ force=(["NC"]=1022 ["C"]=3 ["O"]=5 ["CA"]=115 ["CT"]=2 ["H"]=4 ["HC"]=14 ["Nstar
 
 mkdir conversion/
 if [[ $Step -eq 0 ]]; then
-   procedure=0
-   while  [[ $procedure -ne 1 && $procedure -ne 2 ]]; do
-          echo " Now, select the procedure to follow in this initial step"
-          echo ""
-          echo " 1) Standard QM/MM Opt. You will get the closest configuration to the average"
-          echo "    with the Solvent box and select a cavity for performing a standard QM/MM optimization."
-          echo "    In the next step, the 20 A ASEC configuration will be generated for starting the"
-          echo "    Free Energy Geometry Optimization."
-          echo " 2) ASEC Opt. You will generate from the begining the ASEC configuration of the 20 A shell"
-          echo "    for starting the Free Energy Geometry Optimization of the chromophore. The convergence"
-          echo "    along the iterative procedure using this option may be slower."
-          echo ""
-          read procedure
-   done
+   procedure=2
+  # procedure=0
+  # while  [[ $procedure -ne 1 && $procedure -ne 2 ]]; do
+  #        echo " Now, select the procedure to follow in this initial step"
+  #        echo ""
+  #        echo " 1) Standard QM/MM Opt. You will get the closest configuration to the average"
+  #        echo "    with the Solvent box and select a cavity for performing a standard QM/MM optimization."
+  #        echo "    In the next step, the 20 A ASEC configuration will be generated for starting the"
+  #        echo "    Free Energy Geometry Optimization."
+  #        echo " 2) ASEC Opt. You will generate from the begining the ASEC configuration of the 20 A shell"
+  #        echo "    for starting the Free Energy Geometry Optimization of the chromophore. The convergence"
+  #        echo "    along the iterative procedure using this option may be slower."
+  #        echo ""
+  #        read procedure
+  # done
    if [[ $procedure -eq 1 ]]; then
       ./update_infos.sh "Init_procedure" "QMMM" Infos.dat
       cp MD_ASEC/Best_Config_full.gro conversion/final-$Project.gro
@@ -284,15 +285,16 @@ EOF
       cp $Project-tk.xyz ../
       cd ..
 
-      modo=0
-      while  [[ $modo -ne 1 && $modo -ne 2 ]]; do
-             echo " Now, select what kind of procedure"
-             echo ""
-             echo " 1) Optimizing from SCF Optg"
-             echo " 2) Optimizing directly from CASSCF"
-             echo ""
-             read modo
-      done
+      modo=1
+    #  modo=0
+    #  while  [[ $modo -ne 1 && $modo -ne 2 ]]; do
+    #         echo " Now, select what kind of procedure"
+    #         echo ""
+    #         echo " 1) Optimizing from SCF Optg"
+    #         echo " 2) Optimizing directly from CASSCF"
+    #         echo ""
+    #         read modo
+    #  done
 
       if [[ $modo -eq 1 ]]; then
          cp $templatedir/ASEC/Molcami_OptSCF.sh .

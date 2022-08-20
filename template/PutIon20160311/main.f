@@ -1,0 +1,194 @@
+      program main
+*
+************************************************************************
+* PutIon, March 11, 2016                                               *
+************************************************************************
+* This program neutralizes the intracellular (IC) and extracellular    *
+* (EC) sides of a rhodopsin protein using an appropriate number of Na  *
+* and Cl counterions. The neutralization is done for each side         *
+* independently. The program requires as input a pdb file with         *
+* associated atomic charges (a pqr file). In addition, for each side,  *
+* the user needs to enter a net charge and a list of 'target residues' *
+* (only charged residues are accepted). Given this information, the    *
+* program performs the following steps:                                *
+*                                                                      *
+*  I. A cubic grid with spacing 0.5 angstrom is constructed around     *
+*  each target residue. Grid points more than 8 angstrom away from     *
+*  the center of charge of a residue, or less than 2 angstrom away     *
+*  from any atom are excluded. The remaining grid points are merged    *
+*  into one grid for the IC side and one for the EC side.              *
+*                                                                      *
+*  II. The type and number of counterions to be placed on each side    *
+*  are determined from the net charges provided by the user.           *
+*                                                                      *
+*  III. The position of each counterion is determined by energy        *
+*  minimization on the relevant IC or EC grid. The program starts      *
+*  by placing a counterion on the side with the highest net charge.    *
+*  The counterion placement is then alternated until both sides have   *
+*  been neutralized. The energy of the Nth counterion is computed      *
+*  from the electrostatic interaction with the protein and the N-1     *
+*  preceeding counterions.                                             *
+*                                                                      *
+*  IV. The optimal counterion positions are written to ions.pdb.       *
+*                                                                      *
+* All lengths are output in units of angstrom and energies in units    *
+* of eV.                                                               *
+************************************************************************
+*
+      implicit none
+*
+      include 'param.h'
+*
+      integer iold,irid(matom),itar,itidec(mtar),itidic(mtar),natom
+      integer ngpec,ngpic,ntarec,ntaric,qec,qic
+      double precision q(matom),r(matom,3),rgrdec(mgp,3),rgrdic(mgp,3)
+      character*2 chlab
+      character*256 chin
+      logical zok
+*
+      write(*,'(a)') '>>> PutIon, version 2016-03-11 <<<'
+      write(*,*)
+*
+* Prompt user for basic info
+*
+****** YOE
+      chin='NOMBRE'
+*      write(*,'(a)') 'Enter name of pdb/pqr file (q to quit):'
+* 100  read(*,*) chin
+*      write(*,*)
+*      if (chin.eq.'q ') then
+*         write(*,'(a)') 'Exiting... good bye!'
+*         go to 700
+*      end if
+      inquire(file=chin,exist=zok)
+      if (.not.zok) then
+         write(*,'(a)') 'File not found, please try again:'
+*         go to 100
+      end if
+******
+*
+      write(*,'(a)') 'Enter charge of intracellular (IC) side ' //
+     &               '(integer):'
+      read(*,*) qic
+      write(*,*)
+      if (qic.eq.0) then
+         write(*,'(a)') 'Warning: Neutral IC side. No ions will be ' //
+     &                  'placed.'
+         write(*,*)
+      else if (qic.lt.0) then
+         write(*,'(a)') 'Warning: Negatively charged IC side'
+         write(*,*)
+      end if
+*
+      if (qic.ne.0) then
+         write(*,'(a)') 'Enter number of target residues for IC side:'
+ 200     read(*,*) ntaric
+         write(*,*)
+         if (ntaric.le.0) then
+            write(*,'(a)') 'Number zero or negative, please try again:'
+            go to 200
+         end if
+         write(*,'(a)') 'Enter the IDs of these residues ' //
+     &                  '(one per line, ascending order):'
+ 300     do itar = 1,ntaric
+            read(*,*) itidic(itar)
+         end do
+         write(*,*)
+         iold = 0
+         do itar = 1,ntaric
+            if (itidic(itar).le.iold) then
+               write(*,'(a)') 'Bad list, please try again:'
+               go to 300
+            end if
+            iold = itidic(itar)
+         end do
+      end if
+*
+      write(*,'(a)') 'Enter charge of extracellular (EC) side ' //
+     &               '(integer):'
+      read(*,*) qec
+      write(*,*)
+      if (qec.eq.0) then
+         write(*,'(a)') 'Warning: Neutral EC side. No ions will ' //
+     &                  'be placed.'
+         write(*,*)
+      else if (qec.gt.0) then
+         write(*,'(a)') 'Warning: Positively charged EC side'
+         write(*,*)
+      end if
+*
+      if (qec.ne.0) then
+         write(*,'(a)') 'Enter number of target residues for EC side:'
+ 400     read(*,*) ntarec
+         write(*,*)
+         if (ntarec.le.0) then
+            write(*,'(a)') 'Number zero or negative, please try again:'
+            go to 400
+         end if
+         write(*,'(a)') 'Enter the IDs of these residues ' //
+     &                  '(one per line, ascending order):'
+ 500     do itar = 1,ntarec
+            read(*,*) itidec(itar)
+         end do
+         write(*,*)
+         iold = 0
+         do itar = 1,ntarec
+            if (itidec(itar).le.iold) then
+               write(*,'(a)') 'Bad list, please try again:'
+               go to 500
+            end if
+            iold = itidec(itar)
+         end do
+      end if
+*
+      if (qic.eq.0.and.qec.eq.0) then
+         write(*,'(a)') 'No work to be done. Good bye!'
+         go to 700
+      end if
+*
+      open(unit=luout,file='ions.pdb',status='unknown')
+      write(luout,1000) 'PDB produced by PutIon'
+      write(luout,1100)
+      if (qic.ne.0) then
+         write(luout,1000) 'Target residues, IC side'
+         do itar = 1,ntaric
+            write(luout,1200) itidic(itar)
+         end do
+         write(luout,1100)
+      end if
+      if (qec.ne.0) then
+         write(luout,1000) 'Target residues, EC side'
+         do itar = 1,ntarec
+            write(luout,1200) itidec(itar)
+         end do
+         write(luout,1100)
+      end if
+*
+* Parse input pdb, construct grid and determine optimal ion positions
+*
+      call parse(chin,irid,natom,q,r)
+      if (qic.ne.0) then
+         chlab = 'IC'
+         call grid(irid,itidic,natom,ntaric,q,r,chlab,ngpic,rgrdic)
+      end if
+      if (qec.ne.0) then
+         chlab = 'EC'
+         call grid(irid,itidec,natom,ntarec,q,r,chlab,ngpec,rgrdec)
+      end if
+      call place(natom,ngpec,ngpic,qec,qic,q,r,rgrdec,rgrdic)
+*
+* Shut down
+*
+      write(*,'(a)') 'Calculation ended normally'
+      write(*,*)
+      write(*,'(a)') 'Coordinates have been written to ions.pdb'
+*
+      close(unit=luout)
+*
+ 700  continue
+*
+ 1000 format('REMARK',5x,a)
+ 1100 format('REMARK')
+ 1200 format('REMARK',5x,i15)
+*
+      end

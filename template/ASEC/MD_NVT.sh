@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Reading information from Infos.dat
+# Reading project name, parm file and templatedir from Infos.dat
 #
 Project=`grep "Project" Infos.dat | awk '{ print $2 }'`
 prm=`grep "Parameters" Infos.dat | awk '{ print $2 }'`
@@ -13,13 +13,39 @@ charge=`grep "Init_Charge" Infos.dat | awk '{ print $2 }'`
 relaxpr=`grep "Relax_protein" Infos.dat | awk '{ print $2 }'`
 moldy=`grep "MD_ensemble" Infos.dat | awk '{ print $2 }'`
 amber=`grep "AMBER" Infos.dat | awk '{ print $2 }'`
+tmpdir=`grep "tempdir" Infos.dat | awk '{ print $2 }'`
 
 cd Dynamic
-
-#
-# Colecting data to run the NVT MD
-#
-if [[ $step -eq 0 ]]; then     
+if [[ $step -eq 0 ]]; then
+   if [[ -d Sim_NPT/output ]]; then
+      echo ""
+      echo " *********************************************************************"
+      echo "                      Warning!"
+      echo ""
+      echo " MD Sim_NPT/output directory already excist. We are goint to use it..."
+      echo ""
+      echo " *********************************************************************"
+      echo ""
+   else
+      echo ""
+      echo " Collecting data from the nodes, please wait ..."
+      echo ""
+      dir=`basename $tmpdir`
+      iget -r /arctic/projects/CHEM9C4/$USER/$dir Sim_NPT
+      if [[ -f Sim_NPT/$dir/md.log ]]; then
+        mv Sim_NPT/$dir Sim_NPT/output 
+        irm -r /arctic/projects/CHEM9C4/$USER/$dir
+      else
+         echo ""
+         echo "************************************************************************"
+         echo ""
+         echo " It seems that the NPT MD is still running or it did not finish properly"
+         echo ""
+         echo "************************************************************************"
+         echo ""
+         exit 0
+      fi
+   fi
    cp $templatedir/ASEC/dynamic_sol_NVT.mdp .
    cp Sim_NPT/output/final-${Project}_box_sol.gro ${Project}_box_sol.gro
    cp Sim_NPT/*.itp .
@@ -37,7 +63,7 @@ else
    sed -i "s/;freezedim = Y Y Y/freezedim = Y Y Y/g" dynamic_sol_NVT.mdp
 fi
 echo ""  
-echo " What is the PRODUCTION TEMPERATURE of the NVT simulation? (Kelvin)"
+echo " What is the PRODUCTION TEMPERATURE of the NVT simulation? (Kelvin). Normally 300."
 echo ""
 read tempmd
 
@@ -50,21 +76,16 @@ else
    #read risposta
    heating="y"
 fi
-
-#
-# Parameters for the MD
-#
 if [[ $heating == y ]]; then
    echo ""
-   echo " The system will to be heated from 0k because at this point"
-   echo " we do not have velocities from previous calculations."
+   echo " The system will to be heated from 0k to the defined temperature"
+   echo " because at this point we do not have velocities from previous calculations."
    echo ""
-   echo " How long is the HEATING PHASE? (ps)"
-   echo " (We normally heat from 0k to production temporeature in 300 ps)"
+   echo " How long is the HEATING PHASE? (ps). Normally 300."
    echo ""
    read timeheat
    echo ""
-   echo " How long is the EQUILIBRATION PHASE? (ps)"
+   echo " How long is the EQUILIBRATION PHASE? (ps). Normally 4700."
    echo ""
    read timequi
    echo ""
@@ -73,21 +94,18 @@ else
    echo " Here we do not need to heat the system because we have"
    echo " the velocities from the NPT Molecular dynamics."
    echo ""
-   echo " How long is the EQUILIBRATION PHASE? (ps)"
+   echo " How long is the EQUILIBRATION PHASE? (ps). Normally 5000"
    echo ""
    read timequi
    timeheat=0
    #timequi=0
 fi
 echo ""
-echo " How long is the PRODUCTION PHASE? (ps)"
+echo " How long is the PRODUCTION PHASE? (ps). Normally 5000 in 2 seeds if in Step 0"
 echo ""
 read timeprod
 echo ""
 
-#
-# MD production can be run in different nodes in parallel.
-#
 parallelize=r
 while [[ $parallelize != y && $parallelize != n ]]; do
    echo ""
@@ -118,7 +136,7 @@ if [[ $parallelize == y ]]; then
    timeprod=$(($timeprod/$numparallel))
 fi
 
-if [[ $risposta == y ]]; then
+if [[ $heating == y ]]; then
    numsteps=$(($timeheat+$timequi+$timeprod))
    sed -i "s/TIME1/$timeheat/" dynamic_sol_NVT.mdp
    sed -i "s/TEMP1/$tempmd/g" dynamic_sol_NVT.mdp
@@ -135,9 +153,6 @@ fi
 numsteps=$(($numsteps*1000))
 sed -i "s/PASSI/$numsteps/" dynamic_sol_NVT.mdp
 
-#
-# GPUs or CPUs can also be used to run the MD
-#
 gpu="b"
 while [[ $gpu != "y" && $gpu != "n" ]]; do
    echo ""
@@ -157,9 +172,6 @@ else
    cp $templatedir/gromacs.slurm.sh gromacs.sh
 fi
 
-#
-# Parallelizing in different nodes, each one starting with different seed.
-#
 if [[ $parallelize == y ]]; then
    for i in $(eval echo "{1..$numparallel}")
    do
@@ -180,25 +192,37 @@ if [[ $parallelize == y ]]; then
 
       sed -i "s/SBATCH -t 23:59:00/SBATCH -t 47:59:00/" gromacs.sh
 
+      TMPFILE=`mktemp -d /scratch/photon_seed_${i}_XXXXXX`
+      ../../update_infos.sh "MD_seed_$i" $TMPFILE ../../Infos.dat
+      sed -i "s|TEMPFOLDER|$TMPFILE|" gromacs.sh
+      cp -r * $TMPFILE
+      current=$PWD
+      cd $TMPFILE
       sbatch gromacs.sh
+      cd $current
 
       cd ..
       done
-   else
+   else # no parallel
       $gropath/gmx grompp -maxwarn 2 -f dynamic_sol_NVT.mdp -c ${Project}_box_sol.gro -n ${Project}_box_sol.ndx -p ${Project}_box_sol.top -o ${Project}_box_sol.tpr
 
       sed -i "s|NOMEPROGETTO|${Project}_box_sol|" gromacs.sh
       sed -i "s|NOMEDIRETTORI|$PWD|" gromacs.sh
       sed -i "s|GROPATH|$gropath|" gromacs.sh
 
-      sed -i "s/SBATCH -t 23:59:00/SBATCH -t 100:00:00/" gromacs.sh
+      sed -i "s/SBATCH -t 23:59:00/SBATCH -t 47:59:00/" gromacs.sh
 
+      TMPFILE=`mktemp -d /scratch/photon_XXXXXXXX`
+      ../update_infos.sh "tempdir" $TMPFILE ../Infos.dat
+      sed -i "s|TEMPFOLDER|$TMPFILE|" gromacs.sh
+      cp -r * $TMPFILE
+      current=$PWD
+      cd $TMPFILE
       sbatch gromacs.sh
+      cd $current
+
 fi
 
-#
-# Message to the user
-#
 cd ../
 cp $templatedir/ASEC/MD_ASEC.sh .
 ./update_infos.sh "Next_script" "MD_ASEC.sh" Infos.dat

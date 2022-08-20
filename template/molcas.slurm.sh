@@ -1,28 +1,33 @@
 #!/bin/bash
 #SBATCH -J NOMEPROGETTO
 #SBATCH -N 1
-#SBATCH -n 4
+#SBATCH -n 8
 #SBATCH -t hh:00:00
 #SBATCH --mem=MEMTOTMB 
-#SBATCH -p qPHO
-#SBATCH --exclude photongpu01,photongpu02
+#SBATCH -p qCPU120
+#SBATCH -A CHEM9C4
+##SBATCH --exclude photongpu01,photongpu02
 #--------------------------------------------------------------#
-cd $SLURM_SUBMIT_DIR
+#cd $SLURM_SUBMIT_DIR
 #--------------------------------------------------------------#
 # Molcas settings 
 #--------------------------------------------------------------#
-export MOLCAS="/home/users/yorozcogonzalez/bin/build"
+export MOLCAS="/userapp/APEC_KABIR/build"
 export MOLCAS_MEM=MEMORIAMB
 export MOLCAS_MOLDEN=ON
 export MOLCAS_PRINT=normal
-export TINKER="/home/users/yorozcogonzalez/bin/build/tinker/bin"
+export TINKER="/userapp/APEC_KABIR/build/tinker/bin"
+export WorkDir=/scratch/$SLURM_JOB_ID
+export InpDir=$PWD
+#export outdir=$PWD/output
+export Project=$SLURM_JOB_NAME
+#export WorkDir=/runjobs/RS10237/$SLURM_JOB_ID
 #--------------------------------------------------------------#
 #  Change the Project!!!
 #--------------------------------------------------------------#
-export Project=$SLURM_JOB_NAME
-export WorkDir=/runjobs/RS10237/$SLURM_JOB_ID
 mkdir -p $WorkDir
-export InpDir=$SLURM_SUBMIT_DIR
+#mkdir $outdir
+#export InpDir=$SLURM_SUBMIT_DIR
 echo $SLURM_JOB_NODELIST > $InpDir/nodename
 echo $SLURM_JOB_ID > $InpDir/jobid
 #--------------------------------------------------------------#
@@ -34,10 +39,11 @@ echo $SLURM_JOB_ID > $InpDir/jobid
 #--------------------------------------------------------------#
 # Start job
 #--------------------------------------------------------------#
+cp $InpDir/* $WorkDir
 cd $WorkDir
-/home/users/yorozcogonzalez/bin/pymolcas $InpDir/$Project.input >$InpDir/$Project.out 2>$InpDir/$Project.err
-cp $WorkDir/$Project.RasOrb $InpDir
-cp $WorkDir/$Project.*.molden $InpDir
-cp $WorkDir/$Project.*.Tinker.log $InpDir
+/userapp/APEC_KABIR/bin/pymolcas $WorkDir/$Project.input >$WorkDir/$Project.out 2>$WorkDir/$Project.err
+#cp $WorkDir/* $outdir
+cp $WorkDir/* $InpDir
+rm $InpDir/*.OrdInt
 rm -r $WorkDir
 

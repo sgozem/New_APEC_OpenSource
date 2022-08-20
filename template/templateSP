@@ -1,0 +1,17 @@
+* template for CASSCF single point
+
+> EXPORT MOLCAS_MOLDEN=ON
+
+> COPY $InpDir/$Project.xyz $WorkDir
+> COPY $InpDir/$Project.key $WorkDir
+> COPY $InpDir/PARAMETRI.prm $WorkDir
+
+   &SEWARD
+   &ESPF
+    External = Tinker
+    lamorok
+   &RASSCF; lumorb; spin=1; nActEl=12   0   0;   Inactive=76;   Ras2=12
+
+> COPY $WorkDir/$Project.JobIph $InpDir
+> COPY $Project.Espf.Data $InpDir
+

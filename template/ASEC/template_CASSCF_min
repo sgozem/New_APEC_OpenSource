@@ -17,7 +17,7 @@
  Group = NoSym
  Basis = ANO-L-VDZ
 
-*>   Set   maxiter   100
+>   EXPORT MOLCAS_MAXITER=40
 >   Do   while
  
    &SEWARD
@@ -27,7 +27,7 @@
    &RASSCF
     *LumOrb
     spin=1
-    nActEl=10   0   0
+    nActEl=10 0 0
     Inactive=62
     Ras2=10
     JobIph
@@ -39,7 +39,7 @@
    &ALASKA
    &SLAPAF
     cartesian
-    rHidden = 2.75
+    rHidden = 4.0
 
 > COPY $WorkDir/$Project.xyz $InpDir/$Project.Final.xyz
 > COPY $WorkDir/$Project.xyz $InpDir/$Project.Final.xyz_$PASOS

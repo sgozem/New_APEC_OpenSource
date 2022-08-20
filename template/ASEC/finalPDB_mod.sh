@@ -11,22 +11,61 @@ Step=`grep "Step" ../Infos.dat | awk '{ print $2 }'`
 solvent=`grep "SolventBox" ../Infos.dat | awk '{ print $2 }'`
 retstereo=`grep "RetStereo" ../Infos.dat | awk '{ print $2 }'`
 amber=`grep "AMBER" ../Infos.dat | awk '{ print $2 }'`
-
 chr=`grep "chromophore" ../Infos.dat | awk '{ print $2 }'` 
 numatoms=`grep "Shell" ../Infos.dat | awk '{ print $2 }'`
 numchr=`head -n1 ../Chromophore/$chr.xyz | awk '{ print $1 }'`
 gropath=`grep "GroPath" ../Infos.dat | awk '{ print $2 }'`
-
 charge=`grep "Init_Charge" ../Infos.dat | awk '{ print $2 }'`
-numions=${charge#-}  # module of charge
+#numions=${charge#-}  # module of charge
+chromophore=`grep "chromophore" ../Infos.dat | awk '{ print $2 }'`
+cola=`grep "Tail" ../Infos.dat | awk '{ print $2 }'`
+nna=`grep "Added_NAs" ../Infos.dat | awk '{ print $2 }'`
+ncl=`grep "Added_CLs" ../Infos.dat | awk '{ print $2 }'`
+tempdir=`grep "tempdir" ../Infos.dat | awk '{ print $2 }'`
+
+numions=$(($nna+$ncl))
 
 #
 # Creating a directory where the PDB will be generated
 # and copying the required files
 #
-echo " Preparing the final structure PDB..."
-echo ""
+
 folder=${Project}_VDZP_Opt
+
+if [[ -f $folder/$folder.out ]]; then
+   echo ""
+   echo " *************************************************************"
+   echo "                      Warning!"
+   echo ""
+   echo " $folder.out already excist. We are goint to use it..."
+   echo ""
+   echo " *************************************************************"
+   echo ""
+else
+   #
+   # Collecting the MD output from /scratch 
+   #
+   echo ""
+   echo " Collecting the CASSCF/VDZP Optimization from iRODS..."
+   echo ""
+
+   dir=`basename $tempdir`
+   iget -r /arctic/projects/CHEM9C4/$USER/$dir $folder
+   if [[ -f $folder/$dir/$folder.out ]]; then
+      mv $folder/$dir/* $folder
+      rm -r $folder/$dir
+      irm -r /arctic/projects/CHEM9C4/$USER/$dir
+   else
+      echo ""
+      echo "************************************************************************"
+      echo ""
+      echo " It seems that the MD is still running or it did not finish properly"
+      echo ""
+      echo "************************************************************************"
+      echo ""
+      exit 0
+   fi
+fi
 
 echo ""
 echo " The current project is $Project. Checking the CAS/VDZP optimization..."
@@ -37,8 +76,7 @@ echo ""
 #
 if [ -d $folder ]; then
    cd $folder
-   contr=`grep 'landing' $folder.out | awk '{ print $1 }'`
-   if [[ $contr == "Happy" ]]; then
+   if grep -q "Timing: Wall=" $folder.out; then
       echo " CAS/VDZP optimization ended successfully"
       echo ""
    else
@@ -103,8 +141,9 @@ mkdir ${Project}_finalPDB
 # Terminates if the file is not found
 #
 if [ -f $folder/$folder.Final.xyz ]; then
-   head -n $(($numatoms)) $folder/$folder.Final.xyz | tail -n $numchr > ${Project}_finalPDB/Chromo.xyz
+   head -n $(($numatoms+1)) $folder/$folder.Final.xyz | tail -n $numchr > ${Project}_finalPDB/Chromo.xyz
    cp ../MD_ASEC/Best_Config_full.gro ${Project}_finalPDB
+   cp ../Dynamic/residuetypes.dat ${Project}_finalPDB
    cd ${Project}_finalPDB
    head -n1 Best_Config_full.gro > Protein.gro
    numfull=`head -n2 Best_Config_full.gro | tail -n1 | awk '{ print $1 }'`
@@ -150,19 +189,23 @@ YOE
    mv temp ${Project}_new.gro
 
 #
-# Directions to update the parametrizations of the chromophore
+# Re-parametrizations of the chromophore
 #
    if [ -f ${Project}_new.gro ]; then
       cd ..
-      cp $templatedir/ASEC/RESP_charges.sh .
-     ../update_infos.sh "Next_script" "RESP_charges.sh" ../Infos.dat 
+      mkdir ESPF_charges
+      cp ../Chromophore/${chromophore}.xyz ESPF_charges
+      cp $templatedir/ASEC/charges_$cola ESPF_charges/template_charges
+      cp $folder/$folder.out ESPF_charges/${Project}_ESPF.out
+      ../update_infos.sh "Next_script" "fitting_ESPF.sh" ../Infos.dat 
+      cp $templatedir/ASEC/fitting_ESPF.sh .
       echo ""
       echo "************************************************************************"
       echo ""
       echo " The files \"${Project}_new.gro\" and \"${Project}_new.pdb\" seems to be"
       echo " properly generated"
       echo ""
-      echo " Continue with: RESP_charges.sh"
+      echo " Continue with: fitting_ESPF.sh"
       echo ""
       echo "************************************************************************"
       echo ""  
