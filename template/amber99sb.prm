@@ -984,6 +984,23 @@ atom       1251   23    OS    "D-3'-Phosphate O3'"           8    16.000    2
 atom       1252   28    P     "D-3'-Phosphate P"            15    30.970    4
 atom       1253   25    O2    "D-3'-Phosphate OP"            8    16.000    1
 
+#YOE: Deprotonated Tyrosine
+atom       1254   14    N     "Tyrosinate N"                 7    14.010    3
+atom       1255    1    CT    "Tyrosinate CA"                6    12.010    4
+atom       1256    2    C     "Tyrosinate C"                 6    12.010    3
+atom       1257   29    H     "Tyrosinate HN"                1     1.008    1
+atom       1258   24    O     "Tyrosinate O"                 8    16.000    1
+atom       1259   35    H1    "Tyrosinate HA"                1     1.008    1
+atom       1260    1    CT    "Tyrosinate CB"                6    12.010    4
+atom       1261   34    HC    "Tyrosinate HB"                1     1.008    1
+atom       1262    3    CA    "Tyrosinate CG"                6    12.010    3
+atom       1263    3    CA    "Tyrosinate CD"                6    12.010    3
+atom       1264   33    HA    "Tyrosinate HD"                1     1.008    1
+atom       1265    3    CA    "Tyrosinate CE"                6    12.010    3
+atom       1266   33    HA    "Tyrosinate HE"                1     1.008    1
+atom       1267    3    CA    "Tyrosinate CZ"                6    12.010    3
+atom       1268   22    OH    "Tyrosinate OH"                8    16.000    1
+
 atom       2001   21    OW    "TIP3P Oxygen"                 8    16.000    2
 atom       2002   30    HW    "TIP3P Hydrogen"               1     1.008    1
 atom       2003   41    Li+   "Li+ Lithium Ion"              3     6.940    0
@@ -2721,6 +2738,23 @@ charge     1250               0.4396
 charge     1251              -0.6553      !! TINKER
 charge     1252               0.9000      !! TINKER
 charge     1253              -0.8200      !! TINKER
+# YOE Deprotonated Tyrosine
+charge     1254              -0.5307
+charge     1255               0.0043
+charge     1256               0.6613
+charge     1257               0.2953
+charge     1258              -0.5737
+charge     1259               0.0493
+charge     1260              -0.1857
+charge     1261               0.0883
+charge     1262              -0.0567
+charge     1263              -0.1567
+charge     1264               0.1383
+charge     1265              -0.4027
+charge     1266               0.1183
+charge     1267               0.5603
+charge     1268              -0.7947
+
 charge     2001              -0.8340
 charge     2002               0.4170
 charge     2003               1.0000
@@ -3775,6 +3809,22 @@ biotype    1250    H3T     "3'-Hydroxyl DNA"                1250
 biotype    1251    O3*     "3'-Phosphate OS DNA"            1251
 biotype    1252    P       "3'-Phosphate P DNA"             1252
 biotype    1253    OP      "3'-Phosphate OP DNA"            1253
+# YOE Deprotonared Tyrosine
+biotype    1254    N       "Tyrosinate"                     1254
+biotype    1255    CA      "Tyrosinate"                     1255
+biotype    1256    C       "Tyrosinate"                     1256
+biotype    1257    HN      "Tyrosinate"                     1257
+biotype    1258    O       "Tyrosinate"                     1258
+biotype    1259    HA      "Tyrosinate"                     1259
+biotype    1260    CB      "Tyrosinate"                     1260
+biotype    1261    HB      "Tyrosinate"                     1261
+biotype    1262    CG      "Tyrosinate"                     1262
+biotype    1263    CD      "Tyrosinate"                     1263
+biotype    1264    HD      "Tyrosinate"                     1264
+biotype    1265    CE      "Tyrosinate"                     1265
+biotype    1266    HE      "Tyrosinate"                     1266
+biotype    1267    CZ      "Tyrosinate"                     1267
+biotype    1268    OH      "Tyrosinate"                     1268
 biotype    2001    O       "Water"                          2001
 biotype    2002    H       "Water"                          2002
 biotype    2003    NA      "Sodium Ion"                     2004

@@ -24,18 +24,31 @@ if [[ $step -eq 0 ]]; then
       mkdir Sim_NPT     
       cp $templatedir/ASEC/dynamic_sol_NPT.mdp Sim_NPT
       cp Minimization/final-${Project}_box_sol.gro Sim_NPT/${Project}_box_sol.gro
-      cp Minimization/*.itp Sim_NPT
       cp Minimization/${Project}_box_sol.ndx Sim_NPT
+      cp Minimization/*.itp Sim_NPT
       cp Minimization/${Project}_box_sol.top Sim_NPT
       cp -r Minimization/$amber.ff Sim_NPT
       cp Minimization/residuetypes.dat Sim_NPT
+#      cp ../new_charges Sim_NPT
       cd Sim_NPT
+#
+# The ESPF charges need to be updated here
+#
+#      base=`grep -n "; residue   1 CHR rtp CHR" ${Project}_Other_chain_A2.itp | cut -d : -f 1`
+#      numchr=`grep -c " 1    CHR " ${Project}_Other_chain_A2.itp`
+#      for i in $(seq 1 $numchr); do
+#         charge=`head -n $(($base+$i)) ${Project}_Other_chain_A2.itp | tail -n1 | awk '{ print $7 }'`
+#         newcharge=`head -n $i new_charges | tail -n1 | awk '{ print $1 }'`
+#         sed -i "$(($i+$base))s/$charge/$newcharge/" ${Project}_Other_chain_A2.itp
+#      done
    else
-      cp $templatedir/ASEC/dynamic_sol_NPT.mdp .
-      cp Minimization/final-${Project}_box_sol.gro ${Project}_box_sol.gro
-      cp Minimization/*.itp .
-      cp Minimization/${Project}_box_sol.ndx .
-      cp Minimization/${Project}_box_sol.top .
+      echo "re-do this section ..."
+      exit 0
+#      cp $templatedir/ASEC/dynamic_sol_NPT.mdp .
+#      cp Minimization/final-${Project}_box_sol.gro ${Project}_box_sol.gro
+#      cp Minimization/*.itp .
+#      cp Minimization/${Project}_box_sol.ndx .
+#      cp Minimization/${Project}_box_sol.top .
    fi
 fi
 if [[ $relaxpr == y ]]; then
@@ -55,20 +68,24 @@ fi
 # Defining parameters for the MD
 #
 echo ""  
+echo ""  
+echo "********************************************************************"
+echo ""  
 echo " What is the PRODUCTION TEMPERATURE of the NPT simulation? (Kelvin)"
 echo ""
 read tempmd
 echo ""
-echo " Do you want to heat the system before the MD production run? (y/n)"
-echo
-read risposta
+#echo " Do you want to heat the system before the MD production run? (y/n)"
+#echo
+#read risposta
+risposta="y"
 if [[ $risposta == y ]]; then
    echo ""
-   echo " How long is the HEATING PHASE? (ps)"
+   echo " How long is the HEATING PHASE? (ps). Normally use 300."
    echo ""
    read timeheat
    echo ""
-   echo " How long is the EQUILIBRATION PHASE? (ps)"
+   echo " How long is the EQUILIBRATION PHASE? (ps). Normally use 2000."
    echo ""
    read timequi
    echo ""  
@@ -76,7 +93,8 @@ else
    timeheat=0
    timequi=0
 fi
-echo " How long is the production phase? (ps)"
+echo " How long is the production phase? (ps). Normally 0." 
+echo " We do not need production data ate this time."
 read timeprod
 echo ""  
 
@@ -121,7 +139,14 @@ sed -i "s|NOMEPROGETTO|${Project}_box_sol|" gromacs.sh
 sed -i "s|NOMEDIRETTORI|$PWD|" gromacs.sh
 sed -i "s|GROPATH|$gropath|" gromacs.sh
 
+TMPFILE=`mktemp -d /scratch/photon_XXXXXX`
+../../update_infos.sh "tempdir" $TMPFILE ../../Infos.dat
+sed -i "s|TEMPFOLDER|$TMPFILE|" gromacs.sh
+cp -r * $TMPFILE
+current=$PWD
+cd $TMPFILE
 sbatch gromacs.sh
+cd $current
 
 #
 # Message to user

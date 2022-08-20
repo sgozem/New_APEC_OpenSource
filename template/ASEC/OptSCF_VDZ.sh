@@ -56,7 +56,7 @@ no=$PWD
 sed -i "s|NOMEDIRETTORI|${no}|" molcas-job.sh
 sed -i "s|MEMTOT|23000|" molcas-job.sh
 sed -i "s|MEMORIA|20000|" molcas-job.sh
-sed -i "s|hh:00:00|160:00:00|" molcas-job.sh
+sed -i "s|hh:00:00|260:00:00|" molcas-job.sh
 sed -i "s|Basis = ANO-L-MB|Basis = ANO-L-VDZ|g" ${new}.input
 
 # Submitting the CAS/3-21G single point

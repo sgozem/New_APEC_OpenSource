@@ -1,0 +1,43 @@
+#!/bin/sh
+#
+#$ -S /bin/sh
+#
+Project=NOMEPROGETTO; export Project
+InpDir=NOMEDIRETTORI; export InpDir
+MOLCASMEM=MEMORIAMB ; export MOLCASMEM
+
+PATH=$PATH:/home/opt/intel/cce/10.1.008/bin/:/home/apps/tinker/:/home/opt/intel/cce/10.1.008/lib/:home/opt/intel/fce/10.1.008/lib
+MOLCAS=/nfs/03/bgs0361/bin/7.8.dev; export MOLCAS
+export MOLCAS_MOLDEN=ON
+export TINKER=/nfs/03/bgs0361/bin/7.8.dev/tinker/bin_qmmm
+WorkDir=/state/partition1/scr/$USER/$Project.$RANDOM; export WorkDir
+mkdir /state/partition1/scr/$USER
+mkdir $WorkDir
+
+cp $InpDir/* $WorkDir/
+
+cd $WorkDir
+/nfs/03/bgs0361/bin/dowser/bin/molcas $InpDir/$Project.input > $InpDir/$Project.out 2> $InpDir/$Project.err
+
+cp $WorkDir/*.molden $InpDir/
+cp $WorkDir/$Project.xyz $InpDir/$Project.Final.xyz
+cp $WorkDir/*.Opt.xyz $InpDir/
+cp $WorkDir/*.JobIph $InpDir/
+
+
+cd $InpDir
+rm -rf $WorkDir
+
+################################################################
+##                                                            ##
+## Please,                                                    ##
+## don't leave files  on a node if it's not really necessary  ##
+##                                                            ## 
+################################################################
+
+
+
+
+
+
+

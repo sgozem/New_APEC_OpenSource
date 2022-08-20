@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+#$ -S /bin/sh
+#
+export Project=NOMEPROGETTO
+export scratch=/state/partition1/scr/$USER/$Project.$RANDOM
+export inpdir=NOMEDIRETTORI
+export outdir=NOMEDIRETTORI/output
+mkdir $scratch
+mkdir $outdir
+cp $inpdir/* $scratch
+cd $scratch
+GROPATH/mdrun -s $Project.tpr -o $Project.trr -x $Project.xtc -c final-$Project.gro
+cp * $outdir/
+rm -rf $scratch
+

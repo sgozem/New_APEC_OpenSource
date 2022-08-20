@@ -32,7 +32,7 @@ nstenergy               = 1             ; [steps] freq to write energies to ener
 ;
 cutoff-scheme = Verlet
 nstlist                 = 10            ; [steps] freq to update neighbor list
-ns_type                 = Simple        ; method of updating neighbor list
+ns_type                 = grid        ; method of updating neighbor list
 pbc                     = xyz           ; periodic boundary conditions in all directions
 ;rlist                   = 0.8           ; [nm] cut-off distance for the short-range neighbor list
 ; Electrostatics

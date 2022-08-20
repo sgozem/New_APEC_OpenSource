@@ -1,0 +1,72 @@
+--- source/pdbxyz.f	2014-04-23 11:24:53.000000000 +0200
++++ /home/federico/scratch_acetate/tinker/source/pdbxyz.f	2014-04-15 17:28:34.000000000 +0200
+@@ -2312,9 +2312,9 @@
+       include 'pdb.i'
+       integer i
+ c
+-c Retinal 
++c Retinal, acetate
+ c     
+-      logical first
++      logical first, primo
+ c
+ c
+ c     find water molecules and ions in PDB HETATM records
+@@ -2322,6 +2322,7 @@
+       n = n + 1
+       i = 0
+       first = .false.
++      primo = .false.
+       dowhile (i .lt. npdb)
+          i = i + 1
+          if (pdbtyp(i) .eq. 'HETATM') then
+@@ -2345,6 +2346,8 @@
+ c
+             else if ((resnam(i) .eq. 'RET') .and. (.not.first)) then
+                call buildret(i,first)   
++            else if ((resnam(i) .eq. 'ACI') .and. (.not.primo)) then
++               call buildaci(i,primo)
+             else if (resnam(i) .eq. 'NA ') then
+                call oldatm (i,2003,0,0)
+             else if (resnam(i) .eq. 'K  ') then
+@@ -2611,3 +2614,40 @@
+       end if
+       return
+       end
++c
++c Free acetate ion
++c
++c     #################################################################
++c     ##                                                             ##
++c     ##  subroutine buildaci  --  coordinates of CH3COO-            ##
++c     ##                                                             ##
++c     #################################################################
++c
++c
++c     "buildaci" translates acetate in Protein Data Bank format to a
++c     Cartesian coordinate file and sequence file
++c
++c
++      subroutine buildaci(i,primo)
++      implicit none
++      include 'sizes.i'
++      include 'atoms.i'
++      include 'atmtyp.i'
++      include 'pdb.i'
++      integer i
++      logical primo
++c
++c
++c     adds all the atom in the usual order for acetate
++c
++      
++      call oldatm (i,340,0,0)
++      call oldatm (i+1,341,n-1,0)
++      call oldatm (i+2,341,n-2,0)
++      call oldatm (i+3,341,n-3,0)
++      call oldatm (i+4,342,n-4,0)
++      call oldatm (i+5,343,n-1,0)
++      call oldatm (i+6,343,n-2,0)
++      if (.not. primo) primo = .true.
++      return 
++      end

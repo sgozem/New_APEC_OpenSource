@@ -1,0 +1,23 @@
+* template for CASSCF single point for orbital switching
+
+> EXPORT MOLCAS_MOLDEN=ON
+
+> COPY $InpDir/$Project.xyz $WorkDir
+> COPY $InpDir/$Project.key $WorkDir
+> COPY $InpDir/PARAMETRI.prm $WorkDir
+> COPY $InpDir/$Project.Espf.Data $WorkDir
+
+> COPY $InpDir/$Project.JobIph $WorkDir/$Project.JobOld
+
+   &SEWARD
+   &ESPF
+    External = Tinker
+    lamorok
+   &RASSCF; spin=1; nActEl=12   0   0;   Inactive=76;   Ras2=12
+    jobiph; cirestart;
+    alter
+    NUMORB
+
+> COPY $WorkDir/$Project.JobIph $InpDir
+> COPY $Project.Espf.Data $InpDir
+

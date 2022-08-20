@@ -1,0 +1,58 @@
+; Molecular Dynamics Tinker like mdp
+; Federico 05/07/12
+;
+constraints = none
+define = -DFLEXIBLE
+integrator = md
+dt = 0.001 ps
+nsteps = PASSI
+nstxout = 1000
+nstvout = 1000
+nstxtcout = 1000
+nstlog = 100
+nstenergy = 1000
+comm_mode = Angular
+;
+; Temperature coupling
+;
+;gen_vel = yes
+;gen_temp = 298
+gen_seed = 12345
+tcoupl = Berendsen
+tc_grps = System
+tau_t = 0.1
+ref_t = 0
+;ref_t = TEMP1
+;
+; Pressure coupling - not possible for vacuum systems
+;
+;pcoupl = Berendsen
+;pcoupltype = Isotropic
+;tau_p = 2.0
+;ref_p = 1.01325
+;compressibility = 4.5e-5
+;
+; Cutoffs and other stuff
+;
+;cutoff-scheme = group
+pbc = no
+coulombtype = cut-off
+vdwtype = cut-off
+rlist = 0
+rcoulomb = 0
+rvdw = 0
+nstlist = 0
+ns_type = simple
+;
+; Freezing atoms
+;
+freezegrps = GroupDyna
+freezedim = Y Y Y
+;
+; Heating
+;
+annealing = single
+annealing_npoints = 2
+annealing_time = 0 TIME1
+annealing_temp = 0 TEMP1
+

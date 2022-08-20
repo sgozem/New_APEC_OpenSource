@@ -26,9 +26,52 @@ rm -rf $amber.ff *.itp *.top $Project.gro
 cp ../Chromophore/${chromophore}.pdb .
 cp -r $templatedir/$amber.ff .
 cd $amber.ff/
-#cp amino-rettrans aminoacids.rtp
-#cp normalamino-h aminoacids.hdb
-cp ../../ESPF_charges/new_rtp .
+
+
+option=0
+while [[ $option -ne 1 && $option -ne 2 && $option -ne 3 ]]; do
+   echo ""
+   echo " Please select the Flavin model to use:"
+   echo ""
+   echo " 1) Quinone"
+   echo " 2) Semi-quinone"
+   echo " 3) Hydro-quinone"
+   echo ""
+   read option
+done
+../../update_infos.sh "Redox" $option ../../Infos.dat
+
+fmnfad="NONE"
+while [[ $fmnfad != "FMN" && $fmnfad != "FAD" ]]; do
+   echo ""
+   echo " Please select if the tail corresponds to FMN or FAD (just type FMN or FAD)"
+   echo ""
+   echo ""
+   read fmnfad
+done
+../../update_infos.sh "Tail" $fmnfad ../../Infos.dat
+
+
+if [[ $option -eq 1 && $fmnfad == "FMN" ]]; then
+   cp $templatedir/ASEC/manchester_FMN_rtp new_rtp
+#else
+#   echo ""
+#   echo "*******************************************************"
+#   echo ""
+#   echo " Implement this parametrizations from Manchester: "
+#   echo " http://research.bmh.manchester.ac.uk/bryce/amber/"
+#   echo ""
+#   echo "*******************************************************"
+#   exit 0
+fi
+if [[ $option -eq 2 && $fmnfad == "FMN" ]]; then
+   cp $templatedir/ASEC/manchester_FMNH_rtp new_rtp
+fi
+if [[ $option -eq 3 && $fmnfad == "FMN" ]]; then
+   cp $templatedir/ASEC/manchester_FMNH2_rtp new_rtp
+fi
+
+#cp ../../ESPF_charges/new_rtp .
 cat new_rtp >> aminoacids.rtp
 cd ..
 
@@ -81,14 +124,15 @@ rm oxywat choices.txt
 
 backb=0
 #while  [[ $backb -ne 0 && $backb -ne 1 ]]; do
-       echo " **************************************************************"
+       echo " *******************************************************"
        echo ""
-       echo " An energy minimization of the protein will be performed before"
-       echo " embedding in the Solvent Box. The backbone will not be relaxed"
-       echo " for the moment."
+       echo " An energy minimization of the protein side-chains and"
+       echo " hydrogens of the chromophore will be performed before"
+       echo " embedding in the Solvent Box. The backbone will not be"
+       echo " relaxed for the moment."
        echo ""
 #       echo " Please type 1 if you want to relax the backbone, 0 otherwise"
-       echo " **************************************************************"
+       echo " *******************************************************"
        echo ""
 #       read backb
 #done
@@ -224,6 +268,8 @@ $gropath/gmx solvate -cp ${Project}_box_init.gro -cs spc216.gro -o ${Project}_bo
 # Excluding the water molecules from the solvent box that can be added
 # very close to the protein (like in cavities). Otherwise, it can bring 
 # problems in the energy minimization).
+# The water molecules added to fill the box are labeled as SOL, while the ones coming from dowser are HOH.
+# This avoids the possibility of removing internal waters originally coming from the pdb.
 #
 cp ${Project}_box_sol_init.gro Interm.gro
 
@@ -326,7 +372,7 @@ chratoms=`head -n1 ../../Chromophore/$chromophore.xyz | awk '{ print $1 }'`
 
 if [[ $relaxpr == y ]]; then
    if [[ $relaxbb == n ]]; then
-      selection="backbone or resname CHR"
+      selection="backbone or (resname CHR and not hydrogen)"
       # TCL script for VMD: open file, apply selection, save the serial numbers into a file
       #
       echo -e "mol new ${Project}_box_sol.gro type gro" > ndxsel.tcl
@@ -392,16 +438,39 @@ $gropath/gmx grompp -f min_sol.mdp -c ${Project}_box_sol.gro -n ${Project}_box_s
 # Adding ions to the Solvent Box for neutralizing the total charge of the system
 # (see self explaning echoes)
 #
-if [[ $charge -ne 0 ]]; then
-   echo ""
-   echo ""
-   echo "*********************************************************************"
-   echo " The total charge is not zero. CL or NA ions will be added randomly"
-   echo " to the solvent box for neutraizing the system."
-   echo " Please be sure that the \"SOL\" group will be selected next"
-   echo "*********************************************************************"
-   echo ""
-   echo ""
+
+pairs=-1
+while [[ $pairs -lt 0 ]]; do
+
+   if [[ $charge -ne 0 ]]; then
+      echo ""
+      echo " *************************************************************"
+      echo "  The total charge of the system is ${charge}, which will be"
+      echo "  neutralized by adding Na or Cl ions."
+      echo "  But, if you want to add extra pair of ions to the system"
+      echo "  to mimmic the experimental conditions, please specify"
+      echo "  how many pairs of ions (NA and CL) to add." 
+      echo "  Type \"0\" otherwise."
+      echo ""
+      read pairs
+   fi
+
+   if [[ $charge -eq 0 ]]; then
+      echo ""
+      echo " *************************************************************"
+      echo "  The total charge of the system is ZERO, no Na or Cl ions"
+      echo "  will be added to neutralize the system."
+      echo "  But, if you want to add extra pair of ions to the system"
+      echo "  to mimmic the experimental conditions, please specify"
+      echo "  how many pairs of ions (NA and CL) to add." 
+      echo "  Type \"0\" otherwise."
+      echo ""
+      read pairs
+   fi
+done
+
+if [[ $charge -ne 0 || $pairs -ne 0 ]]; then
+
    mkdir Add_Ion
    mv ${Project}_box_sol.tpr ${Project}_box_sol.ndx ${Project}_box_sol.top ${Project}_box_sol.gro Add_Ion
    cd Add_Ion
@@ -418,16 +487,19 @@ if [[ $charge -ne 0 ]]; then
       replacectl=0
       if [[ $charge -lt 0 ]]; then
          pcharge=$(echo "-1*$charge" | bc)
+         pcharge=$(($pcharge+$pairs)) 
          if [[ -f back_${Project}_box_sol.top ]]; then
             cp back_${Project}_box_sol.top ${Project}_box_sol.top
          else
             cp ${Project}_box_sol.top back_${Project}_box_sol.top
          fi
-         $gropath/gmx genion -seed $seed -s ${Project}_box_sol.tpr -n ${Project}_box_sol.ndx -p ${Project}_box_sol.top -pname NA -pq 1 -np $pcharge -o ${Project}_box_sol_ion.gro 2> addedions << EOF
+         $gropath/gmx genion -seed $seed -s ${Project}_box_sol.tpr -n ${Project}_box_sol.ndx -p ${Project}_box_sol.top -pname NA -pq 1 -np $pcharge -nname CL -nq -1 -nn $pairs -o ${Project}_box_sol_ion.gro 2> addedions << EOF
 15
 EOF
          
-         ../../../update_infos.sh "Added_Ions" "${pcharge}_NA" ../../../Infos.dat
+#         ../../../update_infos.sh "Added_Ions" "${pcharge}_NA" ../../../Infos.dat
+         ../../../update_infos.sh "Added_NAs" "$pcharge" ../../../Infos.dat
+	 ../../../update_infos.sh "Added_CLs" "$pairs" ../../../Infos.dat
 
          lin=`grep -c "Replacing solvent molecule" addedions`
          for i in $(eval echo "{1..$lin}")
@@ -438,16 +510,19 @@ EOF
          fi
          done
       fi
-      if [[ $charge -gt 0 ]]; then
+      if [[ $charge -ge 0 ]]; then
          if [[ -f back_${Project}_box_sol.top ]]; then
             cp back_${Project}_box_sol.top ${Project}_box_sol.top
          else
             cp ${Project}_box_sol.top back_${Project}_box_sol.top
          fi
-         $gropath/gmx genion -seed $seed -s ${Project}_box_sol.tpr -n ${Project}_box_sol.ndx -p ${Project}_box_sol.top -nname CL -nq -1 -nn $charge -o ${Project}_box_sol_ion.gro 2> addedions << EOF
+         charge=$(($charge+$pairs))
+         $gropath/gmx genion -seed $seed -s ${Project}_box_sol.tpr -n ${Project}_box_sol.ndx -p ${Project}_box_sol.top -nname CL -nq -1 -nn $charge -pname NA -pq 1 -np $pairs -o ${Project}_box_sol_ion.gro 2> addedions << EOF
 15
 EOF
-         ../../../update_infos.sh "Added_Ions" "${charge}_CL" ../../../Infos.dat
+#         ../../../update_infos.sh "Added_Ions" "${charge}_CL" ../../../Infos.dat
+         ../../../update_infos.sh "Added_CLs" "$charge" ../../../Infos.dat
+         ../../../update_infos.sh "Added_NAs" "$pairs" ../../../Infos.dat
 
          lin=`grep -c "Replacing solvent molecule" addedions`
          for i in $(eval echo "{1..$lin}")
@@ -500,6 +575,11 @@ EOF
    done
 fi
 
+if [[ $charge -eq 0 && $pairs -eq 0 ]]; then
+   ../../update_infos.sh "Added_CLs" 0 ../../Infos.dat
+   ../../update_infos.sh "Added_NAs" 0 ../../Infos.dat
+fi
+
 #
 # Runing the MM energy minimization. Again it will run in the loging node dividing the number of steps
 # in batches of 1000 steps to avoid being killed the the system
@@ -530,30 +610,21 @@ while [[ conver -ne 0 ]]; do
          conver=0  
          echo ""
          echo " MM energy minimization seems to finished properly."
-         moldy="NVT"
-#         while [[ $moldy != "NPT" && $moldy != "NVT" ]]; do
-#            echo ""
-#            echo " What ensemble will use for the MD along the iterative procedure (NPT or NVT)"
-#            echo ""
-#            echo ""
-#            read moldy
-#         done
-         ../../update_infos.sh "MD_ensemble" "$moldy" ../../Infos.dat
-         if [[ $moldy == "NVT" ]]; then
-            echo ""
-            echo "*************************************************************************"
-            echo ""
-            echo " Continuum with the MD_NPT.sh for equilibrating the volume of the system."
-            echo ""
-            echo "*************************************************************************"
-         else
-            echo ""
-            echo " Continuum with the MD_NPT.sh."
-            echo ""
-            echo ""
-         fi
-         cp $templatedir/ASEC/MD_NPT.sh ../../
-         ../../update_infos.sh "Next_script" "MD_NPT.sh" ../../Infos.dat
+         echo ""
+         cd ../../
+#         cp $templatedir/ASEC/ESPF_charges.sh .
+#         ./update_infos.sh "Next_script" "ESPF_charges.sh" Infos.dat
+         cp $templatedir/ASEC/MD_NPT.sh .
+         ./update_infos.sh "Next_script" "MD_NPT.sh" Infos.dat
+         ./update_infos.sh "MD_ensemble" "NVT" Infos.dat
+         echo ""
+         echo "**********************************************************"
+         echo ""
+#         echo " Pleasde execute now: ESPF_charges.sh"
+         echo " Pleasde execute now: MD_NPT.sh"
+         echo ""
+         echo "**********************************************************"
+         echo ""
       else
          echo ""
          echo "*********************************************************************************"

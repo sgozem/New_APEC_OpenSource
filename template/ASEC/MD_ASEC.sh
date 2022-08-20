@@ -11,12 +11,80 @@ step=`grep "Step" Infos.dat | awk '{ print $2 }'`
 heat=`grep "HeatMD" Infos.dat | awk '{ print $2 }'`
 equi=`grep "EquiMD" Infos.dat | awk '{ print $2 }'`
 prod=`grep "ProdMD" Infos.dat | awk '{ print $2 }'`
-charge=`grep "Init_Charge" Infos.dat | awk '{ print $2 }'`
+#charge=`grep "Init_Charge" Infos.dat | awk '{ print $2 }'`
 numparallel=`grep "Parallel_MD" Infos.dat | awk '{ print $2 }'`
 dimer=`grep "Dimer" Infos.dat | awk '{ print $2 }'`
 chromophore=`grep "chromophore" Infos.dat | awk '{ print $2 }'`
+nna=`grep "Added_NAs" Infos.dat | awk '{ print $2 }'`
+ncl=`grep "Added_CLs" Infos.dat | awk '{ print $2 }'`
 
 confs=100
+if [[ $numparallel -gt 1 ]]; then
+   for i in $(eval echo "{1..$numparallel}")
+   do
+      if [[ -d Dynamic/seed_$i/output ]]; then
+         echo ""
+         echo " *********************************************************************"
+         echo "                      Warning!"
+         echo ""
+         echo " MD seed_$i/output directory already excist. We are goint to use it..."
+         echo ""
+         echo " *********************************************************************"
+         echo ""
+      else
+         echo ""
+         echo " Collecting data from the iRODS, please wait ..."
+         echo ""
+         seeddir=`grep "MD_seed_$i" Infos.dat | awk '{ print $2 }'`
+         dir=`basename $seeddir`
+         iget -r /arctic/projects/CHEM9C4/$USER/$dir Dynamic/seed_$i
+         if [[ -f Dynamic/seed_$i/$dir/md.log ]]; then
+            mv Dynamic/seed_$i/$dir Dynamic/seed_$i/output
+            irm -r /arctic/projects/CHEM9C4/$USER/$dir
+         else
+            echo ""
+            echo "************************************************************************"
+            echo ""
+            echo " It seems that the MD is still running or it did not finish properly"
+            echo ""
+            echo "************************************************************************"
+            echo ""
+            exit 0
+         fi
+      fi
+   done
+else
+   if [[ -d Dynamic/output ]]; then
+      echo ""
+      echo " *********************************************************************"
+      echo "                      Warning!"
+      echo ""
+      echo " MD output directory already excist. We are goint to use it..."
+      echo ""
+      echo " *********************************************************************"
+      echo ""
+   else
+      echo ""
+      echo " Collecting data from the iRODS, please wait ..."
+      echo ""
+      tempdir=`grep "tempdir" Infos.dat | awk '{ print $2 }'`
+      dir=`basename $tempdir`
+      iget -r /arctic/projects/CHEM9C4/$USER/$dir Dynamic
+      if [[ -f Dynamic/$dir/md.log ]]; then
+         mv Dynamic/$dir Dynamic/output
+         irm -r /arctic/projects/CHEM9C4/$USER/$dir
+      else
+         echo ""
+         echo "************************************************************************"
+         echo ""
+         echo " It seems that the MD is still running or it did not finish properly"
+         echo ""
+         echo "************************************************************************"
+         echo ""
+         exit 0
+      fi
+   fi
+fi
 
 #
 # Reading fom the MD output (tpr) to select 100 equally separated configurations to
@@ -91,15 +159,17 @@ EOF
 #EOF
 fi
 
-if [[ $charge -ne 0 ]]; then
-   if [[ $charge -lt 0 ]]; then
-      nions=$(echo "-1*$charge" | bc)
-   else
-      nions=$charge
-   fi
-else
-   nions=0
-fi
+#if [[ $charge -ne 0 ]]; then
+#   if [[ $charge -lt 0 ]]; then
+#      nions=$(echo "-1*$charge" | bc)
+#   else
+#      nions=$charge
+#   fi
+#else
+#   nions=0
+#fi
+
+nions=$(($nna+$ncl))
 
 echo ""
 echo " wait ..."
@@ -293,9 +363,9 @@ else
 #
 # Due to the link atom added in Step_0, shell was increased
 #
-   shel=`grep "Shell" ../Infos.dat | awk '{ print $2 }'`
-   shell=$(($shel-1))
-   ../update_infos.sh "Shell" "$shell" ../Infos.dat
+   shell=`grep "Shell" ../Infos.dat | awk '{ print $2 }'`
+#   shell=$(($shell-1))
+#   ../update_infos.sh "Shell" "$shell" ../Infos.dat
    cd ..
    wat=`grep "DOWSER_wat" Infos.dat | awk '{ print $2 }'`
    nwat=$(($wat+$wat+$wat))

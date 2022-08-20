@@ -12,6 +12,8 @@ uphess=`grep "Update_hessian" Infos.dat | awk '{ print $2 }'`
 chromophore=`grep "chromophore" Infos.dat | awk '{ print $2 }'`
 shell=`grep "Shell" Infos.dat | awk '{ print $2 }'`
 chargechr=`grep "Chromo_Charge" Infos.dat | awk '{ print $2 }'`
+fmnfad=`grep "Tail" Infos.dat | awk '{ print $2 }'`
+redox=`grep "Redox" Infos.dat | awk '{ print $2 }'`
 
 Molcami_OptSCF=`grep "Molcami_OptSCF" Infos.dat | awk '{ print $2 }'`
 
@@ -46,6 +48,16 @@ rm -f chargefx
 rm -f chargefxx
 touch mm
 touch qm
+if [[ $redox -eq 1 && $fmnfad == "FMN" ]]; then
+   cp $templatedir/ASEC/charges_FMN new_charges
+fi
+if [[ $redox -eq 2 && $fmnfad == "FMN" ]]; then
+   cp $templatedir/ASEC/charges_FMNH new_charges
+fi
+if [[ $redox -eq 3 && $fmnfad == "FMN" ]]; then
+   cp $templatedir/ASEC/charges_FMNH2 new_charges
+fi
+
 for i in $(eval echo "{1..$chratoms}"); do
    num=`head -n $(($init+1+$i)) $Project-tk.xyz | tail -n1 | awk '{ print $1 }'`
    charge=`head -n $i new_charges | tail -n1 | awk '{ print $1 }'`
@@ -159,7 +171,7 @@ EOF
 if [[ -f $Project-tk.xyz_2 ]] ; then
    if grep -q "HLA " $Project-tk.xyz_2; then
       if [[ $Molcami_OptSCF != "YES" ]]; then
-         ./update_infos.sh "Shell" $(($shell+1)) Infos.dat
+#         ./update_infos.sh "Shell" $(($shell+1)) Infos.dat
          ./update_infos.sh "Molcami_OptSCF" "YES" Infos.dat
       fi
 #
@@ -212,9 +224,9 @@ mkdir calculations/${newdir}
 mv $Project.key calculations/${newdir}/${newdir}.key
 cp $templatedir/ASEC/template_OptSCF calculations/${newdir}/template_OptSCF
 if [[ $xx -gt 0 ]]; then
-   sed -i "s/Charge = 0/Charge = $char/g" calculations/${newdir}/template_OptSCF
+   sed -i "s/Charge = 0/Charge = $(($char+2))/g" calculations/${newdir}/template_OptSCF
 else
-   sed -i "s/Charge = 0/Charge = $chargechr/g" calculations/${newdir}/template_OptSCF
+   sed -i "s/Charge = 0/Charge = $(($chargechr+2))/g" calculations/${newdir}/template_OptSCF
 fi
 mv $Project-tk.xyz_2 calculations/${newdir}/${newdir}.xyz
 
@@ -234,13 +246,13 @@ no=$PWD
 #sed -i "s|NOMEDIRETTORI|${no}|" molcas-job.sh
 sed -i "s|MEMTOT|23000|" molcas-job.sh
 sed -i "s|MEMORIA|20000|" molcas-job.sh
-sed -i "s|hh:00:00|160:00:00|" molcas-job.sh
+sed -i "s|hh:00:00|120:00:00|" molcas-job.sh
 
 #
 # Replacing PARAMETRI with current prm filename templateOPTSCF
 #
 sed -i "s|PARAMETRI|${prm}|" template_OptSCF
-sed -i "s/\*    rHidden = 4.0/    rHidden = 4.0/" template_OptSCF
+#sed -i "s/\*    rHidden = 4.0/    rHidden = 4.0/" template_OptSCF
 
 sed -i "/export Project=/c\ export Project=${newdir}" molcas-job.sh
 

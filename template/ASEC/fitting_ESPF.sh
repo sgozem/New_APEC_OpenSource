@@ -3,17 +3,33 @@
 #
 # Retrieving information from Infos.dat
 #
-Project=`grep "Project" Infos.dat | awk '{ print $2 }'`
-templatedir=`grep "Template" Infos.dat | awk '{ print $2 }'`
-gropath=`grep "GroPath" Infos.dat | awk '{ print $2 }'`
-prm=`grep "Parameters" Infos.dat | awk '{ print $2 }'`
-tinkerdir=`grep "Tinker" Infos.dat | awk '{ print $2 }'`
-dowser=`grep "Dowser" Infos.dat | awk '{ print $2 }'`
-chromophore=`grep "chromophore" Infos.dat | awk '{ print $2 }'`
-amber=`grep "AMBER" Infos.dat | awk '{ print $2 }'`
-chargechr=`grep "Chromo_Charge" Infos.dat | awk '{ print $2 }'`
-cola=`grep "Tail" Infos.dat | awk '{ print $2 }'`
-
+# If the ${Project}_VDZP_Opt exists, it means we are in calculations folder
+#
+if [ -d *_VDZP_Opt ]; then
+   calculations="true"
+   Project=`grep "Project" ../Infos.dat | awk '{ print $2 }'`
+   templatedir=`grep "Template" ../Infos.dat | awk '{ print $2 }'`
+   gropath=`grep "GroPath" ../Infos.dat | awk '{ print $2 }'`
+   prm=`grep "Parameters" ../Infos.dat | awk '{ print $2 }'`
+   tinkerdir=`grep "Tinker" ../Infos.dat | awk '{ print $2 }'`
+   dowser=`grep "Dowser" ../Infos.dat | awk '{ print $2 }'`
+   chromophore=`grep "chromophore" ../Infos.dat | awk '{ print $2 }'`
+   amber=`grep "AMBER" ../Infos.dat | awk '{ print $2 }'`
+   chargechr=`grep "Chromo_Charge" ../Infos.dat | awk '{ print $2 }'`
+   cola=`grep "Tail" ../Infos.dat | awk '{ print $2 }'`
+else
+   calculations="false"
+   Project=`grep "Project" Infos.dat | awk '{ print $2 }'`
+   templatedir=`grep "Template" Infos.dat | awk '{ print $2 }'`
+   gropath=`grep "GroPath" Infos.dat | awk '{ print $2 }'`
+   prm=`grep "Parameters" Infos.dat | awk '{ print $2 }'`
+   tinkerdir=`grep "Tinker" Infos.dat | awk '{ print $2 }'`
+   dowser=`grep "Dowser" Infos.dat | awk '{ print $2 }'`
+   chromophore=`grep "chromophore" Infos.dat | awk '{ print $2 }'`
+   amber=`grep "AMBER" Infos.dat | awk '{ print $2 }'`
+   chargechr=`grep "Chromo_Charge" Infos.dat | awk '{ print $2 }'`
+   cola=`grep "Tail" Infos.dat | awk '{ print $2 }'`
+fi
 cd ESPF_charges
 
 #
@@ -52,9 +68,7 @@ fi
 if [[ $cola == "FAD" ]]; then
    numqm=$(($numchr-54+1))
 fi
-#
-# Fortran code to collect and round the charges
-#
+
 cat > new_charges.f << YOE
       Program new_gro
       implicit real*8 (a-h,o-z)
@@ -198,17 +212,45 @@ gfortran write_charges.f -o write_charges.x
 #
 # Message to user
 #
-cp new_charges ../
-cd ..
 
-cp $templatedir/ASEC/Solvent_box.sh .
-./update_infos.sh "Next_script" "Solvent_box.sh" Infos.dat
+if [[ $calculations == "false" ]]; then
+   cp new_charges ../
 
-echo ""
-echo "**********************************************************"
-echo " "
-echo " Continue executing: Solvent_box.sh"
-echo ""
-echo "**********************************************************"
-echo ""
+   moldy="NVT"
+#   while [[ $moldy != "NPT" && $moldy != "NVT" ]]; do
+#      echo ""
+#      echo " What ensemble will use for the MD along the iterative procedure (NPT or NVT)"
+#      echo ""
+#      echo ""
+#      read moldy
+#   done
+   ../update_infos.sh "MD_ensemble" "$moldy" ../Infos.dat
+   if [[ $moldy == "NVT" ]]; then
+      echo ""
+      echo "*************************************************************************"
+      echo ""
+      echo " Continuum with the MD_NPT.sh for equilibrating the volume of the system."
+      echo ""
+      echo "*************************************************************************"
+      else
+      echo ""
+      echo " Continuum with the MD_NPT.sh."
+      echo ""
+      echo ""
+   fi
+   cp $templatedir/ASEC/MD_NPT.sh ../
+   ../update_infos.sh "Next_script" "MD_NPT.sh" ../Infos.dat
+else
+   cp new_charges ../
+   cp $templatedir/ASEC/Next_Iteration.sh ../../
+   ../../update_infos.sh "Next_script" "Next_Iteration.sh" ../../Infos.dat
+   echo ""
+   echo "**********************************************************"
+   echo " "
+   echo " Go to the main folder and continue with: Next_Iteration.sh"
+   echo ""
+   echo "**********************************************************"
+   echo ""
+fi
+
 

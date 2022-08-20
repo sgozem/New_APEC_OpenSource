@@ -280,18 +280,21 @@ for ((i=0;$i<$num;i=$(($i+1)))); do
        mv fetecchia.pdb $Project.pdb
 
 #
-# Bug fixed by Yoe
-#
+# Bug fixed by Yoe and pabel
+
 
        awk '{ if ( $6 == '"$numwt"' ) print $0 }' "scwrl.pdb" > temp
        res=`head -n1 temp | awk '{ print $4 }'`
        chain=`head -n1 temp | awk '{ print $5 }'`
-       line=`grep -n -m1 "$res $chain $numwt" scwrl.pdb | awk '{ print $1 }' FS=":"`
+       res_in=`head -n1 temp | awk '{ print $6 }'`
+       line=`head -n1 temp | awk '{ print $2 }'`
+#      line=`grep -n -m1 "$res $chain $numwt" scwrl.pdb | awk '{ print $1 }' FS=":"`
        prev_res=`head -n $(($line-1)) scwrl.pdb | tail -n1 | awk '{ print $4 }'`
        prev_chain=`head -n $(($line-1)) scwrl.pdb | tail -n1 | awk '{ print $5 }'`
 
        echo ":$" > replacemut.vim
-       echo "? $prev_res $prev_chain $(($numwt-1))" >> replacemut.vim
+       echo "? $prev_res $prev_chain $(($res_in-1))" > text
+       awk '{ printf  " %s %s %s %3s\n", $1, $2, $3, $4}' text >> replacemut.vim
        echo ":r nuovomut.pdb" >> replacemut.vim
        echo ":x" >> replacemut.vim
        vim -es $Project.pdb < replacemut.vim

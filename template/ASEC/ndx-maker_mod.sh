@@ -88,7 +88,8 @@ selection="((all and not hydrogen) or (resname RET and not name N H CA HA C O CB
 selection="((all and not sidechain) or (resname RET and not name N H CA HA C O CB CG CD HB1 HB2 HG1 HG2 HD1 HD2)) and not (water or ions)"
 ;;
 5) case $backbone in
-   0) selection="backbone or resname CHR" 
+#   0) selection="backbone or resname CHR" 
+   0) selection="backbone or (resname CHR and not hydrogen)"
    ;;
    1) selection="resname CHR"
    ;;

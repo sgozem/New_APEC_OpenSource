@@ -1,0 +1,1134 @@
+Common subdirectories: /home/federico/7.6.dev_hop/tinker/source/bak and /home/federico/7.6.dev/tinker/source/bak
+diff -abuN /home/federico/7.6.dev_hop/tinker/source/initres.f /home/federico/7.6.dev/tinker/source/initres.f
+--- /home/federico/7.6.dev_hop/tinker/source/initres.f	2010-08-24 22:58:16.000000000 +0200
++++ /home/federico/7.6.dev/tinker/source/initres.f	2012-06-13 10:48:25.000000000 +0200
+@@ -27,11 +27,12 @@
+       character*3 base3(maxnuc)
+       data acid1  / 'G','A','V','L','I','S','T','C','C','P','F','Y',
+      &              'W','H','U','Z','D','N','E','Q','M','K','R','O',
+-     &              'B','J','f','a','n','m','X' /
++     &              'B','J','f','a','n','m','d','e','k','X','r' /
+       data acid3  / 'GLY','ALA','VAL','LEU','ILE','SER','THR','CYS',
+      &              'CYX','PRO','PHE','TYR','TRP','HIS','HID','HIE',
+      &              'ASP','ASN','GLU','GLN','MET','LYS','ARG','ORN',
+-     &              'AIB','PCA','FOR','ACE','NH2','NME','UNK' /
++     &              'AIB','PCA','FOR','ACE','NH2','NME','ASH','GLH',
++     &              'LYD','UNK','RET' /
+       data base1  / 'A','G','C','U','D','B','I','T','1','2','3','X' /
+       data base3  / 'A  ','G  ','C  ','U  ','DA ','DG ','DC ','DT ',
+      &              'MP ','DP ','TP ','UNK' /
+Common subdirectories: /home/federico/7.6.dev_hop/tinker/source/makefiles and /home/federico/7.6.dev/tinker/source/makefiles
+diff -abuN /home/federico/7.6.dev_hop/tinker/source/makepdb.f /home/federico/7.6.dev/tinker/source/makepdb.f
+--- /home/federico/7.6.dev_hop/tinker/source/makepdb.f	2010-08-24 22:58:16.000000000 +0200
++++ /home/federico/7.6.dev/tinker/source/makepdb.f	2012-06-13 10:48:25.000000000 +0200
+@@ -53,6 +53,12 @@
+       character*7 moltyp
+       character*120 seqfile
+ c
++c     New variables for retinal 
++c
++      logical caret
++      character*1 conto
++      character*2 conto2
++c
+ c
+ c     initialize the mapping between TINKER and PDB atoms
+ c
+@@ -153,7 +159,7 @@
+                k = kmol(j)
+                atmname = ' '//name(k)
+                if (water(i)) then
+-                  resname = 'HOH'
++                  resname = 'WAT'
+                else
+                   justify = 0
+                   call numeral (type(k),resname,justify)
+@@ -178,6 +184,10 @@
+ c     find the amide nitrogens and other peptide backbone atoms
+ c
+       if (moltyp .eq. 'PEPTIDE') then
++c
++c    Variables for retinal recognition
++c
++         caret = .false.
+          call attach
+          m = 1
+          do i = 1, n
+@@ -263,6 +273,16 @@
+                      m = m + 1
+                   end if
+                end if
++c
++c   First carbon of the RET residue
++c               
++            else if (resname .eq. 'RET' .and. name(i) .eq. 'C3R') then
++              if (.not.caret) then
++                 cai(m) = i
++                 caret = .true.
++              else
++                 m = m + 1
++              end if
+             else
+                if (atomic(i) .eq. 7) then
+                   obone = .false.
+@@ -307,12 +327,29 @@
+                else if (resname .eq. 'NME') then
+                   call pdbatm (' N  ',resname,i,ni(i))
+                   call pdbatm (' CH3',resname,i,cai(i))
++c
++c Put all the heavy atoms, followed by the hydrogen for the RET residue
++c
++               else if (resname .eq. 'RET') then
++                  do j = 0, 8
++                     write(conto,'(I1)') j+1
++                     call pdbatm (' C'//conto//' ',resname,i,cai(i)+j)
++                  end do
++                  do j = 9, 19
++                     write(conto2,'(I2)') j+1
++                     call pdbatm (' C'//conto2,resname,i,cai(i)+j)
++                  end do
++                  do j = 20, 47
++                     write(conto2,'(I2)') j+1
++                     call pdbatm (' H'//conto2,resname,i,cai(i)+j)
++                  end do
+                else
+                   call pdbatm (' N  ',resname,i,ni(i))
+                   call pdbatm (' CA ',resname,i,cai(i))
+                   call pdbatm (' C  ',resname,i,ci(i))
+                   call pdbatm (' O  ',resname,i,oi(i))
+                end if
++               call getprohbone (resname,i,m,ni(i),cai(i),cbi)
+                call getside (resname,i,ci(i),cai(i),cbi)
+                if (resname.eq.'CYS' .or. resname.eq.'CYX') then
+                   resname = 'CYS'
+@@ -494,9 +531,9 @@
+                   justify = 0
+                   call numeral (type(k),resname,justify)
+                   if (water(i)) then
+-                     if (atmnum .eq. 1)  atmname = ' H  '
+-                     if (atmnum .eq. 6)  atmname = ' O  '
+-                     resname = 'HOH'
++                     if (atmnum .eq. 1)  atmname = ' HT '
++                     if (atmnum .eq. 6)  atmname = ' OT '
++                     resname = 'WAT'
+                   else if (atmnum .eq. 11) then
+                      atmname = 'NA  '
+                      resname = ' NA'
+@@ -607,6 +644,7 @@
+       if (resname .eq. 'ACE')  return
+       if (resname .eq. 'NH2')  return
+       if (resname .eq. 'NME')  return
++      if (resname .eq. 'RET')  return
+ c
+ c     find the beta carbon atom for the current residue
+ c
+@@ -800,6 +838,34 @@
+          call pdbatm (' NH1',resname,ires,cbi+5)
+          call pdbatm (' NH2',resname,ires,cbi+6)
+ c
++c     neutral aspartic acid (ASH)
++c         
++      else if (resname .eq. 'ASH') then
++         call pdbatm (' CG ',resname,ires,cbi+1)
++         call pdbatm (' OD1',resname,ires,cbi+2)
++         call pdbatm (' OD2',resname,ires,cbi+3)
++c
++c     neutral glutamic acid (GLH)
++c
++      else if (resname .eq. 'GLH') then
++         call pdbatm (' CG ',resname,ires,cbi+1)
++         call pdbatm (' CD ',resname,ires,cbi+2)
++         call pdbatm (' OE1',resname,ires,cbi+3)
++         call pdbatm (' OE2',resname,ires,cbi+4)
++c
++c    neutral lysine (LYD)
++c
++      else if (resname .eq. 'LYD') then
++         call pdbatm (' CG ',resname,ires,cbi+1)
++         call pdbatm (' CD ',resname,ires,cbi+2)
++         call pdbatm (' CE ',resname,ires,cbi+3)
++         call pdbatm (' NZ ',resname,ires,cbi+4)
++c
++c    retinal (RET)
++c
++      else if (resname .eq. 'RET') then
++         call pdbatm (' C2R',resname,ires,cbi+1)
++c
+ c     ornithine residue  (ORN)
+ c
+       else if (resname .eq. 'ORN') then
+@@ -830,17 +896,18 @@
+ c
+ c     ################################################################
+ c     ##                                                            ##
+-c     ##  subroutine getproh  --  extract the amino acid hydrogens  ##
++c     ##  subroutine getprohbone  --  backbone amino acid H atoms   ##
+ c     ##                                                            ##
+ c     ################################################################
+ c
++c     this was added to change the hydrogen order in the pdb (melaccios)
+ c
+ c     "getproh" finds the hydrogen atoms for a single amino acid
+ c     residue and copies the names and coordinates to the Protein
+ c     Data Bank file
+ c
+ c
+-      subroutine getproh (resname,ires,jchain,ni,cai,cbi)
++      subroutine getprohbone (resname,ires,jchain,ni,cai,cbi)
+       implicit none
+       include 'sizes.i'
+       include 'atmtyp.i'
+@@ -850,24 +917,25 @@
+       integer i,nh,hca
+       integer ires,jchain
+       integer ni,cai,cbi
+-      logical allatom
+       character*3 resname
+       character*4 atmname
++      logical allatom
++
+ c
+ c
+ c     get any amide hydrogen atoms for non-N-terminal residues
+ c
+-      if (ires.ne.ichain(1,jchain) .or. n12(ni).ne.4) then
++      if (ires .ne. ichain(1,jchain)) then
+          if (resname .ne. 'PRO') then
+             do i = 1, n
+                if (atomic(i).eq.1 .and. i12(1,i).eq.ni) then
+                   if (resname .eq. 'NH2') then
+-                     call pdbatm (' H1 ',resname,ires,i)
+-                     call pdbatm (' H2 ',resname,ires,i+1)
++                     call pdbatm ('1H  ',resname,ires,i)
++                     call pdbatm ('2H  ',resname,ires,i+1)
+                   else
+                      call pdbatm (' H  ',resname,ires,i)
+                   end if
+-                  goto 10
++                  goto 11
+                end if
+             end do
+          end if
+@@ -881,12 +949,12 @@
+                if (atomic(i).eq.1 .and. i12(1,i).eq.ni) then
+                   nh = nh + 1
+                   if (nh .eq. 1) then
+-                     atmname = ' H1 '
++                     atmname = '1H  '
+                   else if (nh .eq. 2) then
+-                     atmname = ' H2 '
++                     atmname = '2H  '
+                   end if
+                   call pdbatm (atmname,resname,ires,i)
+-                  if (nh .eq. 2)  goto 10
++                  if (nh .eq. 2)  goto 11
+                end if
+             end do
+          else if (resname .eq. 'PCA') then
+@@ -894,7 +962,7 @@
+                if (atomic(i).eq.1 .and. i12(1,i).eq.ni) then
+                   atmname = ' H  '
+                   call pdbatm (atmname,resname,ires,i)
+-                  goto 10
++                  goto 11
+                end if
+             end do
+          else
+@@ -903,19 +971,133 @@
+                if (atomic(i).eq.1 .and. i12(1,i).eq.ni) then
+                   nh = nh + 1
+                   if (nh .eq. 1) then
+-                     atmname = ' H1 '
++                     atmname = '1H  '
+                   else if (nh .eq. 2) then
+-                     atmname = ' H2 '
++                     atmname = '2H  '
+                   else if (nh .eq. 3) then
+-                     atmname = ' H3 '
++                     atmname = '3H  '
+                   end if
+                   call pdbatm (atmname,resname,ires,i)
+-                  if (nh .eq. 3)  goto 10
++                  if (nh .eq. 3)  goto 11
+                end if
+             end do
+          end if
+       end if
+-   10 continue
++   11 continue
++c
++c     get the alpha hydrogen atom for the current residue
++c
++      hca = 0
++      do i = 1, n
++         if (atomic(i).eq.1 .and. i12(1,i).eq.cai) then
++            hca = i
++            if (resname .eq. 'GLY') then
++               atmname = '1HA '
++            else if (resname .eq. 'FOR') then
++               atmname = ' H  '
++            else if (resname .eq. 'ACE') then
++               atmname = '1H  '
++            else if (resname .eq. 'NME') then
++               atmname = '1H  '
++            else
++               atmname = ' HA '
++            end if
++            call pdbatm (atmname,resname,ires,i)
++            goto 21
++         end if
++      end do
++   21 return
++      end     
++c
++c
++c     ################################################################
++c     ##                                                            ##
++c     ##  subroutine getproh  --  extract the amino acid hydrogens  ##
++c     ##                                                            ##
++c     ################################################################
++c
++c
++c     "getproh" finds the hydrogen atoms for a single amino acid
++c     residue and copies the names and coordinates to the Protein
++c     Data Bank file
++c
++c
++      subroutine getproh (resname,ires,jchain,ni,cai,cbi)
++      implicit none
++      include 'sizes.i'
++      include 'atmtyp.i'
++      include 'atoms.i'
++      include 'couple.i'
++      include 'sequen.i'
++      integer i,nh,hca
++      integer ires,jchain
++      integer ni,cai,cbi
++      logical allatom
++      character*3 resname
++      character*4 atmname
++c
++c
++c     get any amide hydrogen atoms for non-N-terminal residues
++c
++cc      if (ires.ne.ichain(1,jchain) .or. n12(ni).ne.4) then
++c         if (resname .ne. 'PRO') then
++c            do i = 1, n
++c               if (atomic(i).eq.1 .and. i12(1,i).eq.ni) then
++c                  if (resname .eq. 'NH2') then
++c                     call pdbatm (' H1 ',resname,ires,i)
++c                     call pdbatm (' H2 ',resname,ires,i+1)
++c                  else
++c                     call pdbatm (' H  ',resname,ires,i)
++c                  end if
++c                  goto 10
++c               end if
++c            end do
++c         end if
++cc
++cc     get any amide hydrogen atoms for N-terminal residues
++cc
++c      else
++c         if (resname .eq. 'PRO') then
++c            nh = 0
++c            do i = 1, n
++c               if (atomic(i).eq.1 .and. i12(1,i).eq.ni) then
++c                  nh = nh + 1
++c                  if (nh .eq. 1) then
++c                     atmname = ' H1 '
++c                  else if (nh .eq. 2) then
++c                     atmname = ' H2 '
++c                  end if
++c                  call pdbatm (atmname,resname,ires,i)
++c                  if (nh .eq. 2)  goto 10
++c               end if
++c            end do
++c         else if (resname .eq. 'PCA') then
++c            do i = 1, n
++c               if (atomic(i).eq.1 .and. i12(1,i).eq.ni) then
++c                  atmname = ' H  '
++c                  call pdbatm (atmname,resname,ires,i)
++c                  goto 10
++c               end if
++c            end do
++c         else
++c            nh = 0
++c            do i = 1, n
++c               if (atomic(i).eq.1 .and. i12(1,i).eq.ni) then
++c                  nh = nh + 1
++c                  if (nh .eq. 1) then
++c                     atmname = ' H1 '
++c                  else if (nh .eq. 2) then
++c                     atmname = ' H2 '
++c                  else if (nh .eq. 3) then
++c                     atmname = ' H3 '
++c                  end if
++c                  call pdbatm (atmname,resname,ires,i)
++c                  if (nh .eq. 3)  goto 10
++c               end if
++c            end do
++c         end if
++c      end if
++c   10 continue
+ c
+ c     get the alpha hydrogen atom for the current residue
+ c
+@@ -934,7 +1116,7 @@
+             else
+                atmname = ' HA '
+             end if
+-            call pdbatm (atmname,resname,ires,i)
++c            call pdbatm (atmname,resname,ires,i)
+             goto 20
+          end if
+       end do
+@@ -1161,6 +1343,15 @@
+             call pdbatm (' HB3',resname,ires,hca+6)
+          end if
+ c
++c     neutral aspartic acid (ASH)
++c
++      else if (resname .eq. 'ASH') then
++         if (allatom) then
++            call pdbatm ('1HB ',resname,ires,hca+5)
++            call pdbatm ('2HB ',resname,ires,hca+6)
++            call pdbatm (' HD2',resname,ires,hca+7)
++         end if
++c
+ c     asparagine residue  (ASN)
+ c
+       else if (resname .eq. 'ASN') then
+@@ -1184,6 +1375,18 @@
+             call pdbatm (' HG3',resname,ires,hca+9)
+          end if
+ c
++c     neutral glutamic acid residue (GLH)
++c
++      else if (resname .eq. 'GLH') then
++         if (allatom) then
++            call pdbatm ('1HB ',resname,ires,hca+6)
++            call pdbatm ('2HB ',resname,ires,hca+7)
++            call pdbatm ('1HG ',resname,ires,hca+8)
++            call pdbatm ('2HG ',resname,ires,hca+9)
++            call pdbatm ('HE2 ',resname,ires,hca+10)
++         end if
++
++c
+ c     glutamine residue  (GLN)
+ c
+       else if (resname .eq. 'GLN') then
+@@ -1225,14 +1428,35 @@
+             call pdbatm (' HE2',resname,ires,hca+12)
+             call pdbatm (' HE3',resname,ires,hca+13)
+             call pdbatm (' HZ1',resname,ires,hca+14)
++            if (n12(hca+5) .eq. 4) then
+             call pdbatm (' HZ2',resname,ires,hca+15)
+             call pdbatm (' HZ3',resname,ires,hca+16)
++            end if
+          else
+             call pdbatm (' HZ1',resname,ires,cbi+5)
+             call pdbatm (' HZ2',resname,ires,cbi+6)
+             call pdbatm (' HZ3',resname,ires,cbi+7)
+          end if
+ c
++c       Neutral lysine (LYD)
++c
++      else if (resname .eq. 'LYD') then
++         if (allatom) then
++            call pdbatm ('1HB ',resname,ires,hca+6)
++            call pdbatm ('2HB ',resname,ires,hca+7)
++            call pdbatm ('1HG ',resname,ires,hca+8)
++            call pdbatm ('2HG ',resname,ires,hca+9)
++            call pdbatm ('1HD ',resname,ires,hca+10)
++            call pdbatm ('2HD ',resname,ires,hca+11)
++            call pdbatm ('1HE ',resname,ires,hca+12)
++            call pdbatm ('2HE ',resname,ires,hca+13)
++            call pdbatm ('1HZ ',resname,ires,hca+14)
++            call pdbatm ('2HZ ',resname,ires,hca+15)
++         else
++            call pdbatm ('1HZ ',resname,ires,cbi+5)
++            call pdbatm ('2HZ ',resname,ires,cbi+6)
++         end if
++c
+ c     arginine residue  (ARG)
+ c
+       else if (resname .eq. 'ARG') then
+diff -abuN /home/federico/7.6.dev_hop/tinker/source/pdbxyz.f /home/federico/7.6.dev/tinker/source/pdbxyz.f
+--- /home/federico/7.6.dev_hop/tinker/source/pdbxyz.f	2010-08-24 22:58:16.000000000 +0200
++++ /home/federico/7.6.dev/tinker/source/pdbxyz.f	2012-09-21 12:04:20.000000000 +0200
+@@ -465,81 +465,81 @@
+       data ntyp    /   1,   7,  15,  27,  41,  55,  65,  77,  87,
+      &                96, 107, 122, 138, 161, 178, 194, 210, 220,
+      &               232, 244, 258, 271, 287, 304, 318, 325,   0,
+-     &                 0,   0,   0,   1 /
++     &                 0,   0,   0, 649, 661, 675,   1,   0 /
+       data catyp   /   2,   8,  16,  28,  42,  56,  66,  78,  88,
+      &                97, 108, 123, 139, 162, 179, 195, 211, 221,
+      &               233, 245, 259, 272, 288, 305, 319, 326,   0,
+-     &                 0,   0,   0,   2 /
++     &                 0,   0,   0, 650, 662, 676,   2,   0 /
+       data ctyp    /   3,   9,  17,  29,  43,  57,  67,  79,  89,
+      &                98, 109, 124, 140, 163, 180, 196, 212, 222,
+      &               234, 246, 260, 273, 289, 306, 320, 327,   0,
+-     &                 0,   0,   0,   3 /
++     &                 0,   0,   0, 651, 663, 677,   3,   0 /
+       data hntyp   /   4,  10,  18,  30,  44,  58,  68,  80,  90,
+      &                 0, 110, 125, 141, 164, 181, 197, 213, 223,
+      &               235, 247, 261, 274, 290, 307, 321, 328,   0,
+-     &                 0,   0,   0,   4 /
++     &                 0,   0,   0, 652, 664, 678,   4,   0 /
+       data otyp    /   5,  11,  19,  31,  45,  59,  69,  81,  91,
+      &                99, 111, 126, 142, 165, 182, 198, 214, 224,
+      &               236, 248, 262, 275, 291, 308, 322, 329,   0,
+-     &                 0,   0,   0,   5 /
++     &                 0,   0,   0, 653, 665, 679,   5,   0 /
+       data hatyp   /   6,  12,  20,  32,  46,  60,  70,  82,  92,
+      &               100, 112, 127, 143, 166, 183, 199, 215, 225,
+      &               237, 249, 263, 276, 292, 309,   0, 330,   0,
+-     &                 0,   0,   0,   6 /
++     &                 0,   0,   0, 654, 666, 680,   6,   0 /
+ c
+ c     biopolymer atom types for N-terminal backbone atoms
+ c
+       data nntyp   / 350, 356, 362, 368, 374, 380, 386, 392, 398,
+      &               404, 412, 418, 424, 430, 436, 442, 448, 454,
+      &               460, 466, 472, 478, 484, 490, 496, 325,   0,
+-     &                 0,   0,   0, 350 /
++     &                 0,   0,   0,   0,   0,   0, 350,   0 /
+       data cantyp  / 351, 357, 363, 369, 375, 381, 387, 393, 399,
+      &               405, 413, 419, 425, 431, 437, 443, 449, 455,
+      &               461, 467, 473, 479, 485, 491, 497, 326,   0,
+-     &               340,   0,   0, 351 /
++     &               340,   0,   0,   0,   0,   0, 351,   0 /
+       data cntyp   / 352, 358, 364, 370, 376, 382, 388, 394, 400,
+      &               406, 414, 420, 426, 432, 438, 444, 450, 456,
+      &               462, 468, 474, 480, 486, 492, 498, 327, 337,
+-     &               342,   0,   0, 352 /
++     &               342,   0,   0,   0,   0,   0, 352,   0 /
+       data hnntyp  / 353, 359, 365, 371, 377, 383, 389, 395, 401,
+      &               407, 415, 421, 427, 433, 439, 445, 451, 457,
+      &               463, 469, 475, 481, 487, 493, 499, 328,   0,
+-     &                 0,   0,   0, 353 /
++     &                 0,   0,   0,   0,   0,   0, 353,   0 /
+       data ontyp   / 354, 360, 366, 372, 378, 384, 390, 396, 402,
+      &               408, 416, 422, 428, 434, 440, 446, 452, 458,
+      &               464, 470, 476, 482, 488, 494, 500, 329, 339,
+-     &               343,   0,   0, 354 /
++     &               343,   0,   0,   0,   0,   0, 354,   0 /
+       data hantyp  / 355, 361, 367, 373, 379, 385, 391, 397, 403,
+      &               409, 417, 423, 429, 435, 441, 447, 453, 459,
+      &               465, 471, 477, 483, 489, 495,   0, 330, 338,
+-     &               341,   0,   0, 355 /
++     &               341,   0,   0,   0,   0,   0, 355,   0 /
+ c
+ c     biopolymer atom types for C-terminal backbone atoms
+ c
+       data nctyp   / 501, 507, 513, 519, 525, 531, 537, 543, 549,
+      &               555, 560, 566, 572, 578, 584, 590, 596, 602,
+      &               608, 614, 620, 626, 632, 638, 644,   0,   0,
+-     &                 0, 344, 346, 501 /
++     &                 0, 344, 346,   0,   0,   0, 501,   0 /
+       data cactyp  / 502, 508, 514, 520, 526, 532, 538, 544, 550,
+      &               556, 561, 567, 573, 579, 585, 591, 597, 603,
+      &               609, 615, 621, 627, 633, 639, 645,   0,   0,
+-     &                 0,   0, 348, 502 /
++     &                 0,   0, 348,   0,   0,   0, 502,   0 /
+       data cctyp   / 503, 509, 515, 521, 527, 533, 539, 545, 551,
+      &               557, 562, 568, 574, 580, 586, 592, 598, 604,
+      &               610, 616, 622, 628, 634, 640, 646,   0,   0,
+-     &                 0,   0,   0, 503 /
++     &                 0,   0,   0,   0,   0,   0, 503,   0 /
+       data hnctyp  / 504, 510, 516, 522, 528, 534, 540, 546, 552,
+      &                 0, 563, 569, 575, 581, 587, 593, 599, 605,
+      &               611, 617, 623, 629, 635, 641, 647,   0,   0,
+-     &                 0, 345, 347, 504 /
++     &                 0, 345, 347,   0,   0,   0, 504,   0 /
+       data octyp   / 505, 511, 517, 523, 529, 535, 541, 547, 553,
+      &               558, 564, 570, 576, 582, 588, 594, 600, 606,
+      &               612, 618, 624, 630, 636, 642, 648,   0,   0,
+-     &                 0,   0,   0, 505 /
++     &                 0,   0,   0,   0,   0,   0, 505,   0 /
+       data hactyp  / 506, 512, 518, 524, 530, 536, 542, 548, 554,
+      &               559, 565, 571, 577, 583, 589, 595, 601, 607,
+      &               613, 619, 625, 631, 637, 643,   0,   0,   0,
+-     &                 0,   0, 349, 506 /
++     &                 0,   0, 349,   0,   0,   0, 506,   0 /
+ c
+ c
+ c     set a pointer to the first and last atom of each residue
+@@ -1372,6 +1372,24 @@
+          call findatm (' HB3',start,stop,i)
+          call newatm (i,217,n-5,1.10d0,cai,107.9d0,n-4,110.0d0,-1)
+ c
++c     neutral aspartic acid residue  (ASH)
++c
++      else if (resname .eq. 'ASH') then
++         call findatm (' CB ',start,stop,i)
++           call oldatm (i,655,cai,ires)
++         call findatm (' CG ',start,stop,i)
++           call oldatm (i,657,n-1,ires)
++         call findatm (' OD1',start,stop,i)
++           call oldatm (i,658,n-1,ires)
++         call findatm (' OD2',start,stop,i)
++           call oldatm (i,659,n-2,ires)
++         call findatm (' HB2',start,stop,i)
++           call newatm (i,656,n-4,1.10d0,cai,107.9d0,n-3,110.0d0,1)
++         call findatm (' HB3',start,stop,i)
++           call newatm (i,656,n-5,1.10d0,cai,107.9d0,n-4,110.0d0,-1)
++           call findatm (' HD2',start,stop,i)
++           call newatm (i,660,n-3,1.00d0,n-5,107.9d0,n-4,180.0d0,0)
++c
+ c     asparagine residue  (ASN)
+ c
+       else if (resname .eq. 'ASN') then
+@@ -1414,6 +1432,30 @@
+          call findatm (' HG3',start,stop,i)
+          call newatm (i,241,n-7,1.10d0,n-8,109.5d0,n-6,109.5d0,-1)
+ c
++c     neutral glutamic acid residue  (GLH)
++c
++      else if (resname .eq. 'GLH') then
++         call findatm (' CB ',start,stop,i)
++           call oldatm (i,667,cai,ires)
++         call findatm (' CG ',start,stop,i)
++           call oldatm (i,669,n-1,ires)
++         call findatm (' CD ',start,stop,i)
++           call oldatm (i,671,n-1,ires)
++         call findatm (' OE1',start,stop,i)
++           call oldatm (i,672,n-1,ires)
++         call findatm (' OE2',start,stop,i)
++           call oldatm (i,673,n-2,ires)
++         call findatm (' HB2',start,stop,i)
++           call newatm (i,668,n-5,1.10d0,cai,107.9d0,n-4,110.0d0,1)
++         call findatm (' HB3',start,stop,i)
++           call newatm (i,668,n-6,1.10d0,cai,107.9d0,n-5,110.0d0,-1)
++         call findatm (' HG2',start,stop,i)
++           call newatm (i,670,n-6,1.10d0,n-7,109.5d0,n-5,109.5d0,1)
++           call findatm (' HG3',start,stop,i)
++           call newatm (i,670,n-7,1.10d0,n-8,109.5d0,n-6,109.5d0,-1)
++           call findatm (' HE2',start,stop,i)
++           call newatm (i,674,n-5,1.00d0,n-7,107.9d0,n-6,180.0d0,0)
++c
+ c     glutamine residue  (GLN)
+ c
+       else if (resname .eq. 'GLN') then
+@@ -1502,6 +1544,40 @@
+          call findatm (' HZ3',start,stop,i)
+          call newatm (i,286,n-11,1.04d0,n-12,110.5d0,n-13,-60.0d0,0)
+ c
++c     neutral lysine residue  (LYD)
++c
++      else if (resname .eq. 'LYD') then
++         call findatm (' CB ',start,stop,i)
++         call oldatm (i,681,cai,ires)
++         call findatm (' CG ',start,stop,i)
++         call oldatm (i,683,n-1,ires)
++         call findatm (' CD ',start,stop,i)
++         call oldatm (i,685,n-1,ires)
++         call findatm (' CE ',start,stop,i)
++         call oldatm (i,687,n-1,ires)
++         call findatm (' NZ ',start,stop,i)
++         call oldatm (i,689,n-1,ires)
++         call findatm (' HB2',start,stop,i)
++         call newatm (i,682,n-5,1.10d0,cai,107.9d0,n-4,110.0d0,1)
++         call findatm (' HB3',start,stop,i)
++         call newatm (i,682,n-6,1.10d0,cai,107.9d0,n-5,110.0d0,-1)
++         call findatm (' HG2',start,stop,i)
++         call newatm (i,684,n-6,1.10d0,n-7,109.5d0,n-5,109.5d0,1)
++         call findatm (' HG3',start,stop,i)
++         call newatm (i,684,n-7,1.10d0,n-8,109.5d0,n-6,109.5d0,-1)
++         call findatm (' HD2',start,stop,i)
++         call newatm (i,686,n-7,1.10d0,n-8,109.5d0,n-6,109.5d0,1)
++         call findatm (' HD3',start,stop,i)
++         call newatm (i,686,n-8,1.10d0,n-9,109.5d0,n-7,109.5d0,-1)
++         call findatm (' HE2',start,stop,i)
++         call newatm (i,688,n-8,1.10d0,n-9,110.9d0,n-7,107.3d0,1)
++         call findatm (' HE3',start,stop,i)
++         call newatm (i,688,n-9,1.10d0,n-10,110.9d0,n-8,107.3d0,-1)
++         call findatm (' HZ2',start,stop,i)
++         call newatm (i,690,n-9,1.04d0,n-10,110.5d0,n-11,60.0d0,0)
++         call findatm (' HZ3',start,stop,i)
++         call newatm (i,690,n-10,1.04d0,n-11,110.5d0,n-12,-60.0d0,0)
++c
+ c     arginine residue  (ARG)
+ c
+       else if (resname .eq. 'ARG') then
+@@ -2236,19 +2312,24 @@
+       include 'pdb.i'
+       integer i
+ c
++c Retinal 
++c     
++      logical first
++c
+ c
+ c     find water molecules and ions in PDB HETATM records
+ c
+       n = n + 1
+       i = 0
++      first = .false.
+       dowhile (i .lt. npdb)
+          i = i + 1
+          if (pdbtyp(i) .eq. 'HETATM') then
+-            if (resnam(i) .eq. 'HOH') then
++            if ((resnam(i) .eq. 'HOH') .or. (resnam(i) .eq. 'WAT')) then
+                if (atmnam(i) .eq. ' O  ') then
+                   call oldatm (i,2001,0,0)
+-                  if (atmnam(i+1).eq.' H  ' .and.
+-     &                atmnam(i+2).eq.' H  ') then
++                  if (atmnam(i+1).eq.' H1 ' .and.
++     &                atmnam(i+2).eq.' H2 ') then
+                      call oldatm (i+1,2002,n-1,0)
+                      call oldatm (i+2,2002,n-2,0)
+                      i = i + 2
+@@ -2259,6 +2340,11 @@
+      &                               n-3,120.0d0,0)
+                   end if
+                end if
++c
++c Retinal
++c
++            else if ((resnam(i) .eq. 'RET') .and. (.not.first)) then
++               call buildret(i,first)   
+             else if (resnam(i) .eq. 'NA ') then
+                call oldatm (i,2003,0,0)
+             else if (resnam(i) .eq. 'K  ') then
+@@ -2268,10 +2354,260 @@
+             else if (resnam(i) .eq. 'CA ') then
+                call oldatm (i,2006,0,0)
+             else if (resnam(i) .eq. 'CL ') then
+-               call oldatm (i,2007,0,0)
++               call oldatm (i,2015,0,0)
+             end if
+          end if
+       end do
+       n = n - 1
+       return
+       end
++c
++c Retinal
++c
++c     #################################################################
++c     ##                                                             ##
++c     ##  subroutine buildret  --  coordinates of retinal            ##
++c     ##                                                             ##
++c     #################################################################
++c
++c
++c     "buildret" translates retinal in Protein Data Bank format to a
++c     Cartesian coordinate file and sequence file
++c
++c
++      subroutine buildret(i,stop)
++      implicit none
++      include 'sizes.i'
++      include 'atoms.i'
++      include 'atmtyp.i'
++      include 'pdb.i'
++      integer i,j,k,symb,cont,hncont,a,b
++      character*2 jstring
++      logical atm,stop
++      real*8 x2,y2,z2,dist
++      real*8 xdih(4),ydih(4),zdih(4),rAB,rAC,rAD,rBC,rBD,rCD,qterm
++      real*8 pterm,diha,dihn
++c
++c
++c     decide if it is a sp2 or sp3 atom, based on the numeration
++c
++      j = 1
++      atm = .false.
++      do while ((j .le. 20) .and. (.not.atm))
++         if (j .lt. 10) then
++            write(jstring,'(i1)') j
++            atm = (atmnam(i) .eq. ' C'//jstring//' ')
++         else
++            write(jstring,'(i2)') j
++            atm = (atmnam(i) .eq. ' C'//jstring)
++         end if
++         if (atm) then
++            if (j .eq. 1) call oldatm(i,2013,0,0)
++            if ((j .gt. 1) .and. (j .le. 4)) call oldatm(i,2013,n-1,0)
++            if ((j .ge. 5) .and. (j .lt. 16)) call oldatm(i,2012,n-1,0)
++            if (j .eq. 6) call addbond(n-1,n-6)
++            if ((j .eq. 16) .or. (j .eq. 17)) 
++     &                     call oldatm(i,2013,n-j+1,0)
++            if (j .ge. 18) call oldatm(i,2013,n-(13-3*(j-18)),0)
++         end if
++         j = j + 1
++      end do
++c
++c     after carbon atoms, H Ret are added
++c
++      if (j .eq. 21) then
++         stop = .true.
++         write(6,*) ' '
++         write(6,*) 'WARNING: Retinal Moiety Detected! '
++         write(6,*) 'The retinal H atoms might be in the wrong position'
++         write(6,*) ' '
++         k = 1
++c
++c     C2 H atoms
++c
++         call newatm (0,2014,n-19,1.08d0,n-20,109.5d0,n-15,120.0d0,0)
++         call newatm (0,2014,n-20,1.08d0,n-21,109.5d0,n-16,-120.0d0,0)
++         k = k + 2
++c
++c    C3 H atoms
++c
++         call newatm (0,2014,n-20,1.08d0,n-19,109.5d0,n-18,60.0d0,0)
++         call newatm (0,2014,n-21,1.08d0,n-20,109.5d0,n-19,180.0d0,0) 
++         k = k + 2
++c
++c    C4 H atoms
++c
++         call newatm (0,2014,n-21,1.08d0,n-20,109.5d0,n-19,120.0d0,0)
++         call newatm (0,2014,n-22,1.08d0,n-21,109.5d0,n-20,-120.0d0,0) 
++         k = k + 2
++c
++c    cycle for C7 and C8 H atoms
++c
++         do while (k .le. 8)
++            call newatm (0,2014,n-20,1.08d0,n-19,120.0d0,n-18,0.0d0,0)
++            k = k + 1
++         end do
++c
++c    cycle for C10 and C11 H atoms
++c
++         do while (k .le. 10)
++            call newatm (0,2014,n-19,1.08d0,n-20,120.0d0,n-21,0.0d0,0)
++            k = k + 1
++         end do
++c
++c    H atom on C12
++c
++         call newatm (0,2014,n-19,1.08d0,n-18,120.0d0,n-17,0.0d0,0)
++         k = k + 1
++c
++c    C14
++c
++
++      xdih(1) = x(n-20)
++      xdih(2) = x(n-19)
++      xdih(3) = x(n-18)
++      xdih(4) = x(n-17)
++      ydih(1) = y(n-20)
++      ydih(2) = y(n-19)
++      ydih(3) = y(n-18)
++      ydih(4) = y(n-17)
++      zdih(1) = z(n-20)
++      zdih(2) = z(n-19)
++      zdih(3) = z(n-18)
++      zdih(4) = z(n-17)
++     
++      rCD=sqrt((xdih(4)-xdih(3))**2 + (ydih(4)-ydih(3))**2 +
++     &(zdih(4)-zdih(3))**2)
++      rBC=sqrt((xdih(3)-xdih(2))**2 + (ydih(3)-ydih(2))**2 +
++     &(zdih(3)-zdih(2))**2)
++      rBD=sqrt((xdih(4)-xdih(2))**2 + (ydih(4)-ydih(2))**2 +
++     &(zdih(4)-zdih(2))**2)
++
++      rAB=sqrt((xdih(2)-xdih(1))**2 + (ydih(2)-ydih(1))**2 +
++     &(zdih(2)-zdih(1))**2)
++      rAD=sqrt((xdih(4)-xdih(1))**2 + (ydih(4)-ydih(1))**2 +
++     &(zdih(4)-zdih(1))**2)
++      rAC=sqrt((xdih(3)-xdih(1))**2 + (ydih(3)-ydih(1))**2 +
++     &(zdih(3)-zdih(1))**2)
++
++      pterm=(rCD**2)*(rBC**2+rAB**2-rAC**2)+(rBC**2)*(-rBC**2+
++     &rAB**2+rAC**2)+(rBD**2)*(rBC**2-rAB**2+rAC**2)-
++     &2*(rBC**2)*(rAD**2)
++      qterm=(rCD+rBC+rBD)*(rCD+rBC-rBD)*(rCD-rBC+rBD)*(-rCD+rBC+rBD)*
++     &(rBC+rAB+rAC)*(rBC+rAB-rAC)*(rBC-rAB+rAC)*(-rBC+rAB+
++     &rAC)
++
++      diha=acos(pterm/sqrt(qterm))*(180/3.14159)
++
++      if (abs(diha) .gt. 90.0) then
++         call newatm (0,2014,n-18,1.08d0,n-19,120.0d0,n-20,0.0d0,0)
++         dihn = 0.0d0
++      else
++         call newatm (0,2014,n-18,1.08d0,n-19,120.0d0,n-20,180.0d0,0)
++         dihn = 180.0d0
++      end if
++      k = k + 1
++      
++c
++c    C15
++c
++            call newatm (0,2014,n-18,1.08d0,n-19,120.0d0,n-20,0.0d0,0)
++            k = k + 1
++
++c
++c    H atoms on C16
++c
++         call newatm (0,2014,n-18,1.08d0,n-33,109.5d0,n-32,0.0d0,0)
++         call newatm (0,2014,n-19,1.08d0,n-34,109.5d0,n-33,
++     &                      -120.0d0,0)
++         call newatm (0,2014,n-20,1.08d0,n-35,109.5d0,n-34,120.0d0,0)
++         k = k + 1
++c
++c    H atoms on C17
++c
++         call newatm (0,2014,n-20,1.08d0,n-36,109.5d0,n-35,0.0d0,0)
++         call newatm (0,2014,n-21,1.08d0,n-37,109.5d0,n-36,
++     &                      -120.0d0,0)
++         call newatm (0,2014,n-22,1.08d0,n-38,109.5d0,n-37,120.0d0,0)
++         k = k + 1
++c
++c    H atoms on C18
++c
++         call newatm (0,2014,n-22,1.08d0,n-35,109.5d0,n-34,180.0d0,0)
++         call newatm (0,2014,n-23,1.08d0,n-36,109.5d0,n-35,
++     &                      -60.0d0,0)
++         call newatm (0,2014,n-24,1.08d0,n-37,109.5d0,n-36,60.0d0,0)
++         k = k + 1
++c
++c    H atoms on C19
++c
++         call newatm (0,2014,n-24,1.08d0,n-34,109.5d0,n-33,150.0d0,0)
++         call newatm (0,2014,n-25,1.08d0,n-35,109.5d0,n-34,
++     &                      -90.0d0,0)
++         call newatm (0,2014,n-26,1.08d0,n-36,109.5d0,n-35,30.0d0,0)
++         k = k + 1
++c
++c    H atoms on C20
++c
++         call newatm (0,2014,n-26,1.08d0,n-33,109.5d0,n-32,150.0d0,0)
++         call newatm (0,2014,n-27,1.08d0,n-34,109.5d0,n-33,
++     &                      -90.0d0,0)
++         call newatm (0,2014,n-28,1.08d0,n-35,109.5d0,n-34,30.0d0,0)
++c
++c    In case of H Ret in PDB file, use their PDB coordinates
++c
++         if (resnam(i+1) .eq. 'RET') then
++            a = i+1
++            b = i+28
++            do cont = a, b
++              x(cont+2) = xpdb(cont)
++              y(cont+2) = ypdb(cont)
++              z(cont+2) = zpdb(cont)
++            end do
++            hncont = cont-1
++         end if
++c
++c    Lysine search and connection
++c    C15 coordinates are current position minus 34
++c
++         k = 1 
++         atm = .false.
++c
++c    loop over all atoms, finishing when the PSB Lys has been found
++c
++         do while ((k .le. n) .and. .not.atm)
++            symb = index(name(k),'N3')
++c
++c    compute the distance from C15 only for N3 Tinker atom name
++c
++            if (symb .ne. 0) then
++               x2 = (x(n-34)-x(k))**2
++               y2 = (y(n-34)-y(k))**2
++               z2 = (z(n-34)-z(k))**2
++               dist = sqrt(x2+y2+z2)
++c
++c    if the distance is lower than 1.8 A, 2 HZ atoms are deleted,
++c    the C15-N connection is made and the coordinates for the
++c    for the 3rd HZ are modified according to C15-N double bond
++c
++               if (dist .le. 1.8d0) then
++                  do cont = 1, 2
++                     call delete(k+9)
++                  end do
++                  call addbond(n-34,k)
++                  if (resnam(k).eq.'LYS') then
++                     call xyzatm(k+9,k,1.04d0,n-34,120.0d0,n-35,dihn,0)
++                     if (resnam(i+1) .eq. 'RET') then
++                        x(k+9) = xpdb(k+7)
++                        y(k+9) = ypdb(k+7)
++                        z(k+9) = zpdb(k+7)
++                     end if
++                  end if
++                  atm = .true. 
++               end if
++            end if
++            k = k + 1
++         end do
++      end if
++      return
++      end
+diff -abuN /home/federico/7.6.dev_hop/tinker/source/protein.f /home/federico/7.6.dev/tinker/source/protein.f
+--- /home/federico/7.6.dev_hop/tinker/source/protein.f	2010-08-24 22:58:16.000000000 +0200
++++ /home/federico/7.6.dev/tinker/source/protein.f	2012-06-13 10:48:25.000000000 +0200
+@@ -360,81 +360,81 @@
+       data ntyp    /   1,   7,  15,  27,  41,  55,  65,  77,  87,
+      &                96, 107, 122, 138, 161, 178, 194, 210, 220,
+      &               232, 244, 258, 271, 287, 304, 318, 325,   0,
+-     &                 0,   0,   0,   1 /
++     &                 0,   0,   0, 649, 661, 675,   1,   0 /
+       data catyp   /   2,   8,  16,  28,  42,  56,  66,  78,  88,
+      &                97, 108, 123, 139, 162, 179, 195, 211, 221,
+      &               233, 245, 259, 272, 288, 305, 319, 326,   0,
+-     &                 0,   0,   0,   2 /
++     &                 0,   0,   0, 650, 662, 676,   2,   0 /
+       data ctyp    /   3,   9,  17,  29,  43,  57,  67,  79,  89,
+      &                98, 109, 124, 140, 163, 180, 196, 212, 222,
+      &               234, 246, 260, 273, 289, 306, 320, 327,   0,
+-     &                 0,   0,   0,   3 /
++     &                 0,   0,   0, 651, 663, 677,   3,   0 /
+       data hntyp   /   4,  10,  18,  30,  44,  58,  68,  80,  90,
+      &                 0, 110, 125, 141, 164, 181, 197, 213, 223,
+      &               235, 247, 261, 274, 290, 307, 321, 328,   0,
+-     &                 0,   0,   0,   4 /
++     &                 0,   0,   0, 652, 664, 678,   4,   0 /
+       data otyp    /   5,  11,  19,  31,  45,  59,  69,  81,  91,
+      &                99, 111, 126, 142, 165, 182, 198, 214, 224,
+      &               236, 248, 262, 275, 291, 308, 322, 329,   0,
+-     &                 0,   0,   0,   5 /
++     &                 0,   0,   0, 653, 665, 679,   5,   0 /
+       data hatyp   /   6,  12,  20,  32,  46,  60,  70,  82,  92,
+      &               100, 112, 127, 143, 166, 183, 199, 215, 225,
+      &               237, 249, 263, 276, 292, 309,   0, 330,   0,
+-     &                 0,   0,   0,   6 /
++     &                 0,   0,   0, 654, 666, 680,   6,   0 /
+ c
+ c     biopolymer atom types for N-terminal backbone atoms
+ c
+       data nntyp   / 350, 356, 362, 368, 374, 380, 386, 392, 398,
+      &               404, 412, 418, 424, 430, 436, 442, 448, 454,
+      &               460, 466, 472, 478, 484, 490, 496, 325,   0,
+-     &                 0,   0,   0, 350 /
++     &                 0,   0,   0,   0,   0,   0, 350,   0 /
+       data cantyp  / 351, 357, 363, 369, 375, 381, 387, 393, 399,
+      &               405, 413, 419, 425, 431, 437, 443, 449, 455,
+      &               461, 467, 473, 479, 485, 491, 497, 326,   0,
+-     &               340,   0,   0, 351 /
++     &               340,   0,   0,   0,   0,   0, 351,   0 /
+       data cntyp   / 352, 358, 364, 370, 376, 382, 388, 394, 400,
+      &               406, 414, 420, 426, 432, 438, 444, 450, 456,
+      &               462, 468, 474, 480, 486, 492, 498, 327, 337,
+-     &               342,   0,   0, 352 /
++     &               342,   0,   0,   0,   0,   0, 352,   0 /
+       data hnntyp  / 353, 359, 365, 371, 377, 383, 389, 395, 401,
+      &               407, 415, 421, 427, 433, 439, 445, 451, 457,
+      &               463, 469, 475, 481, 487, 493, 499, 328,   0,
+-     &                 0,   0,   0, 353 /
++     &                 0,   0,   0,   0,   0,   0, 353,   0 /
+       data ontyp   / 354, 360, 366, 372, 378, 384, 390, 396, 402,
+      &               408, 416, 422, 428, 434, 440, 446, 452, 458,
+      &               464, 470, 476, 482, 488, 494, 500, 329, 339,
+-     &               343,   0,   0, 354 /
++     &               343,   0,   0,   0,   0,   0, 354,   0 /
+       data hantyp  / 355, 361, 367, 373, 379, 385, 391, 397, 403,
+      &               409, 417, 423, 429, 435, 441, 447, 453, 459,
+      &               465, 471, 477, 483, 489, 495,   0, 330, 338,
+-     &               341,   0,   0, 355 /
++     &               341,   0,   0,   0,   0,   0, 355,   0 /
+ c
+ c     biopolymer atom types for C-terminal backbone atoms
+ c
+       data nctyp   / 501, 507, 513, 519, 525, 531, 537, 543, 549,
+      &               555, 560, 566, 572, 578, 584, 590, 596, 602,
+      &               608, 614, 620, 626, 632, 638, 644,   0,   0,
+-     &                 0, 344, 346, 501 /
++     &                 0, 344, 346,   0,   0,   0, 501,   0 /
+       data cactyp  / 502, 508, 514, 520, 526, 532, 538, 544, 550,
+      &               556, 561, 567, 573, 579, 585, 591, 597, 603,
+      &               609, 615, 621, 627, 633, 639, 645,   0,   0,
+-     &                 0,   0, 348, 502 /
++     &                 0,   0, 348,   0,   0,   0, 502,   0 /
+       data cctyp   / 503, 509, 515, 521, 527, 533, 539, 545, 551,
+      &               557, 562, 568, 574, 580, 586, 592, 598, 604,
+      &               610, 616, 622, 628, 634, 640, 646,   0,   0,
+-     &                 0,   0,   0, 503 /
++     &                 0,   0,   0,   0,   0,   0, 503,   0 /
+       data hnctyp  / 504, 510, 516, 522, 528, 534, 540, 546, 552,
+      &                 0, 563, 569, 575, 581, 587, 593, 599, 605,
+      &               611, 617, 623, 629, 635, 641, 647,   0,   0,
+-     &                 0, 345, 347, 504 /
++     &                 0, 345, 347,   0,   0,   0, 504,   0 /
+       data octyp   / 505, 511, 517, 523, 529, 535, 541, 547, 553,
+      &               558, 564, 570, 576, 582, 588, 594, 600, 606,
+      &               612, 618, 624, 630, 636, 642, 648,   0,   0,
+-     &                 0,   0,   0, 505 /
++     &                 0,   0,   0,   0,   0,   0, 505,   0 /
+       data hactyp  / 506, 512, 518, 524, 530, 536, 542, 548, 554,
+      &               559, 565, 571, 577, 583, 589, 595, 601, 607,
+      &               613, 619, 625, 631, 637, 643,   0,   0,   0,
+-     &                 0,   0, 349, 506 /
++     &                 0,   0, 349,   0,   0,   0, 506,   0 /
+ c
+ c
+ c     determine whether the peptide chain is cyclic
+diff -abuN /home/federico/7.6.dev_hop/tinker/source/readpdb.f /home/federico/7.6.dev/tinker/source/readpdb.f
+--- /home/federico/7.6.dev_hop/tinker/source/readpdb.f	2010-08-24 22:58:16.000000000 +0200
++++ /home/federico/7.6.dev/tinker/source/readpdb.f	2012-06-13 10:48:25.000000000 +0200
+@@ -665,6 +665,13 @@
+          if (atmname .eq. ' HB1')  atmname = ' HB3'
+          if (atmname .eq. '2HB ')  atmname = ' HB3'
+ c
++c     protonated aspartic acid residue  (ASH)
++c
++      else if (resname .eq. 'ASH') then
++         if (atmname .eq. '1HB ')  atmname = ' HB2'
++         if (atmname .eq. ' HB1')  atmname = ' HB3'
++         if (atmname .eq. '2HB ')  atmname = ' HB3'
++c
+ c     asparagine residue  (ASN)
+ c
+       else if (resname .eq. 'ASN') then
+@@ -688,6 +695,17 @@
+          if (atmname .eq. ' HG1')  atmname = ' HG3'
+          if (atmname .eq. '2HG ')  atmname = ' HG3'
+ c
++c     protonated glutamic acid residue  (GLH)
++c
++      else if (resname .eq. 'GLH') then
++         if (atmname .eq. '1HB ')  atmname = ' HB2'
++         if (atmname .eq. ' HB1')  atmname = ' HB3'
++         if (atmname .eq. '2HB ')  atmname = ' HB3'
++         if (atmname .eq. '1HG ')  atmname = ' HG2'
++         if (atmname .eq. ' HG1')  atmname = ' HG3'
++         if (atmname .eq. '2HG ')  atmname = ' HG3'
++
++c
+ c     glutamine residue  (GLN)
+ c
+       else if (resname .eq. 'GLN') then
+@@ -739,6 +757,26 @@
+          if (atmname .eq. '3HZ ')  atmname = ' HZ3'
+          if (atmname .eq. 'HNZ3')  atmname = ' HZ3'
+ c
++c     neutral lysine residue  (LYD)
++c
++      else if (resname .eq. 'LYD') then
++         if (atmname .eq. '1HB ')  atmname = ' HB2'
++         if (atmname .eq. ' HB1')  atmname = ' HB3'
++         if (atmname .eq. '2HB ')  atmname = ' HB3'
++         if (atmname .eq. '1HG ')  atmname = ' HG2'
++         if (atmname .eq. ' HG1')  atmname = ' HG3'
++         if (atmname .eq. '2HG ')  atmname = ' HG3'
++         if (atmname .eq. '1HD ')  atmname = ' HD2'
++         if (atmname .eq. ' HD1')  atmname = ' HD3'
++         if (atmname .eq. '2HD ')  atmname = ' HD3'
++         if (atmname .eq. '1HE ')  atmname = ' HE2'
++         if (atmname .eq. ' HE1')  atmname = ' HE3'
++         if (atmname .eq. '2HE ')  atmname = ' HE3'
++         if (atmname .eq. '1HZ ')  atmname = ' HZ1'
++         if (atmname .eq. 'HNZ1')  atmname = ' HZ1'
++         if (atmname .eq. '2HZ ')  atmname = ' HZ2'
++         if (atmname .eq. 'HNZ2')  atmname = ' HZ2'
++c
+ c     arginine residue  (ARG)
+ c
+       else if (resname .eq. 'ARG') then
+diff -abuN /home/federico/7.6.dev_hop/tinker/source/sizes.i /home/federico/7.6.dev/tinker/source/sizes.i
+--- /home/federico/7.6.dev_hop/tinker/source/sizes.i	2010-08-24 22:58:17.000000000 +0200
++++ /home/federico/7.6.dev/tinker/source/sizes.i	2012-06-13 10:48:25.000000000 +0200
+@@ -88,7 +88,7 @@
+       parameter (maxring=10000)
+       parameter (maxbio=10000)
+       parameter (maxres=10000)
+-      parameter (maxamino=31)
++      parameter (maxamino=35)
+       parameter (maxnuc=12)
+       parameter (maxbnd=2*maxatm)
+       parameter (maxang=3*maxatm)

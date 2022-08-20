@@ -21,7 +21,6 @@ cp $templatedir/gromacs.sh .
 #
 # Asking the simulation temperature and if heating and equilibration must be run,
 # along with the duration of all MD phases
-# (see the self explaning echoes)
 #
 echo " What is the production temperature of the simulation? (Kelvin)"
 read tempmd
