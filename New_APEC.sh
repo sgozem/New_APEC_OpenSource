@@ -12,35 +12,30 @@ if [ -f Infos.dat ]; then
    echo " New.sh is terminating"
    exit 0
 fi
-echo ""
-echo ""
-echo ""
-echo ""
 echo "*****************************************************************************************************"
 echo "*****************************************************************************************************"
 echo ""
-echo "          *         ******     *******      ***            ********  *******    *****                  "
-echo "         ***       **    **    **         **   **          **        **        **   **                 "
-echo "        ** **      **    **    **        **                **        **       **                       "
-echo "       **   **     ******      ******    **         ***    ******    ******   **  *****                "
-echo "      *********    **          **        **                **        **       **     **                "
-echo "     **       **   **          **         **   **          **        **        **   **                 "
-echo "    **         **  **          *******      ***            **        *******    *****                  "
+echo "          *         ******     *******      ***            ********        **         **    ****     "
+echo "         ***       **    **    **         **   **          **               **       **   **    **   "
+echo "        ** **      **    **    **        **                **                **     **          **   "
+echo "       **   **     ******      ******    **         ***    ******             **   **          **    "
+echo "      *********    **          **        **                **                  ** **         **      "
+echo "     **       **   **          **         **   **          **                   ***        **        "
+echo "    **         **  **          *******      ***            **                    *        ********   "
 echo ""
+echo "         Average Protein Electrostatic Configuration for Flavoproteins (APEC-F) Version 2.0          "
 echo ""
-echo "                                                                Gozem Lab., Georgia State University "
-echo "                                                   Last version, Mar/2020 by Yoelvis Orozco-Gonzalez "
-echo "                                                                         and Pabel Kabir             "
+echo "                                                                 Written by: Yoelvis Orozco-Gonzalez "
+echo "                                               with contributions by: M. Pabel Kabir and Samer Gozem "
+echo "                                                                 Gozem Lab, Georgia State University "
+echo "                                                                                   August 20th, 2022 "
 echo "*****************************************************************************************************"
 echo "*****************************************************************************************************"
-echo ""
-echo ""
-echo ""
 
 #
 # Defining the path of the APEC code
 #
-camino="/home/users/yorozcogonzalez/bin/New_APEC/template"
+camino="/userapp/APEC_GOZEM/New_APEC/template"
 cp $camino/Infos.dat .
 
 #
@@ -110,7 +105,7 @@ cd Step_0/
 # Counts the total charge of the protein without the chromophore
 #
 plusc=`awk '{ print $4 " " $5 " " $6 }' ${Project}.pdb | uniq | awk '{ if ( $1 == "LYS" || $1 == "HIS" || $1 == "ARG" || $1 == "NA" ) print $1 }' | wc -l`
-minusc=`awk '{ print $4 " " $5 " " $6 }' ${Project}.pdb | uniq | awk '{ if ( $1 == "ASP" || $1 == "GLU" || $1 == "CL" || $1 == "ACI" ) print $1 }' | wc -l`
+minusc=`awk '{ print $4 " " $5 " " $6 }' ${Project}.pdb | uniq | awk '{ if ( $1 == "ASP" || $1 == "GLU" || $1 == "CL" || $1 == "ACI" || $1 == "TYO" ) print $1 }' | wc -l`
 totcarica=$(($plusc-$minusc))
 
 #
@@ -136,7 +131,7 @@ fi
 cp $templatedir/amber99sb.prm amber99sb.prm
 echo "AMBER amber99sb" >> Infos.dat
 echo "Parameters amber99sb" >> Infos.dat
-
+echo "Dimer NO" >> Infos.dat
 echo "CurrCalc Start" >> Infos.dat
 
 cp $templatedir/smooth_restart.sh .
@@ -331,7 +326,7 @@ rm ATOMS temp1 xyz HETATM_wat HETATM_CHR format.x format.f
 # Recomputinhg the total charge of the protein after generating the mutations
 #
 plusc=`awk '{ print $4 " " $5 " " $6 }' ${Project}.pdb | uniq | awk '{ if ( $1 == "LYS" || $1 == "HIS" || $1 == "ARG" || $1 == "NA" ) print $1 }' | wc -l`
-minusc=`awk '{ print $4 " " $5 " " $6 }' ${Project}.pdb | uniq | awk '{ if ( $1 == "ASP" || $1 == "GLU" || $1 == "CL" || $1 == "ACI" ) print $1 }' | wc -l`
+minusc=`awk '{ print $4 " " $5 " " $6 }' ${Project}.pdb | uniq | awk '{ if ( $1 == "ASP" || $1 == "GLU" || $1 == "CL" || $1 == "ACI" || $1 == "TYO" ) print $1 }' | wc -l`
 totcarica=$(($plusc-$minusc))
 
 #
